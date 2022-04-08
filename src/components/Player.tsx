@@ -60,7 +60,9 @@ const Player = () => {
   }, []);
 
   React.useEffect(() => {
-    fetchTrackCallback(playerQueueIds[0]);
+    if (playerQueueIds && playerQueueIds[0]) {
+      fetchTrackCallback(playerQueueIds[0]);
+    }
   }, [fetchTrackCallback, playerQueueIds]);
 
   const onEnded = React.useCallback(() => {
@@ -102,7 +104,9 @@ const Player = () => {
         </IconButton>
 
         <ReactAudioPlayer
-          src={`${STREAM_API}${playerQueueIds[0]}?client_id=${user?.clientId}`}
+          src={`${STREAM_API}${playerQueueIds[0]}${
+            user ? `?client_id=${user?.clientId}` : ""
+          }`}
           autoPlay
           controls
           onEnded={onEnded}

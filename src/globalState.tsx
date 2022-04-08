@@ -90,7 +90,10 @@ export const GlobalStateProvider: React.FC<GlobalStateProviderProps> = ({
   children,
 }) => {
   const storedStateString = localStorage.getItem("state");
-  const storedState = JSON.parse(storedStateString ?? "");
+  let storedState = undefined;
+  try {
+    storedState = JSON.parse(storedStateString ?? "");
+  } catch (e) {}
   const [state, dispatch] = React.useReducer(
     stateReducer,
     storedState ?? { playerQueueIds: [] }

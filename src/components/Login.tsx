@@ -47,7 +47,7 @@ const Header = () => {
   return (
     <>
       <Button onClick={onClickOpen}>
-        {cachedToken !== "" ? user?.nickname : "Log in"}
+        {cachedToken && cachedToken !== "" ? user?.nickname : "Log in"}
       </Button>
       <Modal open={openLogin} onClose={onClose} size="small">
         {user && (

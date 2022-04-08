@@ -6,8 +6,10 @@ const fetchWrapper = async (
   apiOptions?: APIOptions
 ) => {
   const stateString = localStorage.getItem("state");
-  const state = JSON.parse(stateString ?? "");
-
+  let state;
+  try {
+    state = JSON.parse(stateString ?? "");
+  } catch (e) {}
   let fullUrl = `${API}${url}`;
   if (apiOptions) {
     const params = new URLSearchParams();
