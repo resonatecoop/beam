@@ -19,7 +19,7 @@ const playerClass = css`
   padding: 1rem;
   position: fixed;
   width: 100%;
-  z-index: 1;
+  z-index: 10;
   bottom: 0;
   background-color: #fff;
 
@@ -74,7 +74,7 @@ const Player = () => {
   }, [dispatch]);
 
   const onClickQueue = React.useCallback(() => {
-    navigate("/queue");
+    navigate("/library/queue");
   }, [navigate]);
 
   if (playerQueueIds.length === 0 || !currentTrack) {

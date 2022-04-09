@@ -1,33 +1,44 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { LibraryContext, libraryReducer } from "../contexts/libraryState";
 import { PlaylistListing } from "./PlaylistListing";
-import constants from "../constants";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import BackButton from "./common/BackButton";
 
 export const Library: React.FC = () => {
-  const [state, dispatch] = React.useReducer(libraryReducer, { playlists: [] });
-
+  const navigate = useNavigate();
   const onClick = (id: string) => {
-    dispatch({ type: "setSelectedPlaylistId", id });
+    navigate(`/library/playlist/${id}`);
   };
 
   return (
-    <LibraryContext.Provider value={[state, dispatch]}>
-      <h2>Playlists</h2>
+    <>
       <div
         className={css`
-          display: flex;
-
-          @media (max-width: ${constants.bp.small}px) {
-            flex-direction: column;
-          }
+          height: 100%;
+          position: fixed;
+          width: 300px;
+          z-index: 1;
+          top: calc(48px + 3rem);
+          left: 0;
+          overflow-x: hidden;
+          padding: 0 0 1rem 1rem;
         `}
       >
+        <BackButton />
+        <h2 className={css``}>Library</h2>
+
         <PlaylistListing onClick={onClick} />
-        <Outlet />
       </div>
-    </LibraryContext.Provider>
+      <div
+        className={css`
+          margin-left: 300px;
+        `}
+      >
+        <div>
+          <Outlet />
+        </div>
+      </div>
+    </>
   );
 };
 

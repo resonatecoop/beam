@@ -4,6 +4,7 @@ export const Table = styled.table`
   width: 100%;
   border: none;
   border-collapse: collapse;
+
   & tbody tr:nth-child(odd) {
     background: #dfdfdf;
   }

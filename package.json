@@ -26,6 +26,7 @@
   "scripts": {
     "start": "PORT=8080 react-scripts start",
     "build": "react-scripts build",
+    "serve": "sirv build --port 8080 --cors --single",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
@@ -55,7 +56,7 @@
   "build": {
     "appId": "com.resonate.beam",
     "productName": "Beam",
-    "icon": "icon256.png",
+    "icon": "icon512.png",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -75,16 +76,17 @@
     }
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
     "concurrently": "^7.1.0",
     "cross-env": "^7.0.3",
     "electron": "^18.0.3",
     "electron-builder": "^22.14.13",
     "electronmon": "^2.0.2",
-    "wait-on": "^6.0.1",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^27.0.1",
-    "gh-pages": "^3.2.3"
+    "gh-pages": "^3.2.3",
+    "sirv-cli": "^2.0.2",
+    "wait-on": "^6.0.1"
   }
 }

@@ -1,5 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
+import { Link } from "react-router-dom";
 import constants from "../constants";
 import { fetchTrackGroups } from "../services/Api";
 import ClickToPlay from "./common/ClickToPlay";
@@ -26,7 +27,6 @@ export const NewReleases: React.FC = () => {
 
   const fetchTrackGroupsCallback = React.useCallback(async () => {
     const result = await fetchTrackGroups({ limit: 8 });
-    console.log("result", result);
     setTrackgroups(result);
   }, []);
 
@@ -69,9 +69,12 @@ export const NewReleases: React.FC = () => {
                   className={css`
                     margin-top: 0.5rem;
                     color: #444;
+                    text-decoration: none;
                   `}
                 >
-                  {group.display_artist}
+                  <Link to={`/library/artist/${group.creator_id}`}>
+                    {group.display_artist}
+                  </Link>
                 </span>
               </div>
               <TrackPopup groupId={group.id} />

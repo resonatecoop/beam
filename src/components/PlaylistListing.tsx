@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { NavLink, useNavigate, useParams } from "react-router-dom";
+import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import constants from "../constants";
 import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchUserTrackGroups } from "../services/Api";
@@ -13,7 +13,8 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
   const {
     state: { user },
   } = useGlobalStateContext();
-  let { playlistId } = useParams();
+  const { playlistId } = useParams();
+  const { pathname } = useLocation();
 
   const navigate = useNavigate();
   const userId = user?.id;
@@ -24,11 +25,11 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
       const result = await fetchUserTrackGroups({ type: "playlist" });
 
       setPlaylists(result);
-      if (!playlistId) {
-        navigate(`/library/${result[0]?.id ?? ""}`);
+      if (!playlistId && pathname.includes("playlist")) {
+        navigate(`/library/playlist/${result[0]?.id ?? ""}`);
       }
     },
-    [navigate, playlistId]
+    [navigate, playlistId, pathname]
   );
 
   React.useEffect(() => {
@@ -40,8 +41,6 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
   return (
     <div
       className={css`
-        max-width: 300px;
-        margin-right: 1rem;
         padding: 1rem 0;
         @media (max-width: ${constants.bp.small}px) {
           max-width: inherit;
@@ -63,7 +62,10 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
               }
             `}
           >
-            <NavLink className={listButtonClass} to={`/library/${playlist.id}`}>
+            <NavLink
+              className={listButtonClass}
+              to={`/library/playlist/${playlist.id}`}
+            >
               {playlist.title}
             </NavLink>
           </li>

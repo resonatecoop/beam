@@ -1,3 +1,5 @@
+import { GlobalState } from "../contexts/globalState";
+
 const API = "https://stream.resonate.coop/api/v2/";
 
 const fetchWrapper = async (
@@ -6,7 +8,7 @@ const fetchWrapper = async (
   apiOptions?: APIOptions
 ) => {
   const stateString = localStorage.getItem("state");
-  let state;
+  let state: undefined | GlobalState;
   try {
     state = JSON.parse(stateString ?? "");
   } catch (e) {}
@@ -19,7 +21,6 @@ const fetchWrapper = async (
     fullUrl += `?${params}`;
   }
 
-  console.log("api using", state.token);
   return fetch(`${fullUrl}`, {
     headers: {
       "Content-Type": "application/json",

@@ -2,6 +2,7 @@ import React from "react";
 import { css } from "@emotion/css";
 import ClickToPlay from "./ClickToPlay";
 import TrackPopup from "./TrackPopup";
+import { Link } from "react-router-dom";
 
 const staffPickUl = css``;
 
@@ -51,7 +52,19 @@ const TrackList: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
                   font-size: 1rem;
                 `}
               >
-                {track.artist}
+                <Link
+                  to={`/library/artist/${track.creator_id}`}
+                  className={css`
+                    color: inherit;
+                    text-decoration: none;
+                    transition: 0.25s color;
+                    &:hover {
+                      color: #111;
+                    }
+                  `}
+                >
+                  {track.artist}
+                </Link>
               </div>
             </div>
             <div

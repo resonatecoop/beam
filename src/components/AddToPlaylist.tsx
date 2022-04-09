@@ -32,8 +32,6 @@ export const AddToPlaylist: React.FC<{
     [selectedTrackIds, onSongAdded]
   );
 
-  console.log("selected", selectedTrackIds);
-
   return (
     <div
       className={css`

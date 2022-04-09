@@ -81,7 +81,7 @@ declare global {
       href: string;
       text: string;
     }[];
-    images: {
+    images?: {
       "cover_photo-l": string;
       "cover_photo-s": string;
       "cover_photo-m": string;

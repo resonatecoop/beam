@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { injectGlobal, css } from "@emotion/css";
 
 import Home from "./components/Home";
@@ -10,10 +10,9 @@ import Profile from "./components/Profile";
 import Header from "./components/Header";
 import Player from "./components/Player";
 import Queue from "./components/Queue";
-import { FaChevronLeft } from "react-icons/fa";
-import IconButton from "./components/common/IconButton";
 import constants from "./constants";
 import PlaylistTracks from "./components/PlaylistTracks";
+import ArtistPage from "./components/ArtistPage";
 
 injectGlobal`
   * {
@@ -48,10 +47,19 @@ injectGlobal`
 
   h3 {
     font-size: 1.8rem;
+    padding-bottom: 1rem;
   }
 
   h4 { 
     font-size: 1.4rem;
+    padding-bottom: .75rem;
+  }
+
+  a {
+    color: #444;
+    &:hover {
+      color: #111;
+    }
   }
 `;
 
@@ -75,42 +83,30 @@ function App() {
     state: { token },
     dispatch,
   } = useGlobalStateContext();
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
   const fetchUserProfileCallback = React.useCallback(async () => {
     const result = await fetchUserProfile();
-    console.log("fetched", result);
     dispatch({ type: "setLoggedInUser", user: result });
   }, [dispatch]);
 
   React.useEffect(() => {
     if (token && token !== "") {
-      console.log("fetching user profile", token);
       fetchUserProfileCallback();
     }
   }, [fetchUserProfileCallback, token]);
-
-  const onBackClick = React.useCallback(() => {
-    navigate("/");
-  }, [navigate]);
 
   return (
     <div className={appWrapper}>
       <Header />
       <div className={contentWrapper}>
-        {pathname !== "/" && (
-          <IconButton onClick={onBackClick}>
-            <FaChevronLeft />
-          </IconButton>
-        )}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/library" element={<Library />}>
-            <Route path=":playlistId" element={<PlaylistTracks />} />
+            <Route path="queue" element={<Queue />} />
+            <Route path="playlist/:playlistId" element={<PlaylistTracks />} />
+            <Route path="artist/:artistId" element={<ArtistPage />} />
+            <Route path="favorites" element={<PlaylistTracks />} />
           </Route>
-
-          <Route path="/queue" element={<Queue />} />
         </Routes>
       </div>
       <Player />

@@ -3,7 +3,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { fetchTrack, fetchUserTrackGroup } from "../services/Api";
 import { CenteredSpinner } from "./common/Spinner";
-import Table from "./common/Table";
+import TrackTable from "./common/TrackTable";
 
 export const PlaylistTracks: React.FC = () => {
   let { playlistId } = useParams();
@@ -38,26 +38,7 @@ export const PlaylistTracks: React.FC = () => {
     >
       <h3>Tracks</h3>
       {isLoading && <CenteredSpinner />}
-      {!isLoading && (
-        <Table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Album</th>
-              <th>Artist</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tracks?.map((track) => (
-              <tr key={track.id}>
-                <td>{track.title}</td>
-                <td>{track.album}</td>
-                <td>{track.artist}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      )}
+      {!isLoading && tracks && <TrackTable tracks={tracks} />}
     </div>
   );
 };

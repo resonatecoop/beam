@@ -18,7 +18,7 @@ const headerClass = css`
   padding: 1rem;
   position: fixed;
   width: 100%;
-  z-index: 1;
+  z-index: 10;
   top: 0;
   background-color: #fff;
 
