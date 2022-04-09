@@ -43,7 +43,7 @@ const Wrapper = styled.div<WrapperProps>`
     margin-left: 0.5rem;
   }
 
-  @media (max-width: ${constants.bp.small}px) {
+  @media (max-width: ${constants.bp.medium}px) {
     position: relative;
     .play {
       width: 100%;

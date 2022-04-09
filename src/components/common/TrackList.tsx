@@ -1,11 +1,7 @@
 import React from "react";
 import { css } from "@emotion/css";
 import ClickToPlay from "./ClickToPlay";
-import { FaEllipsisV } from "react-icons/fa";
-import IconButton from "./IconButton";
-import Modal from "./Modal";
-import ListButton from "./ListButton";
-import { AddToPlaylist } from "../AddToPlaylist";
+import TrackPopup from "./TrackPopup";
 
 const staffPickUl = css``;
 
@@ -20,23 +16,10 @@ const staffPickLi = css`
 `;
 
 const TrackList: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [selectedTrackId, setSelectedTrackId] = React.useState<number>();
-  const [isPlaylistPickerOpen, setIsPlaylistPickerOpen] = React.useState(false);
   const localTracks = tracks.map((track, index) => ({
     ...track,
     key: `${track.id} + ${index}`,
   }));
-
-  const openMenu = React.useCallback((id: number) => {
-    setIsMenuOpen(true);
-    setSelectedTrackId(id);
-  }, []);
-
-  const openAddToPlaylist = React.useCallback(() => {
-    setIsMenuOpen(false);
-    setIsPlaylistPickerOpen(true);
-  }, []);
 
   return (
     <>
@@ -57,13 +40,14 @@ const TrackList: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
               <div
                 className={css`
                   margin-bottom: 0.5rem;
+                  font-size: 1.1rem;
                 `}
               >
                 {track.title}
               </div>
               <div
                 className={css`
-                  color: #333;
+                  color: #444;
                   font-size: 1rem;
                 `}
               >
@@ -82,38 +66,11 @@ const TrackList: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
                 margin-right: 1rem;
               `}
             >
-              <IconButton onClick={() => openMenu(track.id)}>
-                <FaEllipsisV />
-              </IconButton>
+              <TrackPopup trackId={track.id} />
             </div>
           </li>
         ))}
       </ul>
-      {selectedTrackId && (
-        <Modal
-          open={isPlaylistPickerOpen}
-          onClose={() => setIsPlaylistPickerOpen(false)}
-          size="small"
-        >
-          <AddToPlaylist selectedTrackId={selectedTrackId} />
-        </Modal>
-      )}
-
-      <Modal
-        open={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        size="small"
-      >
-        <ul
-          className={css`
-            list-style: none;
-          `}
-        >
-          <li>
-            <ListButton onClick={openAddToPlaylist}>Add to playlist</ListButton>
-          </li>
-        </ul>
-      </Modal>
     </>
   );
 };

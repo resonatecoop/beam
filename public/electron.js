@@ -62,6 +62,23 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+
+  app.webContents.session.webRequest.onBeforeSendHeaders(
+    (details, callback) => {
+      const { requestHeaders } = details;
+      UpsertKeyValue(requestHeaders, "Access-Control-Allow-Origin", ["*"]);
+      callback({ requestHeaders });
+    }
+  );
+
+  app.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    const { responseHeaders } = details;
+    UpsertKeyValue(responseHeaders, "Access-Control-Allow-Origin", ["*"]);
+    UpsertKeyValue(responseHeaders, "Access-Control-Allow-Headers", ["*"]);
+    callback({
+      responseHeaders,
+    });
+  });
 });
 
 // Quit when all windows are closed, except on macOS.
@@ -92,15 +109,17 @@ app.on("web-contents-created", (event, contents) => {
 
 // Attempting to bypass CORS requirement. Test this:
 // https://pratikpc.medium.com/bypassing-cors-with-electron-ab7eaf331605
-app.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
-  callback({ requestHeaders: { Origin: "*", ...details.requestHeaders } });
-});
 
-app.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-  callback({
-    responseHeaders: {
-      "Access-Control-Allow-Origin": ["*"],
-      ...details.responseHeaders,
-    },
-  });
-});
+function UpsertKeyValue(obj, keyToChange, value) {
+  const keyToChangeLower = keyToChange.toLowerCase();
+  for (const key of Object.keys(obj)) {
+    if (key.toLowerCase() === keyToChangeLower) {
+      // Reassign old key
+      obj[key] = value;
+      // Done
+      return;
+    }
+  }
+  // Insert at end instead
+  obj[keyToChange] = value;
+}

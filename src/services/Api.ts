@@ -19,6 +19,7 @@ const fetchWrapper = async (
     fullUrl += `?${params}`;
   }
 
+  console.log("api using", state.token);
   return fetch(`${fullUrl}`, {
     headers: {
       "Content-Type": "application/json",

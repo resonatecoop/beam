@@ -78,13 +78,14 @@ function App() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const fetchUserProfileCallback = React.useCallback(async () => {
-    await fetchUserProfile().then((result) => {
-      dispatch({ type: "setLoggedInUser", user: result });
-    });
+    const result = await fetchUserProfile();
+    console.log("fetched", result);
+    dispatch({ type: "setLoggedInUser", user: result });
   }, [dispatch]);
 
   React.useEffect(() => {
     if (token && token !== "") {
+      console.log("fetching user profile", token);
       fetchUserProfileCallback();
     }
   }, [fetchUserProfileCallback, token]);

@@ -32,7 +32,7 @@ const StaffPicks: React.FC = () => {
           > li {
             display: inline-flex;
             width: 45%;
-            @media (max-width: ${constants.bp.small}px) {
+            @media (max-width: ${constants.bp.medium}px) {
               width: 100%;
             }
           }

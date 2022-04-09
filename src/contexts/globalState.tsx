@@ -45,37 +45,33 @@ type Actions =
   | PopFromFrontOfQueue;
 
 const stateReducer = produce((draft: GlobalState, action: Actions) => {
+  let newDraft = draft;
   switch (action.type) {
     case "setState":
-      return {
+      newDraft = {
         ...action.state,
       };
+      break;
     case "setLoggedInUser":
-      return {
-        ...draft,
-        user: action.user,
-      };
+      newDraft.user = action.user;
+      break;
     case "addTrackIdsToBackOfQueue":
-      return {
-        ...draft,
-        playerQueueIds: [...draft.playerQueueIds, ...action.idsToAdd],
-      };
+      newDraft.playerQueueIds = [...draft.playerQueueIds, ...action.idsToAdd];
+      break;
     case "addTrackIdsToFrontOfQueue":
-      return {
-        ...draft,
-        playerQueueIds: [...action.idsToAdd, ...draft.playerQueueIds],
-      };
+      newDraft.playerQueueIds = [...action.idsToAdd, ...draft.playerQueueIds];
+      break;
     case "popFromFrontOfQueue":
-      draft.playerQueueIds.shift();
-      return draft;
+      newDraft.playerQueueIds.shift();
+      break;
     case "setToken":
-      return {
-        ...draft,
-        token: action.token,
-      };
+      newDraft.token = action.token;
+      break;
     default:
       break;
   }
+  localStorage.setItem("state", JSON.stringify(newDraft));
+  return newDraft;
 });
 
 const GlobalContext = createContext(
@@ -98,10 +94,6 @@ export const GlobalStateProvider: React.FC<GlobalStateProviderProps> = ({
     stateReducer,
     storedState ?? { playerQueueIds: [] }
   );
-
-  React.useEffect(() => {
-    localStorage.setItem("state", JSON.stringify(state));
-  }, [state]);
 
   return (
     <GlobalContext.Provider value={[state, dispatch]}>

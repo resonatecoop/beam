@@ -5,15 +5,16 @@ import constants from "../constants";
 import { addTracksToTrackGroup, fetchUserTrackGroups } from "../services/Api";
 import AddPlaylist from "./AddPlaylist";
 import ListButton, { listButtonClass } from "./common/ListButton";
+import { FaCheck } from "react-icons/fa";
 
-export const AddToPlaylist: React.FC<{ selectedTrackId: number }> = ({
-  selectedTrackId,
-}) => {
+export const AddToPlaylist: React.FC<{
+  selectedTrackIds: number[];
+  onSongAdded: () => void;
+}> = ({ selectedTrackIds, onSongAdded }) => {
   const [playlists, setPlaylists] = React.useState<TrackgroupDetail[]>();
 
   const fetchPlaylistsCallback = React.useCallback(async () => {
     const result = await fetchUserTrackGroups({ type: "playlist" });
-
     setPlaylists(result);
   }, []);
 
@@ -24,18 +25,21 @@ export const AddToPlaylist: React.FC<{ selectedTrackId: number }> = ({
   const onClick = React.useCallback(
     async (playlistId: string) => {
       await addTracksToTrackGroup(playlistId, {
-        tracks: [{ track_id: selectedTrackId }],
+        tracks: selectedTrackIds.map((id) => ({ track_id: id })),
       });
+      onSongAdded();
     },
-    [selectedTrackId]
+    [selectedTrackIds, onSongAdded]
   );
+
+  console.log("selected", selectedTrackIds);
 
   return (
     <div
       className={css`
         display: flex;
         flex-direction: column;
-        max-width: 300px;
+        width: 100%;
         margin-right: 1rem;
         padding: 1rem 0;
         @media (max-width: ${constants.bp.small}px) {
@@ -49,23 +53,30 @@ export const AddToPlaylist: React.FC<{ selectedTrackId: number }> = ({
           list-style: none;
         `}
       >
-        {playlists?.map((playlist) => (
-          <li
-            key={playlist.id}
-            className={css`
-              &:nth-child(odd) {
-                background-color: #dfdfdf;
-              }
-            `}
-          >
-            <ListButton
-              className={listButtonClass}
-              onClick={() => onClick(playlist.id)}
+        {playlists?.map((playlist) => {
+          const alreadyOnPlaylist = playlist.items.find((item) => {
+            return selectedTrackIds.indexOf(item.track.id) !== -1;
+          });
+          return (
+            <li
+              key={playlist.id}
+              className={css`
+                &:nth-child(odd) {
+                  background-color: #dfdfdf;
+                }
+              `}
             >
-              {playlist.title}
-            </ListButton>
-          </li>
-        ))}
+              <ListButton
+                className={listButtonClass}
+                onClick={() => onClick(playlist.id)}
+                style={{ display: "flex", justifyContent: "space-between" }}
+              >
+                {playlist.title}
+                {alreadyOnPlaylist && <FaCheck />}
+              </ListButton>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

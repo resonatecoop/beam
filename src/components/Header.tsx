@@ -31,7 +31,7 @@ const headerClass = css`
 
 const Header: React.FC = () => {
   const {
-    state: { user },
+    state: { user, token },
   } = useGlobalStateContext();
   return (
     <header className={headerClass}>
@@ -41,7 +41,7 @@ const Header: React.FC = () => {
           flex-grow: 1;
         `}
       />
-      {user && <Link to="/library">Library</Link>}
+      {user && token && token !== "" && <Link to="/library">Library</Link>}
       <Login />
     </header>
   );

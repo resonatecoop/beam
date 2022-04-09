@@ -3,15 +3,16 @@ import React from "react";
 import constants from "../constants";
 import { fetchTrackGroups } from "../services/Api";
 import ClickToPlay from "./common/ClickToPlay";
+import TrackPopup from "./common/TrackPopup";
 
 const newReleasesUl = css``;
 
 const newReleasesLi = css`
   display: inline-flex;
   flex-direction: column;
-  margin: 0.5rem 1rem 0.5rem 0;
+  margin: 0.5rem 1rem 0.75rem 0;
 
-  @media (max-width: ${constants.bp.small}px) {
+  @media (max-width: ${constants.bp.medium}px) {
     margin-right: 0;
   }
 
@@ -24,9 +25,9 @@ export const NewReleases: React.FC = () => {
   const [trackgroups, setTrackgroups] = React.useState<Trackgroup[]>([]);
 
   const fetchTrackGroupsCallback = React.useCallback(async () => {
-    await fetchTrackGroups({ limit: 8 }).then((result) => {
-      setTrackgroups(result);
-    });
+    const result = await fetchTrackGroups({ limit: 8 });
+    console.log("result", result);
+    setTrackgroups(result);
   }, []);
 
   React.useEffect(() => {
@@ -44,8 +45,37 @@ export const NewReleases: React.FC = () => {
               title={group.title}
               groupId={group.id}
             />
-            <span>{group.title}</span>
-            <span>{group.display_artist}</span>
+            <div
+              className={css`
+                display: flex;
+                margin: 0.5rem 0;
+                justify-content: space-between;
+              `}
+            >
+              <div
+                className={css`
+                  display: flex;
+                  flex-direction: column;
+                `}
+              >
+                <span
+                  className={css`
+                    font-size: 1.1rem;
+                  `}
+                >
+                  {group.title}
+                </span>
+                <span
+                  className={css`
+                    margin-top: 0.5rem;
+                    color: #444;
+                  `}
+                >
+                  {group.display_artist}
+                </span>
+              </div>
+              <TrackPopup groupId={group.id} />
+            </div>
           </li>
         ))}
       </ul>

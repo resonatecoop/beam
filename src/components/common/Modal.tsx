@@ -40,7 +40,7 @@ const Content = styled.div<ContentProps>`
   border: 1px solid #888;
   width: ${(props) => (props.size === "small" ? "40%" : "80%")};
 
-  @media (max-width: ${constants.bp.small}px) {
+  @media (max-width: ${constants.bp.medium}px) {
     width: 90%;
     position: absolute;
     bottom: 10rem;
@@ -59,6 +59,7 @@ const close = css`
   background: none;
   line-height: 16px;
   cursor: pointer;
+  margin-bottom: 0.25rem;
   &:hover,
   &:focus {
     color: black;

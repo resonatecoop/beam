@@ -1,0 +1,102 @@
+import React from "react";
+import { css } from "@emotion/css";
+import { FaEllipsisV } from "react-icons/fa";
+import IconButton from "./IconButton";
+import Modal from "./Modal";
+import ListButton from "./ListButton";
+import { AddToPlaylist } from "../AddToPlaylist";
+import { fetchTrackGroup } from "../../services/Api";
+
+const TrackPopup: React.FC<{ trackId?: number; groupId?: string }> = ({
+  trackId,
+  groupId,
+}) => {
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [selectedTrackIds, setSelectedTrackIds] = React.useState<number[]>([]);
+  const [isPlaylistPickerOpen, setIsPlaylistPickerOpen] = React.useState(false);
+
+  const openMenu = React.useCallback(() => {
+    setIsMenuOpen(true);
+    // setSelectedTrackId(id);
+  }, []);
+
+  const openAddToPlaylist = React.useCallback(() => {
+    setIsMenuOpen(false);
+    setIsPlaylistPickerOpen(true);
+  }, []);
+
+  const onSongAdded = React.useCallback(() => {
+    setIsMenuOpen(false);
+    setIsPlaylistPickerOpen(false);
+  }, []);
+
+  const determineTracks = React.useCallback(
+    async (trackId?: number, groupId?: string) => {
+      if (trackId) {
+        setSelectedTrackIds([trackId]);
+      } else if (groupId) {
+        const result = await fetchTrackGroup(groupId);
+        setSelectedTrackIds(result.items.map((item) => item.track.id));
+      } else {
+        throw new Error(
+          "TrackPopup needs to include either trackId or groupId"
+        );
+      }
+    },
+    []
+  );
+
+  React.useEffect(() => {
+    determineTracks(trackId, groupId);
+  }, [trackId, groupId, determineTracks]);
+
+  return (
+    <>
+      <div
+        className={css`
+          display: flex;
+          align-items: center;
+        `}
+      >
+        <IconButton onClick={() => openMenu()}>
+          <FaEllipsisV />
+        </IconButton>
+      </div>
+
+      {selectedTrackIds.length > 0 && (
+        <Modal
+          open={isPlaylistPickerOpen}
+          onClose={() => setIsPlaylistPickerOpen(false)}
+          size="small"
+        >
+          <AddToPlaylist
+            selectedTrackIds={selectedTrackIds}
+            onSongAdded={onSongAdded}
+          />
+        </Modal>
+      )}
+
+      {isMenuOpen && (
+        <Modal
+          open={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          size="small"
+        >
+          <ul
+            className={css`
+              list-style: none;
+            `}
+          >
+            <li>
+              <ListButton onClick={openAddToPlaylist}>
+                Add to playlist
+              </ListButton>
+            </li>
+          </ul>
+        </Modal>
+      )}
+    </>
+  );
+};
+
+export default TrackPopup;
