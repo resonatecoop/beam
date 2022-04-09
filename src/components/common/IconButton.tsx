@@ -1,41 +1,23 @@
-import React from "react";
+import styled from "@emotion/styled";
 
-import { css, cx } from "@emotion/css";
-import { ButtonProps } from "./Button";
+interface ListButtonProp {
+  compact?: boolean;
+}
 
-const buttonClass = css`
+const IconButton = styled.button<ListButtonProp>`
   border: none;
   color: rgba(0, 0, 0);
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 0.5rem;
+  background-color: transparent;
+  padding: ${(props) => (props.compact ? "0" : "0.4rem 0.5rem")};
   cursor: pointer;
-  transition: 0.5s;
-  font-size: 1.4rem;
+  transition: 0.25s;
+  font-size: ${(props) => (props.compact ? "1rem" : "1.4rem")};
   line-height: 0.9;
   border-radius: 2px;
 
   &:hover {
-    background-color: #fff;
+    color: #888;
   }
 `;
-
-export const IconButton: React.FC<ButtonProps> = ({
-  children,
-  onClick,
-  disabled,
-  style,
-  className,
-}) => {
-  return (
-    <button
-      className={cx(buttonClass, className)}
-      onClick={onClick}
-      disabled={disabled}
-      style={style}
-    >
-      {children}
-    </button>
-  );
-};
 
 export default IconButton;

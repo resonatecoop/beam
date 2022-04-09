@@ -38,6 +38,7 @@ export interface ButtonProps {
   disabled?: boolean;
   style?: React.CSSProperties;
   className?: string;
+  compact?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({

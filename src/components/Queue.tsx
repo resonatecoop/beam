@@ -42,7 +42,7 @@ export const Queue: React.FC = () => {
 
   return (
     <>
-      <h2>Queue</h2>
+      <h3>Queue</h3>
       <div>
         <TrackList tracks={playerQueue} />
       </div>

@@ -7,18 +7,22 @@ import ListButton from "./ListButton";
 import { AddToPlaylist } from "../AddToPlaylist";
 import { fetchTrackGroup } from "../../services/Api";
 
-const TrackPopup: React.FC<{ trackId?: number; groupId?: string }> = ({
-  trackId,
-  groupId,
-}) => {
+const TrackPopup: React.FC<{
+  trackId?: number;
+  groupId?: string;
+  compact?: boolean;
+}> = ({ trackId, groupId, compact }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [selectedTrackIds, setSelectedTrackIds] = React.useState<number[]>([]);
   const [isPlaylistPickerOpen, setIsPlaylistPickerOpen] = React.useState(false);
 
-  const openMenu = React.useCallback(() => {
-    setIsMenuOpen(true);
-    // setSelectedTrackId(id);
-  }, []);
+  const openMenu = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.stopPropagation();
+      setIsMenuOpen(true);
+    },
+    []
+  );
 
   const openAddToPlaylist = React.useCallback(() => {
     setIsMenuOpen(false);
@@ -58,7 +62,7 @@ const TrackPopup: React.FC<{ trackId?: number; groupId?: string }> = ({
           align-items: center;
         `}
       >
-        <IconButton onClick={() => openMenu()}>
+        <IconButton onClick={(e) => openMenu(e)} compact={compact}>
           <FaEllipsisV />
         </IconButton>
       </div>
