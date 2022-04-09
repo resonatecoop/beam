@@ -1,9 +1,13 @@
 import React from "react";
 import { css } from "@emotion/css";
 
+import { ReactComponent as Logo } from "../assets/logo.svg";
+import { ReactComponent as Icon } from "../assets/icon.svg";
+
 import Login from "./Login";
 import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "../contexts/globalState";
+import constants from "../constants";
 
 const headerClass = css`
   min-height: 48px;
@@ -27,6 +31,19 @@ const headerClass = css`
       color: grey;
     }
   }
+
+  .icon {
+    display: none;
+  }
+
+  @media (max-width: ${constants.bp.small}px) {
+    .full-logo {
+      display: none;
+    }
+    .icon {
+      display: block;
+    }
+  }
 `;
 
 const Header: React.FC = () => {
@@ -35,7 +52,10 @@ const Header: React.FC = () => {
   } = useGlobalStateContext();
   return (
     <header className={headerClass}>
-      <Link to="/">no-logo</Link>
+      <Link to="/">
+        <Logo className="full-logo" style={{ height: "46px" }} />
+        <Icon className="icon" style={{ height: "46px" }} />
+      </Link>
       <div
         className={css`
           flex-grow: 1;

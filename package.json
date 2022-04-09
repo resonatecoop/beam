@@ -3,21 +3,16 @@
   "version": "0.1.0",
   "homepage": "./",
   "main": "./public/electron.js",
-  "author": "Hi",
+  "author": "Si <simsamsomred@gmail.com>",
   "description": "Beaming Resonate",
   "private": true,
   "dependencies": {
     "@emotion/css": "^11.9.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
-    "@testing-library/jest-dom": "^5.14.1",
-    "@testing-library/react": "^12.0.0",
-    "@testing-library/user-event": "^13.2.1",
-    "@types/jest": "^27.0.1",
     "@types/node": "^16.7.13",
     "@types/react": "^17.0.20",
     "@types/react-dom": "^17.0.9",
-    "gh-pages": "^3.2.3",
     "immer": "^9.0.12",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -48,10 +43,7 @@
   },
   "browserslist": {
     "production": [
-      "last 1 electron version",
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "last 1 electron version"
     ],
     "development": [
       "last 1 electron version",
@@ -63,6 +55,7 @@
   "build": {
     "appId": "com.resonate.beam",
     "productName": "Beam",
+    "icon": "icon256.png",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -77,7 +70,8 @@
       "target": "nsis"
     },
     "linux": {
-      "target": "deb"
+      "target": "deb",
+      "category": "Audio"
     }
   },
   "devDependencies": {
@@ -86,6 +80,11 @@
     "electron": "^18.0.3",
     "electron-builder": "^22.14.13",
     "electronmon": "^2.0.2",
-    "wait-on": "^6.0.1"
+    "wait-on": "^6.0.1",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.1",
+    "@types/jest": "^27.0.1",
+    "gh-pages": "^3.2.3"
   }
 }
