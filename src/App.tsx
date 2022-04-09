@@ -4,7 +4,7 @@ import { injectGlobal, css } from "@emotion/css";
 
 import Home from "./components/Home";
 import Library from "./components/Library";
-import { useGlobalStateContext } from "./globalState";
+import { useGlobalStateContext } from "./contexts/globalState";
 import { fetchUserProfile } from "./services/Api";
 import Profile from "./components/Profile";
 import Header from "./components/Header";
@@ -13,6 +13,7 @@ import Queue from "./components/Queue";
 import { FaChevronLeft } from "react-icons/fa";
 import IconButton from "./components/common/IconButton";
 import constants from "./constants";
+import PlaylistTracks from "./components/PlaylistTracks";
 
 injectGlobal`
   * {
@@ -31,6 +32,10 @@ injectGlobal`
     unicode-range: U+0100-024f, U+1-1eff,
       U+20a0-20ab, U+20ad-20cf, U+2c60-2c7f,
       U+A720-A7FF;
+  }
+
+  html {
+    font-size: 18px;
   }
 
   h1 {
@@ -85,7 +90,7 @@ function App() {
   }, [fetchUserProfileCallback, token]);
 
   const onBackClick = React.useCallback(() => {
-    navigate(-1);
+    navigate("/");
   }, [navigate]);
 
   return (
@@ -100,7 +105,10 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/library" element={<Library />} />
+          <Route path="/library" element={<Library />}>
+            <Route path=":playlistId" element={<PlaylistTracks />} />
+          </Route>
+
           <Route path="/queue" element={<Queue />} />
         </Routes>
       </div>

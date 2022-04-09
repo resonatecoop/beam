@@ -55,6 +55,26 @@ export const fetchUserPlaylists = async (
   );
 };
 
+interface FetchTrackGroupFilter extends APIOptions {
+  type: TrackgroupType;
+}
+
+// FIXME: What's the difference between fetching a user's playlists
+// (as with the staff picks) and fetching the user's trackgroups.
+// Also note tha tif you don't supply a type, then the listing returns
+// 0. That might be an API error?
+export const fetchUserTrackGroups = async (
+  options?: FetchTrackGroupFilter
+): Promise<TrackgroupDetail[]> => {
+  return fetchWrapper(
+    `user/trackgroups`,
+    {
+      method: "GET",
+    },
+    options
+  );
+};
+
 export const fetchTrackGroups = async (
   options: APIOptions
 ): Promise<Trackgroup[]> => {
@@ -72,6 +92,37 @@ export const fetchTrackGroup = async (
 ): Promise<TrackgroupDetail> => {
   return fetchWrapper(`trackgroups/${id}`, {
     method: "GET",
+  });
+};
+
+export const createTrackGroup = async (data: {
+  cover: string;
+  title: string;
+  type: string;
+}): Promise<TrackgroupDetail> => {
+  return fetchWrapper(`user/trackgroups`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+};
+
+export const fetchUserTrackGroup = async (
+  id: string
+): Promise<TrackgroupDetail> => {
+  return fetchWrapper(`user/trackgroups/${id}`, {
+    method: "GET",
+  });
+};
+
+export const addTracksToTrackGroup = async (
+  id: string,
+  data: {
+    tracks: { track_id: number }[];
+  }
+) => {
+  return fetchWrapper(`user/trackgroups/${id}/items/add`, {
+    method: "PUT",
+    body: JSON.stringify(data),
   });
 };
 

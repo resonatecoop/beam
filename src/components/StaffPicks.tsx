@@ -1,5 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
+import constants from "../constants";
 
 import { fetchTrackGroup, fetchUserPlaylists } from "../services/Api";
 import TrackList from "./common/TrackList";
@@ -25,7 +26,19 @@ const StaffPicks: React.FC = () => {
   }
 
   return (
-    <div>
+    <div
+      className={css`
+        > ul {
+          > li {
+            display: inline-flex;
+            width: 45%;
+            @media (max-width: ${constants.bp.small}px) {
+              width: 100%;
+            }
+          }
+        }
+      `}
+    >
       <div
         className={css`
           padding-bottom: 1rem;

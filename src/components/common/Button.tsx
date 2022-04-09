@@ -31,12 +31,22 @@ const buttonClass = css`
   }
 `;
 
-export const Button: React.FC<{
-  onClick?: () => void;
+export interface ButtonProps {
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   startIcon?: React.ReactElement;
   endIcon?: React.ReactElement;
   disabled?: boolean;
-}> = ({ children, onClick, startIcon, endIcon, disabled }) => {
+  style?: React.CSSProperties;
+  className?: string;
+}
+
+export const Button: React.FC<ButtonProps> = ({
+  children,
+  onClick,
+  startIcon,
+  endIcon,
+  disabled,
+}) => {
   return (
     <button className={buttonClass} onClick={onClick} disabled={disabled}>
       {startIcon ? <span className="startIcon">{startIcon}</span> : ""}

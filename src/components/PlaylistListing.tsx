@@ -1,0 +1,74 @@
+import { css } from "@emotion/css";
+import React from "react";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
+import constants from "../constants";
+import { useGlobalStateContext } from "../contexts/globalState";
+import { fetchUserTrackGroups } from "../services/Api";
+import AddPlaylist from "./AddPlaylist";
+import { listButtonClass } from "./common/ListButton";
+
+export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
+  onClick,
+}) => {
+  const {
+    state: { user },
+  } = useGlobalStateContext();
+  let { playlistId } = useParams();
+
+  const navigate = useNavigate();
+  const userId = user?.id;
+  const [playlists, setPlaylists] = React.useState<TrackgroupDetail[]>();
+
+  const fetchPlaylistsCallback = React.useCallback(
+    async (userId) => {
+      const result = await fetchUserTrackGroups({ type: "playlist" });
+
+      setPlaylists(result);
+      if (!playlistId) {
+        navigate(`/library/${result[0]?.id ?? ""}`);
+      }
+    },
+    [navigate, playlistId]
+  );
+
+  React.useEffect(() => {
+    if (userId) {
+      fetchPlaylistsCallback(userId);
+    }
+  }, [fetchPlaylistsCallback, userId]);
+
+  return (
+    <div
+      className={css`
+        max-width: 300px;
+        margin-right: 1rem;
+        padding: 1rem 0;
+        @media (max-width: ${constants.bp.small}px) {
+          max-width: inherit;
+        }
+      `}
+    >
+      <AddPlaylist />
+      <ul
+        className={css`
+          list-style: none;
+        `}
+      >
+        {playlists?.map((playlist) => (
+          <li
+            key={playlist.id}
+            className={css`
+              &:nth-child(odd) {
+                background-color: #dfdfdf;
+              }
+            `}
+          >
+            <NavLink className={listButtonClass} to={`/library/${playlist.id}`}>
+              {playlist.title}
+            </NavLink>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};

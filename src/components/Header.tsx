@@ -2,6 +2,8 @@ import React from "react";
 import { css } from "@emotion/css";
 
 import Login from "./Login";
+import { Link } from "react-router-dom";
+import { useGlobalStateContext } from "../contexts/globalState";
 
 const headerClass = css`
   min-height: 48px;
@@ -15,12 +17,31 @@ const headerClass = css`
   z-index: 1;
   top: 0;
   background-color: #fff;
+
+  a {
+    text-decoration: none;
+    color: black;
+    margin-right: 1rem;
+    transition: 0.25s color;
+    &:hover {
+      color: grey;
+    }
+  }
 `;
 
 const Header: React.FC = () => {
+  const {
+    state: { user },
+  } = useGlobalStateContext();
   return (
     <header className={headerClass}>
-      <div>no-logo</div>
+      <Link to="/">no-logo</Link>
+      <div
+        className={css`
+          flex-grow: 1;
+        `}
+      />
+      {user && <Link to="/library">Library</Link>}
       <Login />
     </header>
   );

@@ -1,8 +1,9 @@
 import React from "react";
 import { css } from "@emotion/css";
-import ReactAudioPlayer from "react-audio-player";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
-import { useGlobalStateContext } from "../globalState";
+import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchTrack } from "../services/Api";
 import { MdQueueMusic } from "react-icons/md";
 import IconButton from "./common/IconButton";
@@ -31,6 +32,7 @@ const playerClass = css`
 const trackInfo = css`
   display: flex;
   align-items: center;
+  flex-grow: 1;
 
   img {
     margin-right: 1rem;
@@ -53,6 +55,7 @@ const Player = () => {
   let navigate = useNavigate();
 
   const [currentTrack, setCurrentTrack] = React.useState<Track>();
+  const [isPlaying, setIsPlaying] = React.useState(false);
 
   const fetchTrackCallback = React.useCallback(async (id: number) => {
     const track = await fetchTrack(id);
@@ -62,6 +65,7 @@ const Player = () => {
   React.useEffect(() => {
     if (playerQueueIds && playerQueueIds[0]) {
       fetchTrackCallback(playerQueueIds[0]);
+      setIsPlaying(true);
     }
   }, [fetchTrackCallback, playerQueueIds]);
 
@@ -82,10 +86,13 @@ const Player = () => {
       <div className={trackInfo}>
         {/* FIXME currentTrack.images doesn't contain small image URL */}
         <img
-          src={currentTrack.cover}
+          src={currentTrack.cover ?? currentTrack.images.small.url}
           height={50}
           width={50}
           alt={currentTrack.title}
+          className={css`
+            background-color: #efefef;
+          `}
         />
         <div>
           <div>{currentTrack.title}</div>
@@ -97,19 +104,36 @@ const Player = () => {
         className={css`
           display: flex;
           align-items: center;
+          flex-grow: 1;
+          @media (max-width: ${constants.bp.small}px) {
+            width: 100%;
+          }
         `}
       >
-        <IconButton onClick={onClickQueue} style={{ justifySelf: "flex-end" }}>
+        <IconButton
+          onClick={onClickQueue}
+          className={css`
+            @media (max-width: ${constants.bp.small}px) {
+              display: none;
+            }
+          `}
+        >
           <MdQueueMusic />
         </IconButton>
 
-        <ReactAudioPlayer
+        <AudioPlayer
           src={`${STREAM_API}${playerQueueIds[0]}${
             user ? `?client_id=${user?.clientId}` : ""
           }`}
-          autoPlay
-          controls
+          autoPlayAfterSrcChange
           onEnded={onEnded}
+          layout="horizontal"
+          className={css`
+            &.rhap_container {
+              box-shadow: none;
+              padding: 0;
+            }
+          `}
         />
       </div>
     </div>

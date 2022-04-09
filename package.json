@@ -20,8 +20,8 @@
     "gh-pages": "^3.2.3",
     "immer": "^9.0.12",
     "react": "^18.0.0",
-    "react-audio-player": "^0.17.0",
     "react-dom": "^18.0.0",
+    "react-h5-audio-player": "^3.8.3",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",
@@ -79,5 +79,13 @@
     "linux": {
       "target": "deb"
     }
+  },
+  "devDependencies": {
+    "concurrently": "^7.1.0",
+    "cross-env": "^7.0.3",
+    "electron": "^18.0.3",
+    "electron-builder": "^22.14.13",
+    "electronmon": "^2.0.2",
+    "wait-on": "^6.0.1"
   }
 }

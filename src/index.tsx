@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { GlobalStateProvider } from "./globalState";
+import { GlobalStateProvider } from "./contexts/globalState";
 
 ReactDOM.render(
   <React.StrictMode>

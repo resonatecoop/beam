@@ -1,6 +1,6 @@
 import React from "react";
 
-import { css } from "@emotion/css";
+import { css, cx } from "@emotion/css";
 
 const inputClass = css`
   border: 1px solid #dfdfdf;
@@ -13,12 +13,15 @@ export const Input: React.FC<{
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name: string;
   value: string;
+  placeholder?: string;
   disabled?: boolean;
-}> = ({ onChange, disabled, name, value }) => {
+  className?: string;
+}> = ({ onChange, disabled, name, value, className, placeholder }) => {
   return (
     <input
       name={name}
-      className={inputClass}
+      placeholder={placeholder}
+      className={cx(inputClass, className)}
       onChange={onChange}
       value={value}
       disabled={disabled}

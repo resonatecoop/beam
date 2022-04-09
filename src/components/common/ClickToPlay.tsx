@@ -5,7 +5,7 @@ import { FaPlay } from "react-icons/fa";
 import { MdQueue } from "react-icons/md";
 import constants from "../../constants";
 
-import { useGlobalStateContext } from "../../globalState";
+import { useGlobalStateContext } from "../../contexts/globalState";
 import { fetchTrackGroup } from "../../services/Api";
 import IconButton from "./IconButton";
 

@@ -2,6 +2,7 @@ import React from "react";
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import constants from "../../constants";
+import IconButton from "./IconButton";
 
 const background = css`
   position: fixed; /* Stay in place */
@@ -35,12 +36,17 @@ const Content = styled.div<ContentProps>`
   background-color: #fefefe;
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
-  z-index: 2;
+  z-index: 999;
   border: 1px solid #888;
   width: ${(props) => (props.size === "small" ? "40%" : "80%")};
 
   @media (max-width: ${constants.bp.small}px) {
     width: 90%;
+    position: absolute;
+    bottom: 10rem;
+    z-index: 9999;
+    right: 0;
+    left: 0;
   }
 `;
 
@@ -74,9 +80,9 @@ export const Modal: React.FC<{
       <div className={background} onClick={onClose}></div>
       <div className={wrapper}>
         <Content size={size}>
-          <button className={close} onClick={onClose} aria-label="close">
+          <IconButton className={close} onClick={onClose} aria-label="close">
             &times;
-          </button>
+          </IconButton>
 
           {children}
         </Content>

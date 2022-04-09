@@ -51,22 +51,24 @@ declare global {
     slug: string;
     tags: unknown[];
     title: string;
-    type: string;
+    type: TrackgroupType;
     uri: string;
     user: User;
   }
 
+  type TrackgroupType = "playlist" | "ep";
+
   interface Trackgroup {
     about: null | string;
     cover: string;
+    cover_metadata: CoverMetadata;
     creator_id: number;
     display_artist: null | string;
     id: string;
     slug: string;
     tags: string[];
     title: string;
-    type: "playlist" | "ep";
-    cover_metadata: CoverMetadata;
+    type: TrackgroupType;
     user: User;
     uri: string;
     images: ImageSizes;

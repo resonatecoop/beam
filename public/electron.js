@@ -89,3 +89,18 @@ app.on("web-contents-created", (event, contents) => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+// Attempting to bypass CORS requirement. Test this:
+// https://pratikpc.medium.com/bypassing-cors-with-electron-ab7eaf331605
+app.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
+  callback({ requestHeaders: { Origin: "*", ...details.requestHeaders } });
+});
+
+app.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+  callback({
+    responseHeaders: {
+      "Access-Control-Allow-Origin": ["*"],
+      ...details.responseHeaders,
+    },
+  });
+});

@@ -1,7 +1,7 @@
 import { css } from "@emotion/css";
 import React from "react";
 
-import { useGlobalStateContext } from "../globalState";
+import { useGlobalStateContext } from "../contexts/globalState";
 import Button from "./common/Button";
 import Input from "./common/Input";
 import Modal from "./common/Modal";
