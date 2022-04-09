@@ -25,7 +25,11 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
       const result = await fetchUserTrackGroups({ type: "playlist" });
 
       setPlaylists(result);
-      if (!playlistId && pathname.includes("playlist")) {
+      // FIXME: we probably don't actually want this.
+      if (
+        !playlistId &&
+        (pathname.includes("playlist") || pathname === "/library")
+      ) {
         navigate(`/library/playlist/${result[0]?.id ?? ""}`);
       }
     },
