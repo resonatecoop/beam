@@ -4,7 +4,7 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
 import { useGlobalStateContext } from "../contexts/globalState";
-import { fetchTrack } from "../services/Api";
+import { fetchTrack, registerPlay } from "../services/Api";
 import { MdQueueMusic } from "react-icons/md";
 import IconButton from "./common/IconButton";
 import { useNavigate } from "react-router-dom";
@@ -55,7 +55,7 @@ const Player = () => {
   let navigate = useNavigate();
 
   const [currentTrack, setCurrentTrack] = React.useState<Track>();
-  const [isPlaying, setIsPlaying] = React.useState(false);
+  const [mostlyListened, setMostlyListened] = React.useState(false);
 
   const fetchTrackCallback = React.useCallback(async (id: number) => {
     const track = await fetchTrack(id);
@@ -65,17 +65,37 @@ const Player = () => {
   React.useEffect(() => {
     if (playerQueueIds && playerQueueIds[0]) {
       fetchTrackCallback(playerQueueIds[0]);
-      setIsPlaying(true);
     }
   }, [fetchTrackCallback, playerQueueIds]);
 
   const onEnded = React.useCallback(() => {
     dispatch({ type: "popFromFrontOfQueue" });
+    setMostlyListened(false);
   }, [dispatch]);
 
   const onClickQueue = React.useCallback(() => {
     navigate("/library/queue");
   }, [navigate]);
+
+  const onListen = React.useCallback(
+    async (e) => {
+      if (
+        !mostlyListened &&
+        currentTrack &&
+        user &&
+        e.target.currentTime > currentTrack.duration / 2
+      ) {
+        setMostlyListened(true);
+        try {
+          // FIXME: the v1 API doesn't allow play registration from localhost:8080
+          await registerPlay(user?.id, currentTrack.id);
+        } catch (e) {
+          console.log("");
+        }
+      }
+    },
+    [currentTrack, mostlyListened, user]
+  );
 
   if (playerQueueIds.length === 0 || !currentTrack) {
     return null;
@@ -125,8 +145,10 @@ const Player = () => {
           src={`${STREAM_API}${playerQueueIds[0]}${
             user ? `?client_id=${user?.clientId}` : ""
           }`}
+          autoPlay
           autoPlayAfterSrcChange
           onEnded={onEnded}
+          onListen={onListen}
           layout="horizontal"
           className={css`
             &.rhap_container {

@@ -40,8 +40,10 @@ const Header = () => {
     []
   );
 
-  const onSubmitToken = () => {
+  const onSubmitToken = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    e?.preventDefault();
     dispatch({ type: "setToken", token: token });
+    setOpenLogin(false);
   };
 
   return (

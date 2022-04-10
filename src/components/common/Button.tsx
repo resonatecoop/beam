@@ -14,6 +14,7 @@ const buttonClass = css`
   background-color: #eee;
   border-radius: 2px;
   margin-right: 0.25rem;
+  white-space: nowrap;
 
   &:hover:not(:disabled) {
     background-color: #ddd;

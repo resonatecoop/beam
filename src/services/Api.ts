@@ -1,6 +1,6 @@
 import { GlobalState } from "../contexts/globalState";
 
-const API = "https://stream.resonate.coop/api/v2/";
+const API = "https://stream.resonate.coop/api/";
 
 const fetchWrapper = async (
   url: string,
@@ -9,19 +9,19 @@ const fetchWrapper = async (
 ) => {
   const stateString = localStorage.getItem("state");
   let state: undefined | GlobalState;
+  const apiVersion = apiOptions?.apiVersion ?? "v2";
   try {
     state = JSON.parse(stateString ?? "");
   } catch (e) {}
-  let fullUrl = `${API}${url}`;
-  if (apiOptions) {
+  let fullUrl = `${API}${apiVersion}/${url}`;
+  if (apiOptions && options.method === "GET") {
     const params = new URLSearchParams();
     Object.keys(apiOptions).forEach((key) => {
       params.set(key, `${apiOptions[key]}`);
     });
     fullUrl += `?${params}`;
   }
-
-  return fetch(`${fullUrl}`, {
+  return fetch(fullUrl, {
     headers: {
       "Content-Type": "application/json",
       ...(state && state.token
@@ -173,4 +173,20 @@ export const fetchTrack = (trackId: number): Promise<Track> => {
   return fetchWrapper(`tracks/${trackId}`, {
     method: "GET",
   });
+};
+
+export const registerPlay = (
+  userId: number,
+  trackId: number
+): Promise<void> => {
+  return fetchWrapper(
+    `users/${userId}/plays`,
+    {
+      method: "POST",
+      body: JSON.stringify({ tid: trackId }),
+    },
+    {
+      apiVersion: "v1",
+    }
+  );
 };

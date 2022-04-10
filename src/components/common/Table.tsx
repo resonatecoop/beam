@@ -5,9 +5,16 @@ export const Table = styled.table`
   border: none;
   border-collapse: collapse;
 
-  & tbody tr:nth-child(odd) {
-    background: #dfdfdf;
+  & tbody tr {
+    transition: 0.25s background-color;
+    &:nth-child(odd) {
+      background-color: #dfdfdf;
+    }
+    &:hover {
+      background-color: #bfbfbf !important;
+    }
   }
+
   & th {
     text-align: left;
     background-color: #d8d8d8;

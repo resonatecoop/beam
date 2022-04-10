@@ -15,7 +15,8 @@ export const ListButton = styled.button<ListButtonProp>`
   font-size: inherit;
   background-color: inherit;
   cursor: pointer;
-  display: block;
+  display: flex;
+  align-items: center;
   text-decoration: none;
   color: #333;
   transition: 0.5s background-color;
@@ -26,6 +27,10 @@ export const ListButton = styled.button<ListButtonProp>`
 
   &.active {
     background-color: #cfcfcf;
+  }
+
+  > svg {
+    margin-right: 0.5rem;
   }
 `;
 
@@ -39,7 +44,7 @@ export const listButtonClass = css`
   font-size: inherit;
   background-color: inherit;
   cursor: pointer;
-  display: block;
+  display: flex;
   text-decoration: none;
   color: #333;
   transition: 0.5s background-color;

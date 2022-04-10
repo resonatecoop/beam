@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "@emotion/css";
-import { FaEllipsisV } from "react-icons/fa";
+import { FaEllipsisV, FaPlus, FaStar } from "react-icons/fa";
 import IconButton from "./IconButton";
 import Modal from "./Modal";
 import ListButton from "./ListButton";
@@ -107,11 +107,14 @@ const TrackPopup: React.FC<{
           >
             <li>
               <ListButton onClick={openAddToPlaylist}>
-                Add to playlist
+                <FaPlus /> Add to playlist
               </ListButton>
             </li>
             <li>
-              <ListButton onClick={onClickFavorite}>Favorite</ListButton>
+              {/* FIXME: how do we check that a user has already favorited a track */}
+              <ListButton onClick={onClickFavorite}>
+                <FaStar /> Favorite
+              </ListButton>
             </li>
           </ul>
         </Modal>

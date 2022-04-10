@@ -59,9 +59,10 @@ injectGlobal`
   }
 
   a {
-    color: #444;
+    color: #c1006d;
+    transition: 0.25s color;
     &:hover {
-      color: #111;
+      color: #770043;
     }
   }
 `;
