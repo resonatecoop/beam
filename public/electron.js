@@ -2,15 +2,6 @@
 const { app, BrowserWindow, protocol } = require("electron");
 const path = require("path");
 
-const RESOURCES_PATH = app.isPackaged
-  ? path.join(process.resourcesPath, "")
-  : path.join(__dirname, "");
-
-const getAssetPath = (...paths) => {
-  return path.join(RESOURCES_PATH, ...paths);
-};
-
-console.log("icon", path.join(__dirname, "icons/256x256.png"));
 // Create the native browser window.
 function createWindow() {
   const mainWindow = new BrowserWindow({
