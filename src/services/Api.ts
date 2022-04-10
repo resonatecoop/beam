@@ -129,8 +129,17 @@ export const addTracksToTrackGroup = async (
 };
 
 export const fetchUserFavorites = async (): Promise<Track[]> => {
-  return fetchWrapper("users/favorites", {
+  return fetchWrapper("user/favorites", {
     method: "GET",
+  });
+};
+
+export const addTrackToUserFavorites = async (id: number): Promise<Track[]> => {
+  return fetchWrapper("user/favorites", {
+    method: "POST",
+    body: JSON.stringify({
+      track_id: id,
+    }),
   });
 };
 

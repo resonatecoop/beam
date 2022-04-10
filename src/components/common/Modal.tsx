@@ -3,6 +3,7 @@ import { css } from "@emotion/css";
 import styled from "@emotion/styled";
 import constants from "../../constants";
 import IconButton from "./IconButton";
+import ReactDOM from "react-dom";
 
 const background = css`
   position: fixed; /* Stay in place */
@@ -73,22 +74,52 @@ export const Modal: React.FC<{
   onClose: () => void;
   size?: "small";
 }> = ({ children, open, onClose, size }) => {
+  const [container] = React.useState(() => {
+    // This will be executed only on the initial render
+    // https://reactjs.org/docs/hooks-reference.html#lazy-initial-state
+    return document.createElement("div");
+  });
+  React.useEffect(() => {
+    document.body.appendChild(container);
+    return () => {
+      document.body.removeChild(container);
+    };
+  }, [container]);
+
+  const onCloseWrapper = React.useCallback(
+    (
+      e:
+        | React.MouseEvent<HTMLButtonElement, MouseEvent>
+        | React.MouseEvent<HTMLDivElement, MouseEvent>
+    ) => {
+      e.stopPropagation();
+      onClose();
+    },
+    [onClose]
+  );
+
   if (!open) {
     return null;
   }
-  return (
+
+  return ReactDOM.createPortal(
     <>
-      <div className={background} onClick={onClose}></div>
+      <div className={background} onClick={onCloseWrapper}></div>
       <div className={wrapper}>
         <Content size={size}>
-          <IconButton className={close} onClick={onClose} aria-label="close">
+          <IconButton
+            className={close}
+            onClick={onCloseWrapper}
+            aria-label="close"
+          >
             &times;
           </IconButton>
 
           {children}
         </Content>
       </div>
-    </>
+    </>,
+    container
   );
 };
 

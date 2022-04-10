@@ -5,7 +5,7 @@ import IconButton from "./IconButton";
 import Modal from "./Modal";
 import ListButton from "./ListButton";
 import { AddToPlaylist } from "../AddToPlaylist";
-import { fetchTrackGroup } from "../../services/Api";
+import { addTrackToUserFavorites, fetchTrackGroup } from "../../services/Api";
 
 const TrackPopup: React.FC<{
   trackId?: number;
@@ -24,10 +24,14 @@ const TrackPopup: React.FC<{
     []
   );
 
-  const openAddToPlaylist = React.useCallback(() => {
-    setIsMenuOpen(false);
-    setIsPlaylistPickerOpen(true);
-  }, []);
+  const openAddToPlaylist = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.stopPropagation();
+      setIsMenuOpen(false);
+      setIsPlaylistPickerOpen(true);
+    },
+    []
+  );
 
   const onSongAdded = React.useCallback(() => {
     setIsMenuOpen(false);
@@ -48,6 +52,16 @@ const TrackPopup: React.FC<{
       }
     },
     []
+  );
+
+  const onClickFavorite = React.useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.stopPropagation();
+      await Promise.all(
+        selectedTrackIds.map((id) => addTrackToUserFavorites(id))
+      );
+    },
+    [selectedTrackIds]
   );
 
   React.useEffect(() => {
@@ -95,6 +109,9 @@ const TrackPopup: React.FC<{
               <ListButton onClick={openAddToPlaylist}>
                 Add to playlist
               </ListButton>
+            </li>
+            <li>
+              <ListButton onClick={onClickFavorite}>Favorite</ListButton>
             </li>
           </ul>
         </Modal>

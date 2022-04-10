@@ -57,6 +57,11 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
           list-style: none;
         `}
       >
+        <li>
+          <NavLink className={listButtonClass} to="/library/favorites">
+            Favorites
+          </NavLink>
+        </li>
         {playlists?.map((playlist) => (
           <li
             key={playlist.id}

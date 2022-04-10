@@ -23,7 +23,11 @@ export const AddToPlaylist: React.FC<{
   }, [fetchPlaylistsCallback]);
 
   const onClick = React.useCallback(
-    async (playlistId: string) => {
+    async (
+      e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+      playlistId: string
+    ) => {
+      e.stopPropagation();
       await addTracksToTrackGroup(playlistId, {
         tracks: selectedTrackIds.map((id) => ({ track_id: id })),
       });
@@ -66,7 +70,7 @@ export const AddToPlaylist: React.FC<{
             >
               <ListButton
                 className={listButtonClass}
-                onClick={() => onClick(playlist.id)}
+                onClick={(e) => onClick(e, playlist.id)}
                 style={{ display: "flex", justifyContent: "space-between" }}
               >
                 {playlist.title}

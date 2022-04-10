@@ -13,6 +13,7 @@ import Queue from "./components/Queue";
 import constants from "./constants";
 import PlaylistTracks from "./components/PlaylistTracks";
 import ArtistPage from "./components/ArtistPage";
+import Favorites from "./components/Favorites";
 
 injectGlobal`
   * {
@@ -105,7 +106,7 @@ function App() {
             <Route path="queue" element={<Queue />} />
             <Route path="playlist/:playlistId" element={<PlaylistTracks />} />
             <Route path="artist/:artistId" element={<ArtistPage />} />
-            <Route path="favorites" element={<PlaylistTracks />} />
+            <Route path="favorites" element={<Favorites />} />
           </Route>
         </Routes>
       </div>
