@@ -1,8 +1,16 @@
 // Module to control the application lifecycle and the native browser window.
 const { app, BrowserWindow, protocol } = require("electron");
 const path = require("path");
-const url = require("url");
 
+const RESOURCES_PATH = app.isPackaged
+  ? path.join(process.resourcesPath, "")
+  : path.join(__dirname, "");
+
+const getAssetPath = (...paths) => {
+  return path.join(RESOURCES_PATH, ...paths);
+};
+
+console.log("icon", path.join(__dirname, "icons/256x256.png"));
 // Create the native browser window.
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -14,17 +22,14 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
+    icon: path.join(__dirname, "icons/256x256.png"),
   });
 
   // In production, set the initial browser path to the local bundle generated
   // by the Create React App build process.
   // In development, set it to localhost to allow live/hot-reloading.
   const appURL = app.isPackaged
-    ? url.format({
-        pathname: path.join(__dirname, "index.html"),
-        protocol: "file:",
-        slashes: true,
-      })
+    ? `file://${__dirname}/index.html`
     : "http://localhost:8080";
   mainWindow.loadURL(appURL);
 
@@ -64,22 +69,22 @@ app.whenReady().then(() => {
     }
   });
 
-  app.webContents.session.webRequest.onBeforeSendHeaders(
-    (details, callback) => {
-      const { requestHeaders } = details;
-      UpsertKeyValue(requestHeaders, "Access-Control-Allow-Origin", ["*"]);
-      callback({ requestHeaders });
-    }
-  );
+  // app.webContents.session.webRequest.onBeforeSendHeaders(
+  //   (details, callback) => {
+  //     const { requestHeaders } = details;
+  //     UpsertKeyValue(requestHeaders, "Access-Control-Allow-Origin", ["*"]);
+  //     callback({ requestHeaders });
+  //   }
+  // );
 
-  app.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-    const { responseHeaders } = details;
-    UpsertKeyValue(responseHeaders, "Access-Control-Allow-Origin", ["*"]);
-    UpsertKeyValue(responseHeaders, "Access-Control-Allow-Headers", ["*"]);
-    callback({
-      responseHeaders,
-    });
-  });
+  // app.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+  //   const { responseHeaders } = details;
+  //   UpsertKeyValue(responseHeaders, "Access-Control-Allow-Origin", ["*"]);
+  //   UpsertKeyValue(responseHeaders, "Access-Control-Allow-Headers", ["*"]);
+  //   callback({
+  //     responseHeaders,
+  //   });
+  // });
 });
 
 // Quit when all windows are closed, except on macOS.

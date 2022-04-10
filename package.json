@@ -1,6 +1,6 @@
 {
   "name": "beam",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "./",
   "main": "./public/electron.js",
   "author": "Si <simsamsomred@gmail.com>",
@@ -56,7 +56,6 @@
   "build": {
     "appId": "com.resonate.beam",
     "productName": "Beam",
-    "icon": "icon512.png",
     "files": [
       "build/**/*",
       "node_modules/**/*"
@@ -65,14 +64,17 @@
       "buildResources": "public"
     },
     "mac": {
-      "target": "dmg"
+      "target": "dmg",
+      "icon": "build/icon.icns"
     },
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "icon": "build/icons/256x256.png"
     },
     "linux": {
       "target": "deb",
-      "category": "Audio"
+      "category": "Audio",
+      "icon": "build/icon.icns"
     }
   },
   "devDependencies": {

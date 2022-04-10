@@ -90,6 +90,8 @@ export const ArtistPage: React.FC = () => {
               {releases.map((release) => (
                 <div key={release.id} style={{ marginBottom: "1rem" }}>
                   <h4>{release.title}</h4>
+                  <p className={padding}>{release.about}</p>
+
                   <TrackTable
                     tracks={release.items.map((item) => item.track)}
                   />

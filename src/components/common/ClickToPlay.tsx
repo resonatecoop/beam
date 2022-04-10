@@ -32,6 +32,10 @@ const Wrapper = styled.div<WrapperProps>`
     border: 0;
     transition: 0.5s;
 
+    button {
+      color: white;
+    }
+
     &:hover {
       background-color: rgba(0, 0, 0, 0.5);
       opacity: 1;

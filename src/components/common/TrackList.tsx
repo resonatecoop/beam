@@ -1,8 +1,7 @@
 import React from "react";
 import { css } from "@emotion/css";
 import ClickToPlay from "./ClickToPlay";
-import TrackPopup from "./TrackPopup";
-import { Link } from "react-router-dom";
+import SmallTileDetails from "./SmallTileDetails";
 
 const staffPickUl = css``;
 
@@ -32,55 +31,7 @@ const TrackList: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
               title={track.title}
               image={track.images.small}
             />
-            <div
-              className={css`
-                margin-left: 1rem;
-                margin-top: 1rem;
-              `}
-            >
-              <div
-                className={css`
-                  margin-bottom: 0.5rem;
-                  font-size: 1.1rem;
-                `}
-              >
-                {track.title}
-              </div>
-              <div
-                className={css`
-                  color: #444;
-                  font-size: 1rem;
-                `}
-              >
-                <Link
-                  to={`/library/artist/${track.creator_id}`}
-                  className={css`
-                    color: inherit;
-                    text-decoration: none;
-                    transition: 0.25s color;
-                    &:hover {
-                      color: #111;
-                    }
-                  `}
-                >
-                  {track.artist}
-                </Link>
-              </div>
-            </div>
-            <div
-              className={css`
-                flex-grow: 1;
-              `}
-            />
-            <div
-              className={css`
-                display: flex;
-                align-items: center;
-                margin-right: 1rem;
-              `}
-            >
-              <TrackPopup trackId={track.id} />
-            </div>
+            <SmallTileDetails object={track} />
           </li>
         ))}
       </ul>

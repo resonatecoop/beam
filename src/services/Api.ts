@@ -144,7 +144,7 @@ export const addTrackToUserFavorites = async (id: number): Promise<Track[]> => {
 };
 
 export const fetchByTag = async (tag: string): Promise<TagResult[]> => {
-  return fetchWrapper(`tags/${tag}`, {
+  return fetchWrapper(`tag/${tag}`, {
     method: "GET",
   });
 };

@@ -63,7 +63,9 @@ export const NewReleases: React.FC = () => {
                     font-size: 1.1rem;
                   `}
                 >
-                  {group.title}
+                  <Link to={`/library/trackgroup/${group.id}`}>
+                    {group.title}
+                  </Link>
                 </span>
                 <span
                   className={css`

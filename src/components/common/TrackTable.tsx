@@ -2,7 +2,6 @@ import { css } from "@emotion/css";
 import React from "react";
 import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "../../contexts/globalState";
-import IconButton from "./IconButton";
 import Table from "./Table";
 import TrackPopup from "./TrackPopup";
 
@@ -15,8 +14,9 @@ export const TrackTable: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
     },
     [dispatch]
   );
+
   return (
-    <Table>
+    <Table style={{ marginBottom: "2rem" }}>
       <thead>
         <tr>
           <th>Title</th>

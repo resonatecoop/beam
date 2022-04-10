@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { injectGlobal, css } from "@emotion/css";
 
 import Home from "./components/Home";
@@ -14,6 +14,8 @@ import constants from "./constants";
 import PlaylistTracks from "./components/PlaylistTracks";
 import ArtistPage from "./components/ArtistPage";
 import Favorites from "./components/Favorites";
+import TrackgroupPage from "./components/TrackgroupPage";
+import TagList from "./components/TagList";
 
 injectGlobal`
   * {
@@ -70,7 +72,7 @@ const appWrapper = css`
 `;
 
 const contentWrapper = css`
-  padding: calc(48px + 3rem) 1rem calc(48px + 3rem);
+  padding: calc(48px + 3rem) 1rem calc(48px + 5rem);
   min-height: 100vh;
   background-color: #efefef;
 
@@ -102,12 +104,19 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/tag/:tagString" element={<TagList />} />
           <Route path="/library" element={<Library />}>
             <Route path="queue" element={<Queue />} />
             <Route path="playlist/:playlistId" element={<PlaylistTracks />} />
             <Route path="artist/:artistId" element={<ArtistPage />} />
+            <Route
+              path="trackgroup/:trackgroupId"
+              element={<TrackgroupPage />}
+            />
+
             <Route path="favorites" element={<Favorites />} />
           </Route>
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
       <Player />

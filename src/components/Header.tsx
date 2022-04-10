@@ -26,9 +26,14 @@ const headerClass = css`
     text-decoration: none;
     color: black;
     margin-right: 1rem;
+    max-height: 42px;
     transition: 0.25s color;
     &:hover {
       color: grey;
+    }
+
+    svg {
+      scale: 0.8;
     }
   }
 
@@ -61,7 +66,9 @@ const Header: React.FC = () => {
           flex-grow: 1;
         `}
       />
-      {user && token && token !== "" && <Link to="/library">Library</Link>}
+      {user && token && token !== "" && (
+        <Link to="/library/favorites">Library</Link>
+      )}
       <Login />
     </header>
   );
