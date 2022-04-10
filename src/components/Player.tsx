@@ -104,9 +104,8 @@ const Player = () => {
   return (
     <div className={playerClass}>
       <div className={trackInfo}>
-        {/* FIXME currentTrack.images doesn't contain small image URL */}
         <img
-          src={currentTrack.cover ?? currentTrack.images.small.url}
+          src={currentTrack.images.small?.url ?? currentTrack.cover}
           height={50}
           width={50}
           alt={currentTrack.title}

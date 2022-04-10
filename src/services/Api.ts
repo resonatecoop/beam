@@ -63,7 +63,7 @@ interface FetchTrackGroupFilter extends APIOptions {
 
 // FIXME: What's the difference between fetching a user's playlists
 // (as with the staff picks) and fetching the user's trackgroups.
-// Also note tha tif you don't supply a type, then the listing returns
+// Also note that if you don't supply a type, then the listing returns
 // 0. That might be an API error?
 export const fetchUserTrackGroups = async (
   options?: FetchTrackGroupFilter

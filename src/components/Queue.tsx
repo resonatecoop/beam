@@ -26,7 +26,7 @@ export const Queue: React.FC = () => {
                 ...result.images,
                 small: {
                   ...result.images.small,
-                  url: result.cover,
+                  url: result.images.small?.url ?? result.cover,
                 },
               },
             };
