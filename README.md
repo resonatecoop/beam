@@ -51,3 +51,12 @@ To build it for your system:
 ```
 yarn electron:package:<linux|mac|windows>
 ```
+
+# Preparing a release
+
+In a distinct commit that _just_ bumps the version.
+
+1. Edit the package.json with the new version `vx.x.x`.
+2. `git commit -am vx.x.x`
+3. `git tag vx.x.x`
+4. `git push && git push --tags`
