@@ -9,7 +9,7 @@ export interface GlobalState {
 
 type SetLoggedInUser = {
   type: "setLoggedInUser";
-  user: LoggedInUser;
+  user?: LoggedInUser;
 };
 
 type AddToBackQueue = {

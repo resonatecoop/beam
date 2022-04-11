@@ -70,6 +70,13 @@ const Header = () => {
     setOpenLogin(false);
   };
 
+  const logout = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    e?.preventDefault();
+    dispatch({ type: "setToken", token: "" });
+    dispatch({ type: "setLoggedInUser", user: undefined });
+    setOpenLogin(false);
+  };
+
   const onLogIn = async (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
     const { access_token: token } = await logInUserWithPassword({
@@ -110,26 +117,39 @@ const Header = () => {
         {/** if the user is on the dev environment, we can't use the v1 api,
          * cause it requires CORS, but if they are in the app, then we can
          * use the API */}
-        {isDev && (
-          <form className={formWrapper}>
-            <label>
-              Because you're developing the app you need to log in with your own{" "}
-              <code>clientId</code>. You can copy it from any v2 API request
-              header on stream.resonate.coop. It's a hack until the
-              authentication situation is fixed.
-            </label>
-            <Input name="token" value={token} onChange={onChangeToken} />
-            <Button onClick={onSubmitToken}>Submit Token</Button>
-          </form>
+        {(!cachedToken || cachedToken === "") && (
+          <>
+            {isDev && (
+              <form className={formWrapper}>
+                <label>
+                  Because you're developing the app you need to log in with your
+                  own <code>clientId</code>. You can copy it from any v2 API
+                  request header on stream.resonate.coop. It's a hack until the
+                  authentication situation is fixed.
+                </label>
+                <Input name="token" value={token} onChange={onChangeToken} />
+                <Button onClick={onSubmitToken}>Submit Token</Button>
+              </form>
+            )}
+            {!isDev && (
+              <form className={formWrapper}>
+                <label>Log in</label>
+                <Input
+                  name="password"
+                  value={username}
+                  onChange={onChangeEmail}
+                />
+                <Input
+                  name="email"
+                  value={password}
+                  onChange={onChangePassword}
+                />
+                <Button onClick={onLogIn}>Log in</Button>
+              </form>
+            )}
+          </>
         )}
-        {!isDev && (
-          <form className={formWrapper}>
-            <label>Log in</label>
-            <Input name="password" value={username} onChange={onChangeEmail} />
-            <Input name="email" value={password} onChange={onChangePassword} />
-            <Button onClick={onLogIn}>Log in</Button>
-          </form>
-        )}
+        {cachedToken && <Button onClick={logout}>Log out</Button>}
       </Modal>
     </>
   );
