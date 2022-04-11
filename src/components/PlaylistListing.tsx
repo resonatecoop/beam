@@ -54,6 +54,10 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
       <ul
         className={css`
           list-style: none;
+
+          > li:nth-child(odd) {
+            background-color: #dfdfdf;
+          }
         `}
       >
         <li>
@@ -62,14 +66,7 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
           </NavLink>
         </li>
         {playlists?.map((playlist) => (
-          <li
-            key={playlist.id}
-            className={css`
-              &:nth-child(odd) {
-                background-color: #dfdfdf;
-              }
-            `}
-          >
+          <li key={playlist.id} className={css``}>
             <NavLink
               className={listButtonClass}
               to={`/library/playlist/${playlist.id}`}

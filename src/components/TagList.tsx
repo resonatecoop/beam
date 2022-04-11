@@ -1,10 +1,11 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import constants from "../constants";
 import { fetchByTag } from "../services/Api";
 import ClickToPlay from "./common/ClickToPlay";
 import SmallTileDetails from "./common/SmallTileDetails";
+import TrackPopup from "./common/TrackPopup";
 
 export const TagList: React.FC = () => {
   const { tagString } = useParams();
@@ -39,12 +40,22 @@ export const TagList: React.FC = () => {
                 }
               `}
             >
-              <ClickToPlay
-                image={group.images.small}
+              {group.images.small && (
+                <ClickToPlay
+                  image={group.images.small}
+                  title={group.title}
+                  groupId={group._id}
+                />
+              )}
+              <SmallTileDetails
                 title={group.title}
-                groupId={group._id}
+                subtitle={
+                  <Link to={`/library/artist/${group.creator_id}`}>
+                    {group.display_artist}
+                  </Link>
+                }
+                moreActions={<TrackPopup groupId={group.track_group_id} />}
               />
-              <SmallTileDetails object={group} />
             </li>
           ))}
         </ul>

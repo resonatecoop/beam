@@ -18,3 +18,21 @@ export function isTagResult(entity: unknown): entity is TagResult {
   }
   return (entity as TagResult)._id !== undefined;
 }
+
+export function isArtistSearchResult(
+  entity: unknown
+): entity is ArtistSearchResult {
+  if (!entity) {
+    return false;
+  }
+  return (entity as ArtistSearchResult).kind === "artist";
+}
+
+export function isTrackSearchResult(
+  entity: unknown
+): entity is TrackSearchResult {
+  if (!entity) {
+    return false;
+  }
+  return (entity as TrackSearchResult).kind === "track";
+}

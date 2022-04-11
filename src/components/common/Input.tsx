@@ -8,6 +8,7 @@ const inputClass = css`
   font-size: 1rem;
   margin-bottom: 0.5rem;
   width: 100%;
+  background-color: white;
 `;
 
 export const Input: React.FC<{

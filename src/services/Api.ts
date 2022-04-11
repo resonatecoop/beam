@@ -7,9 +7,10 @@ const fetchWrapper = async (
   options: RequestInit,
   apiOptions?: APIOptions
 ) => {
+  const apiVersion = apiOptions?.apiVersion ?? "v2";
+
   const stateString = localStorage.getItem("state");
   let state: undefined | GlobalState;
-  const apiVersion = apiOptions?.apiVersion ?? "v2";
   try {
     state = JSON.parse(stateString ?? "");
   } catch (e) {}
@@ -189,4 +190,10 @@ export const registerPlay = (
       apiVersion: "v1",
     }
   );
+};
+
+export const fetchSearchResults = (
+  searchString: string
+): Promise<SearchResult[]> => {
+  return fetchWrapper("search/", { method: "GET" }, { q: searchString });
 };

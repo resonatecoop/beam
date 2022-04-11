@@ -106,7 +106,7 @@ const ClickToPlay: React.FC<{
   }, [dispatch, groupId, trackId]);
 
   return (
-    <Wrapper width={image.width} height={image.height}>
+    <Wrapper width={image?.width ?? 0} height={image?.height ?? 0}>
       <div className="play">
         <IconButton onClick={onClickPlay}>
           <FaPlay />
@@ -115,12 +115,14 @@ const ClickToPlay: React.FC<{
           <MdQueue />
         </IconButton>
       </div>
-      <img
-        src={image.url}
-        alt={title}
-        width={image.width}
-        height={image.height}
-      />
+      {image && (
+        <img
+          src={image.url}
+          alt={title}
+          width={image.width}
+          height={image.height}
+        />
+      )}
     </Wrapper>
   );
 };

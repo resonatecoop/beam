@@ -90,7 +90,7 @@ const Player = () => {
           // FIXME: the v1 API doesn't allow play registration from localhost:8080
           await registerPlay(user?.id, currentTrack.id);
         } catch (e) {
-          console.log("");
+          console.error(e);
         }
       }
     },

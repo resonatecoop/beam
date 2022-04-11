@@ -16,6 +16,7 @@ import ArtistPage from "./components/ArtistPage";
 import Favorites from "./components/Favorites";
 import TrackgroupPage from "./components/TrackgroupPage";
 import TagList from "./components/TagList";
+import SearchResults from "./components/SearchResults";
 
 injectGlobal`
   * {
@@ -108,6 +109,7 @@ function App() {
           <Route path="/tag/:tagString" element={<TagList />} />
           <Route path="/library" element={<Library />}>
             <Route path="queue" element={<Queue />} />
+            <Route path="search/:searchString" element={<SearchResults />} />
             <Route path="playlist/:playlistId" element={<PlaylistTracks />} />
             <Route path="artist/:artistId" element={<ArtistPage />} />
             <Route

@@ -1,8 +1,8 @@
-import { css } from "@emotion/css";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { createTrackGroup } from "../services/Api";
 import IconButton from "./common/IconButton";
+import InlineForm from "./common/InlineForm";
 import Input from "./common/Input";
 
 export const AddPlaylist: React.FC = () => {
@@ -27,32 +27,17 @@ export const AddPlaylist: React.FC = () => {
   );
 
   return (
-    <form
-      className={css`
-        display: flex;
-        margin-bottom: 1rem;
-      `}
-    >
+    <InlineForm>
       <Input
         name="newPlaylistName"
         placeholder="New playlist name"
         value={newPlaylistName}
         onChange={onChange}
-        className={css`
-          margin-bottom: 0rem;
-          width: 100%;
-        `}
       />
-      <IconButton
-        onClick={onAddPlaylist}
-        className={css`
-          border: 1px solid #dfdfdf;
-          border-left: none;
-        `}
-      >
+      <IconButton onClick={onAddPlaylist}>
         <FaPlus />
       </IconButton>
-    </form>
+    </InlineForm>
   );
 };
 

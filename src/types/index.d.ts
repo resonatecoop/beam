@@ -18,9 +18,9 @@ declare global {
   }
 
   interface ImageSizes {
-    small: ResonateImage;
-    medium: ResonateImage;
-    large: ResonateImage;
+    small?: ResonateImage;
+    medium?: ResonateImage;
+    large?: ResonateImage;
   }
 
   interface LoggedInUser {
@@ -74,6 +74,20 @@ declare global {
     images: ImageSizes;
   }
 
+  interface ArtistImage {
+    "cover_photo-l": string;
+    "cover_photo-s": string;
+    "cover_photo-m": string;
+    cover_photo: string;
+    "profile_photo-xxl": string;
+    "profile_photo-m": string;
+    "profile_photo-l": string;
+    "profile_photo-xs": string;
+    "profile_photo-xl": string;
+    "profile_photo-sm": string;
+    profile_photo: string;
+  }
+
   interface Artist {
     name: string;
     id: number;
@@ -81,19 +95,7 @@ declare global {
       href: string;
       text: string;
     }[];
-    images?: {
-      "cover_photo-l": string;
-      "cover_photo-s": string;
-      "cover_photo-m": string;
-      cover_photo: string;
-      "profile_photo-xxl": string;
-      "profile_photo-m": string;
-      "profile_photo-l": string;
-      "profile_photo-xs": string;
-      "profile_photo-xl": string;
-      "profile_photo-sm": string;
-      profile_photo: string;
-    };
+    images?: ArtistImage;
     bio: string;
   }
 
@@ -142,4 +144,28 @@ declare global {
   }
 
   interface Favorite extends Track {}
+
+  interface SearchResultBase {
+    tags: string[];
+    _id: string;
+    score: number;
+  }
+
+  interface TrackSearchResult extends SearchResultBase {
+    track_id: number;
+    kind: "track";
+    display_artist: string;
+    title: string;
+    cover: string;
+    images: ImageSizes;
+  }
+
+  interface ArtistSearchResult extends SearchResultBase {
+    user_id: number;
+    kind: "artist";
+    name: string;
+    twitter_handle: string;
+    images?: ArtistImage;
+  }
+  type SearchResult = ArtistSearchResult | TrackSearchResult;
 }

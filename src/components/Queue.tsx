@@ -25,7 +25,7 @@ export const Queue: React.FC = () => {
               images: {
                 ...result.images,
                 small: {
-                  ...result.images.small,
+                  ...(result.images.small ?? { width: 60, height: 60 }),
                   url: result.images.small?.url ?? result.cover,
                 },
               },

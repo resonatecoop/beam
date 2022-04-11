@@ -8,6 +8,7 @@ import Login from "./Login";
 import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "../contexts/globalState";
 import constants from "../constants";
+import Search from "./Search";
 
 const headerClass = css`
   min-height: 48px;
@@ -66,6 +67,7 @@ const Header: React.FC = () => {
           flex-grow: 1;
         `}
       />
+      <Search />
       {user && token && token !== "" && (
         <Link to="/library/favorites">Library</Link>
       )}

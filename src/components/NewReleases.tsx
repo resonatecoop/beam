@@ -40,11 +40,13 @@ export const NewReleases: React.FC = () => {
       <ul className={newReleasesUl}>
         {trackgroups.map((group) => (
           <li key={group.id} className={newReleasesLi}>
-            <ClickToPlay
-              image={group.images.medium}
-              title={group.title}
-              groupId={group.id}
-            />
+            {group.images.medium && (
+              <ClickToPlay
+                image={group.images.medium}
+                title={group.title}
+                groupId={group.id}
+              />
+            )}
             <div
               className={css`
                 display: flex;
