@@ -78,6 +78,8 @@
     }
   },
   "devDependencies": {
+    "@commitlint/cli": "^16.2.3",
+    "@commitlint/config-conventional": "^16.2.1",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -88,7 +90,25 @@
     "electron-builder": "^22.14.13",
     "electronmon": "^2.0.2",
     "gh-pages": "^3.2.3",
+    "husky": "^7.0.4",
     "sirv-cli": "^2.0.2",
     "wait-on": "^6.0.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{js,jsx,ts,tsx,json,css,scss}": [
+      "prettier — single-quote — write",
+      "eslint --rule 'no-console: [\"error\", { \"allow\": [\"warn\", \"error\"] }]'"
+    ]
   }
 }
