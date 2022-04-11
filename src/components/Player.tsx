@@ -144,7 +144,7 @@ const Player = () => {
           src={`${STREAM_API}${playerQueueIds[0]}${
             user ? `?client_id=${user?.clientId}` : ""
           }`}
-          autoPlay
+          // autoPlay
           autoPlayAfterSrcChange
           onEnded={onEnded}
           onListen={onListen}

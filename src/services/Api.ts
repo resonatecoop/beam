@@ -39,6 +39,29 @@ const fetchWrapper = async (
     });
 };
 
+export const logInUserWithPassword = async ({
+  username,
+  password,
+}: {
+  username: string;
+  password: string;
+}): Promise<{
+  access_token: string;
+  access_token_expires: string;
+  client_id: string;
+}> => {
+  return fetchWrapper(
+    "oauth2/password",
+    {
+      method: "POST",
+      body: JSON.stringify({ username, password }),
+    },
+    {
+      apiVersion: "v1",
+    }
+  );
+};
+
 export const fetchUserProfile = async (): Promise<LoggedInUser> => {
   return fetchWrapper("user/profile/", {
     method: "GET",

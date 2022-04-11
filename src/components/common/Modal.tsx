@@ -39,6 +39,8 @@ const Content = styled.div<ContentProps>`
   padding: 20px;
   z-index: 999;
   border: 1px solid #888;
+  display: flex;
+  flex-direction: column;
   width: ${(props) => (props.size === "small" ? "40%" : "80%")};
 
   @media (max-width: ${constants.bp.medium}px) {
@@ -61,6 +63,10 @@ const close = css`
   line-height: 16px;
   cursor: pointer;
   margin-bottom: 0.25rem;
+  margin-right: 0;
+  padding-right: 0 !important;
+  padding-top: 0 !important;
+
   &:hover,
   &:focus {
     color: black;
@@ -107,14 +113,15 @@ export const Modal: React.FC<{
       <div className={background} onClick={onCloseWrapper}></div>
       <div className={wrapper}>
         <Content size={size}>
-          <IconButton
-            className={close}
-            onClick={onCloseWrapper}
-            aria-label="close"
-          >
-            &times;
-          </IconButton>
-
+          <div>
+            <IconButton
+              className={close}
+              onClick={onCloseWrapper}
+              aria-label="close"
+            >
+              &times;
+            </IconButton>
+          </div>
           {children}
         </Content>
       </div>
