@@ -83,6 +83,7 @@ const Header = () => {
       username,
       password,
     });
+    setPassword("");
     dispatch({ type: "setToken", token });
     setOpenLogin(false);
   };
