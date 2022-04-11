@@ -34,7 +34,8 @@
     "electron:start": "concurrently -k \"cross-env BROWSER=none yarn start\" \"wait-on http://localhost:8080 && electronmon .\"",
     "electron:package:mac": "yarn build && electron-builder -m -c.extraMetadata.main=build/electron.js",
     "electron:package:win": "yarn build && electron-builder -w -c.extraMetadata.main=build/electron.js",
-    "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js"
+    "electron:package:linux": "yarn build && electron-builder -l -c.extraMetadata.main=build/electron.js",
+    "release": "electron-builder -c.extraMetadata.main=build/electron.js"
   },
   "eslintConfig": {
     "extends": [
@@ -65,16 +66,25 @@
     },
     "mac": {
       "target": "dmg",
-      "icon": "build/icon.icns"
+      "icon": "build/icon.icns",
+      "publish": [
+        "github"
+      ]
     },
     "win": {
       "target": "nsis",
-      "icon": "build/icons.icns"
+      "icon": "build/icons.icns",
+      "publish": [
+        "github"
+      ]
     },
     "linux": {
       "target": "deb",
       "category": "Audio",
-      "icon": "build/icon.icns"
+      "icon": "build/icon.icns",
+      "publish": [
+        "github"
+      ]
     }
   },
   "devDependencies": {
