@@ -1,6 +1,6 @@
 name: CI/CD Electron App on version tag
 
-on:
+on: 
   push:
     # Sequence of patterns matched against refs/tags
     tags:
@@ -13,7 +13,8 @@ jobs:
     # Platforms to build on/for
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [macos-latest, ubuntu-latest]
+        # os: [macos-latest, ubuntu-latest, windows-latest]
 
     steps:
       - name: Check out Git repository
@@ -25,7 +26,10 @@ jobs:
           node-version: 16
 
       - name: Install dependencies
-        run: yarn
+        run: yarn install
+      
+      - name: Build
+        run: yarn build
 
       - name: Build using electron-builder
         run: yarn release
