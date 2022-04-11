@@ -17,9 +17,18 @@ export const Search: React.FC = () => {
   const onSearchClick = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
-      navigate(`/library/search/${search}`);
+      const encodedURI = encodeURIComponent(search);
+      navigate(`/library/search/?q=${encodedURI}`);
     },
     [navigate, search]
+  );
+
+  const onFormSubmit = React.useCallback(
+    (e) => {
+      const encodedURI = encodeURIComponent(search);
+      navigate(`/library/search/?q=${encodedURI}`);
+    },
+    [search, navigate]
   );
 
   return (
@@ -28,6 +37,7 @@ export const Search: React.FC = () => {
       className={css`
         margin-right: 1rem;
       `}
+      onSubmit={onFormSubmit}
     >
       <Input
         placeholder="Search"

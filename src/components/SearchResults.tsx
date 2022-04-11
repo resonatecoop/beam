@@ -1,19 +1,24 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import constants from "../constants";
 import { fetchSearchResults } from "../services/Api";
-import { isArtistSearchResult, isTrackSearchResult } from "../typeguards";
+import {
+  isArtistSearchResult,
+  isLabelSearchResult,
+  isTrackSearchResult,
+} from "../typeguards";
 import ClickToPlay from "./common/ClickToPlay";
 import SmallTileDetails from "./common/SmallTileDetails";
 
 export const SearchResults: React.FC = () => {
-  const { searchString } = useParams();
+  const [search] = useSearchParams();
+  const searchString = search.get("q");
   const [searchResults, setSearchResults] = React.useState<SearchResult[]>([]);
 
   const fetchSearchResultsCallback = React.useCallback(async (str: string) => {
     const results = await fetchSearchResults(str);
-    setSearchResults(results);
+    setSearchResults(results ?? []);
   }, []);
 
   React.useEffect(() => {
@@ -41,7 +46,8 @@ export const SearchResults: React.FC = () => {
                 }
               `}
             >
-              {isArtistSearchResult(result) && (
+              {(isArtistSearchResult(result) ||
+                isLabelSearchResult(result)) && (
                 <>
                   <img
                     src={result.images?.["profile_photo-sm"]}
@@ -59,6 +65,7 @@ export const SearchResults: React.FC = () => {
                   />
                 </>
               )}
+
               {isTrackSearchResult(result) && (
                 <>
                   {result.images.small && (

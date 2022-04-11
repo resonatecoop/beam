@@ -36,3 +36,12 @@ export function isTrackSearchResult(
   }
   return (entity as TrackSearchResult).kind === "track";
 }
+
+export function isLabelSearchResult(
+  entity: unknown
+): entity is LabelSearchResult {
+  if (!entity) {
+    return false;
+  }
+  return (entity as LabelSearchResult).kind === "label";
+}

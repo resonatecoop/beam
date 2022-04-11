@@ -217,6 +217,11 @@ export const registerPlay = (
 
 export const fetchSearchResults = (
   searchString: string
-): Promise<SearchResult[]> => {
-  return fetchWrapper("search/", { method: "GET" }, { q: searchString });
+): Promise<SearchResult[] | null> => {
+  return fetchWrapper(
+    "search/",
+    { method: "GET" },
+    // FIXME: figure out what to do here
+    { q: encodeURIComponent(decodeURI(searchString)) }
+  );
 };

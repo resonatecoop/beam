@@ -151,6 +151,17 @@ const Header = () => {
           </>
         )}
         {cachedToken && <Button onClick={logout}>Log out</Button>}
+        <p
+          className={css`
+            margin-top: 1rem;
+          `}
+        >
+          Using resonate means you agree with the{" "}
+          <a href="https://community.resonate.is/docs?topic=1865">
+            terms and conditions outlined here
+          </a>
+          .
+        </p>
       </Modal>
     </>
   );

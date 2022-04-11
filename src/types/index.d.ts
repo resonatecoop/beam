@@ -160,6 +160,14 @@ declare global {
     images: ImageSizes;
   }
 
+  interface LabelSearchResult extends SearchResultBase {
+    user_id: number;
+    kind: "label";
+    name: string;
+    twitter_handle: string;
+    images?: ArtistImage;
+  }
+
   interface ArtistSearchResult extends SearchResultBase {
     user_id: number;
     kind: "artist";
@@ -167,5 +175,8 @@ declare global {
     twitter_handle: string;
     images?: ArtistImage;
   }
-  type SearchResult = ArtistSearchResult | TrackSearchResult;
+  type SearchResult =
+    | ArtistSearchResult
+    | TrackSearchResult
+    | LabelSearchResult;
 }
