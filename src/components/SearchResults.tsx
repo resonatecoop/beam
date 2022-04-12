@@ -1,7 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import constants from "../constants";
 import { fetchSearchResults } from "../services/Api";
 import {
   isArtistSearchResult,
@@ -9,6 +8,7 @@ import {
   isTrackSearchResult,
 } from "../typeguards";
 import ClickToPlay from "./common/ClickToPlay";
+import ResultListItem from "./common/ResultListItem";
 import SmallTileDetails from "./common/SmallTileDetails";
 
 export const SearchResults: React.FC = () => {
@@ -35,17 +35,7 @@ export const SearchResults: React.FC = () => {
           `}
         >
           {searchResults.map((result) => (
-            <li
-              key={result._id}
-              className={css`
-                display: inline-flex;
-                margin-right: 1rem;
-                width: 45%;
-                @media (max-width: ${constants.bp.medium}px) {
-                  width: 100%;
-                }
-              `}
-            >
+            <ResultListItem>
               {(isArtistSearchResult(result) ||
                 isLabelSearchResult(result)) && (
                 <>
@@ -84,7 +74,7 @@ export const SearchResults: React.FC = () => {
                   />
                 </>
               )}
-            </li>
+            </ResultListItem>
           ))}
         </ul>
       </div>

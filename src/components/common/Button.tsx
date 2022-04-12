@@ -11,7 +11,7 @@ const buttonClass = css`
   font-size: 1rem;
   line-height: 1rem;
   padding: 1rem;
-  background-color: #eee;
+  background-color: white;
   border-radius: 2px;
   margin-right: 0.25rem;
   white-space: nowrap;

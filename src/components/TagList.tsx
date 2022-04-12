@@ -1,21 +1,40 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import constants from "../constants";
 import { fetchByTag } from "../services/Api";
 import ClickToPlay from "./common/ClickToPlay";
+import ResultListItem from "./common/ResultListItem";
 import SmallTileDetails from "./common/SmallTileDetails";
+import { CenteredSpinner } from "./common/Spinner";
 import TrackPopup from "./common/TrackPopup";
+import usePagination from "./common/usePagination";
 
 export const TagList: React.FC = () => {
   const { tagString } = useParams();
+  const [isLoading, setLoading] = React.useState(false);
 
   const [trackgroups, setTrackgroups] = React.useState<TagResult[]>([]);
 
-  const fetchTagCallback = React.useCallback(async (tag: string) => {
-    const result = await fetchByTag(tag);
-    setTrackgroups(result);
-  }, []);
+  const fetchTagCallback = React.useCallback(
+    async (tag: string, nextPage?: number) => {
+      setLoading(true);
+      const result = await fetchByTag(tag, { limit: 20, page: nextPage ?? 1 });
+      setTrackgroups((groups) => [...groups, ...result]);
+      setLoading(false);
+    },
+    []
+  );
+
+  const callbackFnc = React.useCallback(
+    async (nextPage?: number) => {
+      if (tagString) {
+        await fetchTagCallback(tagString, nextPage);
+      }
+    },
+    [fetchTagCallback, tagString]
+  );
+
+  const { LoadingButton } = usePagination({ callbackFnc });
 
   React.useEffect(() => {
     if (tagString) {
@@ -28,18 +47,9 @@ export const TagList: React.FC = () => {
       <h3>{tagString}</h3>
       <div>
         <ul>
+          {isLoading && <CenteredSpinner />}
           {trackgroups.map((group) => (
-            <li
-              key={group._id}
-              className={css`
-                display: inline-flex;
-                margin-right: 0.5rem;
-                width: 45%;
-                @media (max-width: ${constants.bp.medium}px) {
-                  width: 100%;
-                }
-              `}
-            >
+            <ResultListItem key={group._id}>
               {group.images.small && (
                 <ClickToPlay
                   image={group.images.small}
@@ -56,8 +66,9 @@ export const TagList: React.FC = () => {
                 }
                 moreActions={<TrackPopup groupId={group.track_group_id} />}
               />
-            </li>
+            </ResultListItem>
           ))}
+          {trackgroups.length > 0 && <LoadingButton />}
         </ul>
       </div>
     </>

@@ -4,18 +4,9 @@ import ClickToPlay from "./ClickToPlay";
 import SmallTileDetails from "./SmallTileDetails";
 import { Link } from "react-router-dom";
 import TrackPopup from "./TrackPopup";
+import ResultListItem from "./ResultListItem";
 
 const staffPickUl = css``;
-
-const staffPickLi = css`
-  display: flex;
-  position: relative;
-  margin-bottom: 1rem;
-
-  .track-info {
-    margin-left: 1rem;
-  }
-`;
 
 const TrackList: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
   const localTracks = tracks.map((track, index) => ({
@@ -27,7 +18,7 @@ const TrackList: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
     <>
       <ul className={staffPickUl}>
         {localTracks.map((track) => (
-          <li key={track.key} className={staffPickLi}>
+          <ResultListItem key={track.key}>
             {track.images.small && (
               <ClickToPlay
                 trackId={track.id}
@@ -44,7 +35,7 @@ const TrackList: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
               }
               moreActions={<TrackPopup trackId={track.id} />}
             />
-          </li>
+          </ResultListItem>
         ))}
       </ul>
     </>
