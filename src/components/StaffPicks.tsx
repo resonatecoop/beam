@@ -5,7 +5,7 @@ import { fetchTrackGroup, fetchUserPlaylists } from "../services/Api";
 import TrackList from "./common/TrackList";
 
 const StaffPicks: React.FC = () => {
-  const [latestStaffPick, setLatestStaffPick] = React.useState<Playlist>();
+  const [latestStaffPick, setLatestStaffPick] = React.useState<Trackgroup>();
   const [tracks, setTracks] = React.useState<Track[]>();
 
   const fetchStaffPicksCallback = React.useCallback(async () => {

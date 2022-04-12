@@ -40,22 +40,8 @@ declare global {
     nicename: string;
   }
 
-  interface Playlist {
-    about: string;
-    cover: string;
-    cover_metadata: CoverMetadata;
-    creator_id: number;
-    id: string;
-    images: ImageSizes;
-    release_date: string;
-    slug: string;
-    tags: unknown[];
-    title: string;
-    type: TrackgroupType;
-    uri: string;
-    user: User;
-  }
-
+  // FIXME: Suss out the relationship between trackgroups and playlists
+  // and possibly define unique types for each. See search result types.
   type TrackgroupType = "playlist" | "ep";
 
   interface Trackgroup {
@@ -72,6 +58,7 @@ declare global {
     user: User;
     uri: string;
     images: ImageSizes;
+    private: boolean;
   }
 
   interface ArtistImage {

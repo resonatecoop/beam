@@ -71,7 +71,7 @@ export const fetchUserProfile = async (): Promise<LoggedInUser> => {
 export const fetchUserPlaylists = async (
   id: number,
   options?: APIOptions
-): Promise<Playlist[]> => {
+): Promise<Trackgroup[]> => {
   return fetchWrapper(
     `users/${id}/playlists`,
     {
@@ -128,6 +128,22 @@ export const createTrackGroup = async (data: {
 }): Promise<TrackgroupDetail> => {
   return fetchWrapper(`user/trackgroups`, {
     method: "POST",
+    body: JSON.stringify(data),
+  });
+};
+
+export const updateTrackGroup = async (
+  id: string,
+  data: {
+    cover: string;
+    title: string;
+    private: boolean;
+    tags: string[];
+    type: string;
+  }
+): Promise<TrackgroupDetail> => {
+  return fetchWrapper(`user/trackgroups/${id}`, {
+    method: "PUT",
     body: JSON.stringify(data),
   });
 };

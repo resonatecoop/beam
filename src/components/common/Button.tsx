@@ -11,13 +11,15 @@ const buttonClass = css`
   font-size: 1rem;
   line-height: 1rem;
   padding: 1rem;
-  background-color: white;
+  background-color: var(--magenta);
+  color: white;
   border-radius: 2px;
   margin-right: 0.25rem;
   white-space: nowrap;
+  transition: 0.25s background-color;
 
   &:hover:not(:disabled) {
-    background-color: #ddd;
+    background-color: var(--dark-magenta);
     cursor: pointer;
   }
 

@@ -37,6 +37,11 @@ injectGlobal`
       U+A720-A7FF;
   }
 
+  :root {
+    --magenta: #c1006d;
+    --dark-magenta: #770043;
+  }
+
   html {
     font-size: 18px;
   }
@@ -60,10 +65,10 @@ injectGlobal`
   }
 
   a {
-    color: #c1006d;
+    color: var(--magenta);
     transition: 0.25s color;
     &:hover {
-      color: #770043;
+      color: var(--dark-magenta);
     }
   }
 `;
