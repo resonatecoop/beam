@@ -129,17 +129,6 @@ const Player = () => {
           }
         `}
       >
-        <IconButton
-          onClick={onClickQueue}
-          className={css`
-            @media (max-width: ${constants.bp.small}px) {
-              display: none;
-            }
-          `}
-        >
-          <MdQueueMusic />
-        </IconButton>
-
         <AudioPlayer
           src={`${STREAM_API}${playerQueueIds[0]}${
             user ? `?client_id=${user?.clientId}` : ""
@@ -156,6 +145,16 @@ const Player = () => {
             }
           `}
         />
+        <IconButton
+          onClick={onClickQueue}
+          className={css`
+            @media (max-width: ${constants.bp.small}px) {
+              display: none;
+            }
+          `}
+        >
+          <MdQueueMusic style={{ color: "#868686" }} />
+        </IconButton>
       </div>
     </div>
   );
