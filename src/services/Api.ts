@@ -140,6 +140,7 @@ export const updateTrackGroup = async (
     private: boolean;
     tags: string[];
     type: string;
+    about?: string;
   }
 ): Promise<TrackgroupDetail> => {
   return fetchWrapper(`user/trackgroups/${id}`, {

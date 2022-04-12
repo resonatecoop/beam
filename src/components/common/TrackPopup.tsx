@@ -65,8 +65,10 @@ const TrackPopup: React.FC<{
   );
 
   React.useEffect(() => {
-    determineTracks(trackId, groupId);
-  }, [trackId, groupId, determineTracks]);
+    if (isMenuOpen) {
+      determineTracks(trackId, groupId);
+    }
+  }, [trackId, groupId, determineTracks, isMenuOpen]);
 
   return (
     <>

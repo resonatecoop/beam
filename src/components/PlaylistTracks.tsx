@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import React from "react";
 import { FaEdit, FaEye, FaLock } from "react-icons/fa";
 import { useParams } from "react-router-dom";
-import { fetchTrack, fetchUserTrackGroup } from "../services/Api";
+import { fetchUserTrackGroup } from "../services/Api";
 import IconButton from "./common/IconButton";
 import { CenteredSpinner } from "./common/Spinner";
 import TrackTable from "./common/TrackTable";
@@ -20,14 +20,9 @@ export const PlaylistTracks: React.FC = () => {
 
     const trackgroup = await fetchUserTrackGroup(playlistId);
     setPlaylist(trackgroup);
-    const trackIds = trackgroup.items.map((item) => item.track.id);
-    const results = await Promise.all(
-      trackIds.map((id) => {
-        return fetchTrack(id);
-      })
-    );
+
     setIsLoading(false);
-    setTracks(results);
+    setTracks(trackgroup.items.map((item) => item.track));
   }, []);
 
   React.useEffect(() => {
@@ -38,7 +33,10 @@ export const PlaylistTracks: React.FC = () => {
 
   const onDone = React.useCallback(() => {
     setIsEditing(false);
-  }, []);
+    if (playlistId) {
+      fetchTracks(playlistId);
+    }
+  }, [playlistId, fetchTracks]);
 
   return (
     <div
@@ -47,27 +45,38 @@ export const PlaylistTracks: React.FC = () => {
       `}
     >
       {!isEditing && !isLoading && (
-        <h3
-          className={css`
-            display: flex;
-            align-items: center;
+        <>
+          <h3
+            className={css`
+              display: flex;
+              align-items: center;
 
-            > svg {
-              margin-right: 0.5rem;
-              font-size: 1rem;
-            }
+              > svg {
+                margin-right: 0.5rem;
+                font-size: 1rem;
+              }
 
-            button > svg {
-              margin-left: 0.5rem;
-            }
-          `}
-        >
-          {playlist?.private ? <FaLock /> : <FaEye />}
-          {playlist?.title ?? "Tracks"}{" "}
-          <IconButton onClick={() => setIsEditing(true)}>
-            <FaEdit />
-          </IconButton>
-        </h3>
+              button > svg {
+                margin-left: 0.5rem;
+              }
+            `}
+          >
+            {playlist?.private ? <FaLock /> : <FaEye />}
+            {playlist?.title ?? "Tracks"}{" "}
+            <IconButton onClick={() => setIsEditing(true)}>
+              <FaEdit />
+            </IconButton>
+          </h3>
+          {playlist?.about && (
+            <p
+              className={css`
+                margin-bottom: 1rem;
+              `}
+            >
+              {playlist.about}
+            </p>
+          )}
+        </>
       )}
       {playlist && isEditing && (
         <PlaylistTitleEditing playlist={playlist} onDone={onDone} />
