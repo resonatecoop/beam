@@ -184,6 +184,17 @@ export const addTrackToUserFavorites = async (id: number): Promise<Track[]> => {
   });
 };
 
+export const checkTrackIdsForFavorite = async (
+  ids: number[]
+): Promise<{ track_id: number }[]> => {
+  return fetchWrapper("user/favorites/resolve", {
+    method: "POST",
+    body: JSON.stringify({
+      ids,
+    }),
+  });
+};
+
 export const fetchByTag = async (
   tag: string,
   options?: APIOptions
@@ -237,6 +248,17 @@ export const registerPlay = (
       apiVersion: "v1",
     }
   );
+};
+
+export const checkPlayCountOfTrackIds = async (
+  ids: number[]
+): Promise<{ track_id: number; count: number }[]> => {
+  return fetchWrapper("user/plays/resolve", {
+    method: "POST",
+    body: JSON.stringify({
+      ids,
+    }),
+  });
 };
 
 export const fetchSearchResults = (
