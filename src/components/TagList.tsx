@@ -6,7 +6,7 @@ import ResultListItem from "./common/ResultListItem";
 import SmallTileDetails from "./common/SmallTileDetails";
 import { CenteredSpinner } from "./common/Spinner";
 import TrackPopup from "./common/TrackPopup";
-import usePagination from "./common/usePagination";
+import usePagination from "../utils/usePagination";
 
 export const TagList: React.FC = () => {
   const { tagString } = useParams();

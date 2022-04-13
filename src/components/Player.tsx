@@ -9,6 +9,8 @@ import { MdQueueMusic } from "react-icons/md";
 import IconButton from "./common/IconButton";
 import { useNavigate } from "react-router-dom";
 import constants from "../constants";
+import { FavoriteTrack } from "./common/FavoriteTrack";
+import { mapFavoriteAndPlaysToTracks } from "../utils/tracks";
 
 const playerClass = css`
   min-height: 48px;
@@ -54,12 +56,13 @@ const Player = () => {
   } = useGlobalStateContext();
   let navigate = useNavigate();
 
-  const [currentTrack, setCurrentTrack] = React.useState<Track>();
+  const [currentTrack, setCurrentTrack] = React.useState<TrackWithUserCounts>();
   const [mostlyListened, setMostlyListened] = React.useState(false);
 
   const fetchTrackCallback = React.useCallback(async (id: number) => {
     const track = await fetchTrack(id);
-    setCurrentTrack(track);
+    const mappedTrack = (await mapFavoriteAndPlaysToTracks([track]))[0];
+    setCurrentTrack(mappedTrack);
   }, []);
 
   React.useEffect(() => {
@@ -117,6 +120,15 @@ const Player = () => {
           <div>{currentTrack.title}</div>
           <div>{currentTrack.album}</div>
           <div>{currentTrack.artist}</div>
+        </div>
+        <div
+          className={css`
+            flex-grow: 1;
+            text-align: right;
+            padding-right: 1rem;
+          `}
+        >
+          <FavoriteTrack track={currentTrack} />
         </div>
       </div>
       <div

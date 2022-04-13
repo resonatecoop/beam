@@ -1,28 +1,21 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { FaPause, FaPlay, FaRegStar, FaStar } from "react-icons/fa";
+import { FaPause, FaPlay } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "../../contexts/globalState";
 import {
-  addTrackToUserFavorites,
   checkPlayCountOfTrackIds,
   checkTrackIdsForFavorite,
 } from "../../services/Api";
+import { FavoriteTrack } from "./FavoriteTrack";
 import IconButton from "./IconButton";
 import Table from "./Table";
 import TrackPopup from "./TrackPopup";
-
-interface TrackWithUserCounts extends Track {
-  favorite: boolean;
-  plays: number;
-}
 
 const TrackRow: React.FC<{
   track: TrackWithUserCounts;
   addTracksToQueue: (id: number) => void;
 }> = ({ track, addTracksToQueue }) => {
-  const [isFavorite, setIsFavorite] = React.useState(track.favorite);
-  const [loadingFavorite, setLoadingFavorite] = React.useState(false);
   const {
     state: { playerQueueIds },
   } = useGlobalStateContext();
@@ -32,19 +25,6 @@ const TrackRow: React.FC<{
   const onTrackClick = React.useCallback(() => {
     addTracksToQueue(track.id);
   }, [addTracksToQueue, track.id]);
-
-  const onClickStar = React.useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setLoadingFavorite(true);
-
-      await addTrackToUserFavorites(track.id);
-      setIsFavorite((val) => !val);
-      setLoadingFavorite(false);
-    },
-    [track.id]
-  );
 
   return (
     <tr
@@ -60,32 +40,7 @@ const TrackRow: React.FC<{
       `}
     >
       <td>
-        <IconButton
-          compact
-          onClick={onClickStar}
-          className={
-            loadingFavorite
-              ? css`
-                  @keyframes spinning {
-                    from {
-                      transform: rotate(0deg);
-                    }
-                    to {
-                      transform: rotate(360deg);
-                    }
-                  }
-                  animation-name: spinning;
-                  animation-duration: 0.5s;
-                  animation-iteration-count: infinite;
-                  /* linear | ease | ease-in | ease-out | ease-in-out */
-                  animation-timing-function: linear;
-                `
-              : ""
-          }
-        >
-          {isFavorite && <FaStar />}
-          {!isFavorite && <FaRegStar />}
-        </IconButton>
+        <FavoriteTrack track={track} />
       </td>
       <td>
         {currentTrackId !== track.id && (

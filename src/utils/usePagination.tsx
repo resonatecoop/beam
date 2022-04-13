@@ -1,7 +1,7 @@
 import { css } from "@emotion/css";
 import React from "react";
-import Button from "./Button";
-import { CenteredSpinner } from "./Spinner";
+import Button from "../components/common/Button";
+import { CenteredSpinner } from "../components/common/Spinner";
 
 export const usePagination = ({
   callbackFnc,

@@ -100,6 +100,11 @@ declare global {
     images: ImageSizes;
   }
 
+  interface TrackWithUserCounts extends Track {
+    favorite: boolean;
+    plays: number;
+  }
+
   interface TrackgroupItem {
     index: number;
     track: Track;
