@@ -1,8 +1,12 @@
 import React from "react";
 
-import { css } from "@emotion/css";
+import styled from "@emotion/styled";
 
-const buttonClass = css`
+export interface Compactable {
+  compact?: boolean;
+}
+
+const CustomButton = styled.button<Compactable>`
   border: none;
   background: none;
   display: inline-flex;
@@ -10,7 +14,7 @@ const buttonClass = css`
   justify-content: center;
   font-size: 1rem;
   line-height: 1rem;
-  padding: 1rem;
+  padding: ${(props) => (props.compact ? ".3rem .5rem" : "1rem")};
   background-color: var(--magenta);
   color: white;
   border-radius: 2px;
@@ -50,13 +54,14 @@ export const Button: React.FC<ButtonProps> = ({
   startIcon,
   endIcon,
   disabled,
+  compact,
 }) => {
   return (
-    <button className={buttonClass} onClick={onClick} disabled={disabled}>
+    <CustomButton onClick={onClick} disabled={disabled} compact={compact}>
       {startIcon ? <span className="startIcon">{startIcon}</span> : ""}
       {children}
       {endIcon ? <span className="endIcon">{endIcon}</span> : ""}
-    </button>
+    </CustomButton>
   );
 };
 

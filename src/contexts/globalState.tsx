@@ -5,11 +5,16 @@ export interface GlobalState {
   user?: LoggedInUser;
   playerQueueIds: number[];
   token?: string;
+  playing?: boolean;
 }
 
 type SetLoggedInUser = {
   type: "setLoggedInUser";
   user?: LoggedInUser;
+};
+
+type ClearQueue = {
+  type: "clearQueue";
 };
 
 type AddToBackQueue = {
@@ -36,13 +41,20 @@ type SetToken = {
   token: string;
 };
 
+type SetPlaying = {
+  type: "setPlaying";
+  playing: boolean;
+};
+
 type Actions =
   | SetLoggedInUser
   | SetState
   | AddToBackQueue
   | AddToFrontQueue
   | SetToken
-  | PopFromFrontOfQueue;
+  | PopFromFrontOfQueue
+  | SetPlaying
+  | ClearQueue;
 
 const stateReducer = produce((draft: GlobalState, action: Actions) => {
   let newDraft = draft;
@@ -64,13 +76,22 @@ const stateReducer = produce((draft: GlobalState, action: Actions) => {
     case "popFromFrontOfQueue":
       newDraft.playerQueueIds.shift();
       break;
+    case "clearQueue":
+      newDraft.playerQueueIds = [];
+      break;
     case "setToken":
       newDraft.token = action.token;
+      break;
+    case "setPlaying":
+      newDraft.playing = action.playing;
       break;
     default:
       break;
   }
-  localStorage.setItem("state", JSON.stringify(newDraft));
+  localStorage.setItem(
+    "state",
+    JSON.stringify({ ...newDraft, playing: undefined }) // We don't want playing to be persisted
+  );
   return newDraft;
 });
 

@@ -51,10 +51,11 @@ const STREAM_API = "https://api.resonate.coop/v1/stream/";
 
 const Player = () => {
   const {
-    state: { playerQueueIds, user },
+    state: { playerQueueIds, user, playing },
     dispatch,
   } = useGlobalStateContext();
   let navigate = useNavigate();
+  const playerRef = React.useRef<any>();
 
   const [currentTrack, setCurrentTrack] = React.useState<TrackWithUserCounts>();
   const [mostlyListened, setMostlyListened] = React.useState(false);
@@ -100,37 +101,47 @@ const Player = () => {
     [currentTrack, mostlyListened, user]
   );
 
-  if (playerQueueIds.length === 0 || !currentTrack) {
-    return null;
-  }
+  React.useEffect(() => {
+    if (playerRef?.current && playing) {
+      playerRef.current.audio.current.play();
+    } else if (playerRef?.current) {
+      playerRef.current.audio.current.pause();
+    }
+  }, [playing]);
+
+  // if (playerQueueIds.length === 0 || !currentTrack) {
+  //   return null;
+  // }
 
   return (
     <div className={playerClass}>
-      <div className={trackInfo}>
-        <img
-          src={currentTrack.images.small?.url ?? currentTrack.cover}
-          height={50}
-          width={50}
-          alt={currentTrack.title}
-          className={css`
-            background-color: #efefef;
-          `}
-        />
-        <div>
-          <div>{currentTrack.title}</div>
-          <div>{currentTrack.album}</div>
-          <div>{currentTrack.artist}</div>
+      {currentTrack && (
+        <div className={trackInfo}>
+          <img
+            src={currentTrack.images.small?.url ?? currentTrack.cover}
+            height={50}
+            width={50}
+            alt={currentTrack.title}
+            className={css`
+              background-color: #efefef;
+            `}
+          />
+          <div>
+            <div>{currentTrack.title}</div>
+            <div>{currentTrack.album}</div>
+            <div>{currentTrack.artist}</div>
+          </div>
+          <div
+            className={css`
+              flex-grow: 1;
+              text-align: right;
+              padding-right: 1rem;
+            `}
+          >
+            <FavoriteTrack track={currentTrack} />
+          </div>
         </div>
-        <div
-          className={css`
-            flex-grow: 1;
-            text-align: right;
-            padding-right: 1rem;
-          `}
-        >
-          <FavoriteTrack track={currentTrack} />
-        </div>
-      </div>
+      )}
       <div
         className={css`
           display: flex;
@@ -145,7 +156,7 @@ const Player = () => {
           src={`${STREAM_API}${playerQueueIds[0]}${
             user ? `?client_id=${user?.clientId}` : ""
           }`}
-          // autoPlay
+          ref={playerRef}
           autoPlayAfterSrcChange
           onEnded={onEnded}
           onListen={onListen}

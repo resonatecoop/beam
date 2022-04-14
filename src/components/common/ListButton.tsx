@@ -1,11 +1,8 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
+import { Compactable } from "./Button";
 
-interface ListButtonProp {
-  compact?: boolean;
-}
-
-export const ListButton = styled.button<ListButtonProp>`
+export const ListButton = styled.button<Compactable>`
   width: 100%;
   height: 100%;
   border: 0;

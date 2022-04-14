@@ -1,10 +1,7 @@
 import styled from "@emotion/styled";
+import { Compactable } from "./Button";
 
-interface ListButtonProp {
-  compact?: boolean;
-}
-
-const IconButton = styled.button<ListButtonProp>`
+const IconButton = styled.button<Compactable>`
   border: none;
   color: rgba(0, 0, 0);
   background-color: transparent;

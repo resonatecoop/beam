@@ -3,10 +3,7 @@ import React from "react";
 import { FaPause, FaPlay } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "../../contexts/globalState";
-import {
-  checkPlayCountOfTrackIds,
-  checkTrackIdsForFavorite,
-} from "../../services/Api";
+
 import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
 import { FavoriteTrack } from "./FavoriteTrack";
 import IconButton from "./IconButton";
@@ -18,14 +15,20 @@ const TrackRow: React.FC<{
   addTracksToQueue: (id: number) => void;
 }> = ({ track, addTracksToQueue }) => {
   const {
-    state: { playerQueueIds },
+    state: { playerQueueIds, playing },
+    dispatch,
   } = useGlobalStateContext();
 
   const currentTrackId = playerQueueIds[0];
 
   const onTrackPlay = React.useCallback(() => {
     addTracksToQueue(track.id);
-  }, [addTracksToQueue, track.id]);
+    dispatch({ type: "setPlaying", playing: true });
+  }, [dispatch, addTracksToQueue, track.id]);
+
+  const onTrackPause = React.useCallback(() => {
+    dispatch({ type: "setPlaying", playing: false });
+  }, [dispatch]);
 
   return (
     <tr
@@ -42,14 +45,14 @@ const TrackRow: React.FC<{
       <td>
         <FavoriteTrack track={track} />
       </td>
-      <td onClick={onTrackPlay}>
-        {currentTrackId !== track.id && (
-          <IconButton compact className="play-button">
+      <td>
+        {(!playing || currentTrackId !== track.id) && (
+          <IconButton compact className="play-button" onClick={onTrackPlay}>
             <FaPlay />
           </IconButton>
         )}
-        {currentTrackId === track.id && (
-          <IconButton compact>
+        {playing && currentTrackId === track.id && (
+          <IconButton compact onClick={onTrackPause}>
             <FaPause />
           </IconButton>
         )}
