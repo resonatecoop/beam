@@ -7,6 +7,7 @@ import {
   checkPlayCountOfTrackIds,
   checkTrackIdsForFavorite,
 } from "../../services/Api";
+import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
 import { FavoriteTrack } from "./FavoriteTrack";
 import IconButton from "./IconButton";
 import Table from "./Table";
@@ -128,20 +129,9 @@ export const TrackTable: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
 
   React.useEffect(() => {
     const fetchFavorites = async (checkTracks: Track[]) => {
-      const favorites = await checkTrackIdsForFavorite(
-        checkTracks.map((c) => c.id)
-      );
-      const plays = await checkPlayCountOfTrackIds(
-        checkTracks.map((c) => c.id)
-      );
+      const newTracks = await mapFavoriteAndPlaysToTracks(checkTracks);
 
-      setDisplayTracks(
-        checkTracks.map((t) => ({
-          ...t,
-          favorite: !!favorites.find((f) => f.track_id === t.id),
-          plays: plays.find((f) => f.track_id === t.id)?.count ?? 0,
-        }))
-      );
+      setDisplayTracks(newTracks);
     };
 
     fetchFavorites(tracks);
