@@ -4,6 +4,37 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import { addTrackToUserFavorites } from "../../services/Api";
 import IconButton from "./IconButton";
 
+export const spinner = css`
+  @keyframes spinning {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  > svg {
+    position: relative;
+    animation-name: spinning;
+    animation-duration: 0.5s;
+    animation-iteration-count: infinite;
+    /* linear | ease | ease-in | ease-out | ease-in-out */
+    animation-timing-function: linear;
+  }
+`;
+
+export const SpinningStar: React.FC<{ spinning: boolean; full: boolean }> = ({
+  spinning,
+  full,
+}) => {
+  return (
+    <div className={spinning ? spinner : ""}>
+      {full && <FaStar />}
+      {!full && <FaRegStar />}
+    </div>
+  );
+};
+
 export const FavoriteTrack: React.FC<{ track: TrackWithUserCounts }> = ({
   track,
 }) => {
@@ -23,31 +54,8 @@ export const FavoriteTrack: React.FC<{ track: TrackWithUserCounts }> = ({
     [track.id]
   );
   return (
-    <IconButton
-      compact
-      onClick={onClickStar}
-      className={
-        loadingFavorite
-          ? css`
-              @keyframes spinning {
-                from {
-                  transform: rotate(0deg);
-                }
-                to {
-                  transform: rotate(360deg);
-                }
-              }
-              animation-name: spinning;
-              animation-duration: 0.5s;
-              animation-iteration-count: infinite;
-              /* linear | ease | ease-in | ease-out | ease-in-out */
-              animation-timing-function: linear;
-            `
-          : ""
-      }
-    >
-      {isFavorite && <FaStar />}
-      {!isFavorite && <FaRegStar />}
+    <IconButton compact onClick={onClickStar}>
+      <SpinningStar spinning={loadingFavorite} full={isFavorite} />
     </IconButton>
   );
 };

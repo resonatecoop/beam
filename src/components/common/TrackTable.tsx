@@ -23,14 +23,13 @@ const TrackRow: React.FC<{
 
   const currentTrackId = playerQueueIds[0];
 
-  const onTrackClick = React.useCallback(() => {
+  const onTrackPlay = React.useCallback(() => {
     addTracksToQueue(track.id);
   }, [addTracksToQueue, track.id]);
 
   return (
     <tr
       key={track.id}
-      onClick={onTrackClick}
       className={css`
         > td > .play-button {
           opacity: 0;
@@ -43,7 +42,7 @@ const TrackRow: React.FC<{
       <td>
         <FavoriteTrack track={track} />
       </td>
-      <td>
+      <td onClick={onTrackPlay}>
         {currentTrackId !== track.id && (
           <IconButton compact className="play-button">
             <FaPlay />

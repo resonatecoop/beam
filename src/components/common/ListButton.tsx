@@ -25,11 +25,15 @@ export const ListButton = styled.button<ListButtonProp>`
     background-color: #cfcfcf;
   }
 
+  &:active {
+    background-color: var(--magenta);
+  }
+
   &.active {
     background-color: #cfcfcf;
   }
 
-  > svg {
+  svg {
     margin-right: 0.5rem;
   }
 `;

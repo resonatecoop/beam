@@ -1,11 +1,13 @@
 import React from "react";
 import { css } from "@emotion/css";
-import { FaEllipsisV, FaPlus, FaStar } from "react-icons/fa";
+import { FaEllipsisV, FaPlus } from "react-icons/fa";
 import IconButton from "./IconButton";
 import Modal from "./Modal";
 import ListButton from "./ListButton";
 import { AddToPlaylist } from "../AddToPlaylist";
 import { addTrackToUserFavorites, fetchTrackGroup } from "../../services/Api";
+import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
+import { SpinningStar } from "./FavoriteTrack";
 
 const TrackPopup: React.FC<{
   trackId?: number;
@@ -13,6 +15,8 @@ const TrackPopup: React.FC<{
   compact?: boolean;
 }> = ({ trackId, groupId, compact }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [isFavorite, setIsFavorite] = React.useState(false);
+  const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false);
   const [selectedTrackIds, setSelectedTrackIds] = React.useState<number[]>([]);
   const [isPlaylistPickerOpen, setIsPlaylistPickerOpen] = React.useState(false);
 
@@ -40,16 +44,23 @@ const TrackPopup: React.FC<{
 
   const determineTracks = React.useCallback(
     async (trackId?: number, groupId?: string) => {
+      let trackIds = [];
       if (trackId) {
-        setSelectedTrackIds([trackId]);
+        trackIds.push(trackId);
       } else if (groupId) {
         const result = await fetchTrackGroup(groupId);
-        setSelectedTrackIds(result.items.map((item) => item.track.id));
+        trackIds.push(...result.items.map((item) => item.track.id));
       } else {
         throw new Error(
           "TrackPopup needs to include either trackId or groupId"
         );
       }
+
+      const mapped = await mapFavoriteAndPlaysToTracks(
+        trackIds.map((id) => ({ id } as Track))
+      );
+      setIsFavorite(mapped[0]?.favorite ?? 0);
+      setSelectedTrackIds(trackIds);
     },
     []
   );
@@ -57,9 +68,12 @@ const TrackPopup: React.FC<{
   const onClickFavorite = React.useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.stopPropagation();
+      setIsLoadingFavorite(true);
       await Promise.all(
         selectedTrackIds.map((id) => addTrackToUserFavorites(id))
       );
+      setIsFavorite((val) => !val);
+      setIsLoadingFavorite(false);
     },
     [selectedTrackIds]
   );
@@ -113,9 +127,9 @@ const TrackPopup: React.FC<{
               </ListButton>
             </li>
             <li>
-              {/* FIXME: how do we check that a user has already favorited a track */}
               <ListButton onClick={onClickFavorite}>
-                <FaStar /> Favorite
+                <SpinningStar spinning={isLoadingFavorite} full={isFavorite} />{" "}
+                {isFavorite ? "Remove from favorites" : "Add to favorites"}
               </ListButton>
             </li>
           </ul>
