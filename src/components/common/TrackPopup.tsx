@@ -1,9 +1,9 @@
 import React from "react";
 import { css } from "@emotion/css";
-import { FaEllipsisV, FaPlus } from "react-icons/fa";
+import { FaEllipsisV, FaFont, FaPlus } from "react-icons/fa";
 import IconButton from "./IconButton";
 import Modal from "./Modal";
-import ListButton from "./ListButton";
+import ListButton, { listButtonClass } from "./ListButton";
 import { AddToPlaylist } from "../AddToPlaylist";
 import {
   addTrackToUserFavorites,
@@ -14,6 +14,7 @@ import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
 import { SpinningStar } from "./FavoriteTrack";
 import { CenteredSpinner } from "./Spinner";
 import TrackPopupDetails from "./TrackPopupDetails";
+import { NavLink } from "react-router-dom";
 
 const TrackPopup: React.FC<{
   trackId?: number;
@@ -22,6 +23,7 @@ const TrackPopup: React.FC<{
 }> = ({ trackId, groupId, compact }) => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isFavorite, setIsFavorite] = React.useState(false);
+  const [artistId, setArtistId] = React.useState<number>();
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false);
   const [track, setTrack] = React.useState<TrackWithUserCounts>();
   const [selectedTrackIds, setSelectedTrackIds] = React.useState<number[]>([]);
@@ -58,8 +60,10 @@ const TrackPopup: React.FC<{
         const mapped = await mapFavoriteAndPlaysToTracks([t]);
         setTrack(mapped[0]);
         setIsFavorite(mapped[0]?.favorite ?? 0);
+        setArtistId(t.creator_id);
       } else if (groupId) {
         const result = await fetchTrackGroup(groupId);
+        setArtistId(result.creator_id);
         trackIds.push(...result.items.map((item) => item.track.id));
       } else {
         throw new Error(
@@ -159,6 +163,17 @@ const TrackPopup: React.FC<{
                 <FaPlus /> Add to playlist
               </ListButton>
             </li>
+            {artistId && (
+              <li>
+                <NavLink
+                  className={listButtonClass}
+                  to={`/library/artist/${artistId}`}
+                >
+                  <FaFont />
+                  Artist page
+                </NavLink>
+              </li>
+            )}
           </ul>
         </Modal>
       )}
