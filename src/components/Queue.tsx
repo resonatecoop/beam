@@ -1,5 +1,7 @@
 import { css } from "@emotion/css";
 import React from "react";
+import { shuffle } from "lodash";
+import { MdShuffle } from "react-icons/md";
 import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchTrack } from "../services/Api";
 import Button from "./common/Button";
@@ -16,6 +18,15 @@ export const Queue: React.FC = () => {
   const clearQueue = React.useCallback(() => {
     dispatch({ type: "clearQueue" });
   }, [dispatch]);
+
+  const shuffleQueue = React.useCallback(() => {
+    const first = playerQueueIds[0];
+    const shuffled = shuffle(playerQueueIds.slice(1));
+    dispatch({
+      type: "setPlayerQueueIds",
+      playerQueueIds: [first, ...shuffled],
+    });
+  }, [dispatch, playerQueueIds]);
 
   const fetchQueueDetails = React.useCallback(async () => {
     if (playerQueueIds && playerQueueIds.length > 0) {
@@ -60,6 +71,9 @@ export const Queue: React.FC = () => {
         `}
       >
         <h3>Queue</h3>
+        <Button compact onClick={shuffleQueue}>
+          <MdShuffle /> Shuffle
+        </Button>
         <Button compact onClick={clearQueue}>
           Clear Queue
         </Button>

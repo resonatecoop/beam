@@ -46,6 +46,11 @@ type SetPlaying = {
   playing: boolean;
 };
 
+type SetPlayerQueueIds = {
+  type: "setPlayerQueueIds";
+  playerQueueIds: number[];
+};
+
 type Actions =
   | SetLoggedInUser
   | SetState
@@ -54,7 +59,8 @@ type Actions =
   | SetToken
   | PopFromFrontOfQueue
   | SetPlaying
-  | ClearQueue;
+  | ClearQueue
+  | SetPlayerQueueIds;
 
 const stateReducer = produce((draft: GlobalState, action: Actions) => {
   let newDraft = draft;
@@ -75,6 +81,9 @@ const stateReducer = produce((draft: GlobalState, action: Actions) => {
       break;
     case "popFromFrontOfQueue":
       newDraft.playerQueueIds.shift();
+      break;
+    case "setPlayerQueueIds":
+      newDraft.playerQueueIds = action.playerQueueIds;
       break;
     case "clearQueue":
       newDraft.playerQueueIds = [];
