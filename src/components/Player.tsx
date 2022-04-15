@@ -10,7 +10,7 @@ import IconButton from "./common/IconButton";
 import { useNavigate } from "react-router-dom";
 import constants from "../constants";
 import { FavoriteTrack } from "./common/FavoriteTrack";
-import { mapFavoriteAndPlaysToTracks } from "../utils/tracks";
+import { buildStreamURL, mapFavoriteAndPlaysToTracks } from "../utils/tracks";
 
 const playerClass = css`
   min-height: 48px;
@@ -46,8 +46,6 @@ const trackInfo = css`
     // justify-content: ;
   }
 `;
-
-const STREAM_API = "https://api.resonate.coop/v1/stream/";
 
 const Player = () => {
   const {
@@ -109,10 +107,6 @@ const Player = () => {
     }
   }, [playing]);
 
-  // if (playerQueueIds.length === 0 || !currentTrack) {
-  //   return null;
-  // }
-
   return (
     <div className={playerClass}>
       {currentTrack && (
@@ -153,9 +147,7 @@ const Player = () => {
         `}
       >
         <AudioPlayer
-          src={`${STREAM_API}${playerQueueIds[0]}${
-            user ? `?client_id=${user?.clientId}` : ""
-          }`}
+          src={buildStreamURL(playerQueueIds[0], user?.clientId)}
           ref={playerRef}
           autoPlayAfterSrcChange
           onEnded={onEnded}

@@ -3,6 +3,8 @@ import {
   checkTrackIdsForFavorite,
 } from "../services/Api";
 
+const STREAM_API = "https://api.resonate.coop/v1/stream/";
+
 export const mapFavoriteAndPlaysToTracks = async (
   checkTracks: Track[]
 ): Promise<TrackWithUserCounts[]> => {
@@ -42,4 +44,8 @@ export function calculateRemainingCost(count: number) {
     i++;
   }
   return 1022 - cost;
+}
+
+export function buildStreamURL(id?: number, clientId?: string) {
+  return `${STREAM_API}${id}${clientId ? `?client_id=${clientId}` : ""}`;
 }

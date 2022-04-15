@@ -6,6 +6,7 @@ import {
   calculateRemainingCost,
   formatCredit,
   calculateCost,
+  buildStreamURL,
 } from "../../utils/tracks";
 import Button from "./Button";
 
@@ -15,9 +16,12 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
   const {
     state: { user },
   } = useGlobalStateContext();
+
+  const [purchaseSuccess, setPurchaseSuccess] = React.useState(false);
   const onBuyClick = React.useCallback(async () => {
     if (user) {
       await buyTrack(user.id, track.id);
+      setPurchaseSuccess(true);
     }
   }, [user, track.id]);
 
@@ -63,6 +67,11 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
           </p>
         </div>
       </div>
+      {purchaseSuccess && (
+        <>
+          <h4>Congrats!</h4>
+        </>
+      )}
       <div
         className={css`
           display: flex;
@@ -70,13 +79,28 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
           align-items: center;
         `}
       >
-        <p>
-          You're <strong>{9 - track.plays}</strong> plays away from owning this
-          song
-        </p>
-        <Button compact onClick={onBuyClick}>
-          Buy now
-        </Button>
+        {!purchaseSuccess && track.plays !== 9 && (
+          <>
+            <p>
+              You're <strong>{9 - track.plays}</strong> plays away from owning
+              this song
+            </p>
+            <Button compact onClick={onBuyClick}>
+              Buy now
+            </Button>
+          </>
+        )}
+        {(purchaseSuccess || track.plays === 9) && (
+          <>
+            <p>You own this song!</p>
+            <a
+              href={buildStreamURL(track.id, user?.clientId)}
+              download={`${track.artist} - ${track.title}`}
+            >
+              Download
+            </a>
+          </>
+        )}
       </div>
       <div
         className={css`
