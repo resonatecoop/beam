@@ -1,7 +1,7 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
-import constants from "../constants";
+import { bp } from "../constants";
 import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchUserTrackGroups } from "../services/Api";
 import AddPlaylist from "./AddPlaylist";
@@ -45,7 +45,7 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
     <div
       className={css`
         padding: 1rem 0;
-        @media (max-width: ${constants.bp.small}px) {
+        @media (max-width: ${bp.small}px) {
           max-width: inherit;
         }
       `}

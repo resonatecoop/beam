@@ -3,7 +3,7 @@ import React from "react";
 
 import { FaPlay } from "react-icons/fa";
 import { MdQueue } from "react-icons/md";
-import constants from "../../constants";
+import { bp } from "../../constants";
 
 import { useGlobalStateContext } from "../../contexts/globalState";
 import { fetchTrackGroup } from "../../services/Api";
@@ -47,7 +47,7 @@ const Wrapper = styled.div<WrapperProps>`
     margin-left: 0.5rem;
   }
 
-  @media (max-width: ${constants.bp.medium}px) {
+  @media (max-width: ${bp.medium}px) {
     position: relative;
     .play {
       width: 100%;

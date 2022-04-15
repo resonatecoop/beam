@@ -1,7 +1,7 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { Link } from "react-router-dom";
-import constants from "../constants";
+import { bp } from "../constants";
 import { fetchTrackGroups } from "../services/Api";
 import ClickToPlay from "./common/ClickToPlay";
 import TrackPopup from "./common/TrackPopup";
@@ -13,7 +13,7 @@ const newReleasesLi = css`
   flex-direction: column;
   margin: 0.5rem 1rem 0.75rem 0;
 
-  @media (max-width: ${constants.bp.medium}px) {
+  @media (max-width: ${bp.medium}px) {
     margin-right: 0;
   }
 

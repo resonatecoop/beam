@@ -10,7 +10,7 @@ import Profile from "./components/Profile";
 import Header from "./components/Header";
 import Player from "./components/Player";
 import Queue from "./components/Queue";
-import constants from "./constants";
+import { bp } from "./constants";
 import PlaylistTracks from "./components/PlaylistTracks";
 import ArtistPage from "./components/ArtistPage";
 import Favorites from "./components/Favorites";
@@ -83,7 +83,7 @@ const contentWrapper = css`
   min-height: 100vh;
   background-color: #efefef;
 
-  @media (max-width: ${constants.bp.small}px) {
+  @media (max-width: ${bp.small}px) {
     padding-bottom: calc(150px + 3rem);
   }
 `;

@@ -7,7 +7,7 @@ import { ReactComponent as Icon } from "../assets/icon.svg";
 import Login from "./Login";
 import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "../contexts/globalState";
-import constants from "../constants";
+import { bp } from "../constants";
 import Search from "./Search";
 
 const headerClass = css`
@@ -42,7 +42,7 @@ const headerClass = css`
     display: none;
   }
 
-  @media (max-width: ${constants.bp.small}px) {
+  @media (max-width: ${bp.small}px) {
     .full-logo {
       display: none;
     }

@@ -15,7 +15,8 @@ const formWrapper = css`
 
 const pClass = css`
   display: flex;
-  margin: 0.25rem 0;
+  margin: 0.5rem 0;
+  padding-bottom: 0.25rem;
   justify-content: space-between;
   border-bottom: 1px solid #ddd;
 `;
@@ -107,8 +108,14 @@ const Header = () => {
             <p className={pClass}>
               <strong>nickname: </strong> {user.nickname}
             </p>
-            <p className={pClass}>
-              <strong>credits: </strong> {user.credits}
+            <p className={pClass} style={{ flexDirection: "column" }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <strong>credits: </strong> {user.credits}
+              </div>
+              <small style={{ textAlign: "right" }}>
+                Want to add credits to your account? Use{" "}
+                <a href="https://stream.resonate.coop/discover">the web app.</a>
+              </small>
             </p>
             <p className={pClass}>
               <strong>role: </strong> {user.role}

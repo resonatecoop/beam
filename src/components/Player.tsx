@@ -8,7 +8,7 @@ import { fetchTrack, registerPlay } from "../services/Api";
 import { MdQueueMusic } from "react-icons/md";
 import IconButton from "./common/IconButton";
 import { useNavigate } from "react-router-dom";
-import constants from "../constants";
+import { bp } from "../constants";
 import { FavoriteTrack } from "./common/FavoriteTrack";
 import { buildStreamURL, mapFavoriteAndPlaysToTracks } from "../utils/tracks";
 
@@ -25,7 +25,7 @@ const playerClass = css`
   bottom: 0;
   background-color: #fff;
 
-  @media (max-width: ${constants.bp.small}px) {
+  @media (max-width: ${bp.small}px) {
     height: 150px;
     flex-direction: column;
   }
@@ -40,7 +40,7 @@ const trackInfo = css`
     margin-right: 1rem;
   }
 
-  @media (max-width: ${constants.bp.small}px) {
+  @media (max-width: ${bp.small}px) {
     width: 100%;
     align-items: flex-start;
     // justify-content: ;
@@ -141,7 +141,7 @@ const Player = () => {
           display: flex;
           align-items: center;
           flex-grow: 1;
-          @media (max-width: ${constants.bp.small}px) {
+          @media (max-width: ${bp.small}px) {
             width: 100%;
           }
         `}
@@ -163,7 +163,7 @@ const Player = () => {
         <IconButton
           onClick={onClickQueue}
           className={css`
-            @media (max-width: ${constants.bp.small}px) {
+            @media (max-width: ${bp.small}px) {
               display: none;
             }
           `}

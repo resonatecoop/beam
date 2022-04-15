@@ -1,7 +1,7 @@
 import React from "react";
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
-import constants from "../../constants";
+import { bp } from "../../constants";
 import IconButton from "./IconButton";
 import ReactDOM from "react-dom";
 
@@ -43,7 +43,7 @@ const Content = styled.div<ContentProps>`
   flex-direction: column;
   width: ${(props) => (props.size === "small" ? "40%" : "80%")};
 
-  @media (max-width: ${constants.bp.medium}px) {
+  @media (max-width: ${bp.medium}px) {
     width: 90%;
     position: absolute;
     bottom: 10rem;

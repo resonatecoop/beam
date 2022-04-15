@@ -1,7 +1,7 @@
 import React from "react";
 
 import { css } from "@emotion/css";
-import constants from "../constants";
+import { bp } from "../constants";
 import { addTracksToTrackGroup, fetchUserTrackGroups } from "../services/Api";
 import AddPlaylist from "./AddPlaylist";
 import ListButton, { listButtonClass } from "./common/ListButton";
@@ -44,7 +44,7 @@ export const AddToPlaylist: React.FC<{
         width: 100%;
         margin-right: 1rem;
         padding: 1rem 0;
-        @media (max-width: ${constants.bp.small}px) {
+        @media (max-width: ${bp.small}px) {
           max-width: inherit;
         }
       `}

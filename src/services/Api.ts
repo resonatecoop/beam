@@ -1,6 +1,7 @@
+import { resonateUrl } from "../constants";
 import { GlobalState } from "../contexts/globalState";
 
-const API = "https://stream.resonate.coop/api/";
+const API = `${resonateUrl}/api/`;
 
 const fetchWrapper = async (
   url: string,

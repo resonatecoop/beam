@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
-import constants from "../../constants";
+import { bp } from "../../constants";
 
 export const ResultListItem = styled.li`
   display: inline-flex;
   margin-right: 0.5rem;
   width: 45%;
-  @media (max-width: ${constants.bp.medium}px) {
+  @media (max-width: ${bp.medium}px) {
     width: 100%;
   }
 `;
