@@ -1,24 +1,14 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { fetchUserFavorites } from "../services/Api";
-import { CenteredSpinner } from "./common/Spinner";
+import usePagination from "../utils/usePagination";
 import TrackTable from "./common/TrackTable";
 
 export const Favorites: React.FC = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [tracks, setTracks] = React.useState<Track[]>();
-
-  const fetchTracks = React.useCallback(async () => {
-    setIsLoading(true);
-    const results = await fetchUserFavorites();
-
-    setIsLoading(false);
-    setTracks(results);
-  }, []);
-
-  React.useEffect(() => {
-    fetchTracks();
-  }, [fetchTracks]);
+  const { LoadingButton, results } = usePagination<Track>({
+    apiCall: React.useCallback(fetchUserFavorites, []),
+    options: React.useMemo(() => ({ limit: 50 }), []),
+  });
 
   return (
     <div
@@ -27,8 +17,8 @@ export const Favorites: React.FC = () => {
       `}
     >
       <h3>Favorites</h3>
-      {isLoading && <CenteredSpinner />}
-      {!isLoading && tracks && <TrackTable tracks={tracks} />}
+      {results.length > 0 && <TrackTable tracks={results} />}
+      <LoadingButton />
     </div>
   );
 };

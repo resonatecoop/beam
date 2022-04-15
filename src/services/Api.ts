@@ -5,7 +5,8 @@ const API = "https://stream.resonate.coop/api/";
 const fetchWrapper = async (
   url: string,
   options: RequestInit,
-  apiOptions?: APIOptions
+  apiOptions?: APIOptions,
+  pagination?: boolean
 ) => {
   const apiVersion = apiOptions?.apiVersion ?? "v2";
 
@@ -35,6 +36,9 @@ const fetchWrapper = async (
       return result.json();
     })
     .then((result) => {
+      if (pagination) {
+        return result;
+      }
       return result.data;
     });
 };
@@ -169,10 +173,17 @@ export const addTracksToTrackGroup = async (
   });
 };
 
-export const fetchUserFavorites = async (): Promise<Track[]> => {
-  return fetchWrapper("user/favorites", {
-    method: "GET",
-  });
+export const fetchUserFavorites = async (
+  options?: APIOptions
+): Promise<APIPaginatedResult<Track>> => {
+  return fetchWrapper(
+    "user/favorites",
+    {
+      method: "GET",
+    },
+    options,
+    true
+  );
 };
 
 export const addTrackToUserFavorites = async (id: number): Promise<Track[]> => {
@@ -195,16 +206,21 @@ export const checkTrackIdsForFavorite = async (
   });
 };
 
-export const fetchByTag = async (
-  tag: string,
-  options?: APIOptions
-): Promise<TagResult[]> => {
+interface TagOptions extends APIOptions {
+  tag: string;
+}
+
+export const fetchByTag = async ({
+  tag,
+  ...options
+}: TagOptions): Promise<APIPaginatedResult<TagResult>> => {
   return fetchWrapper(
     `tag/${tag}`,
     {
       method: "GET",
     },
-    options
+    options,
+    true
   );
 };
 

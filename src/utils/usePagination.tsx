@@ -3,42 +3,82 @@ import React from "react";
 import Button from "../components/common/Button";
 import { CenteredSpinner } from "../components/common/Spinner";
 
-export const usePagination = ({
-  callbackFnc,
+/**
+ * A helper that handles pagination
+ * @param {
+ *  apiCall: A call to the API that satisfies pagination,
+ *  options. A *MEMOIZED* options array.
+ * }
+ * @returns
+ */
+export function usePagination<T>({
+  apiCall,
+  options,
 }: {
-  callbackFnc: (nextPage: number) => Promise<void>;
-}) => {
+  apiCall: (props: any) => Promise<APIPaginatedResult<T>>;
+  options: APIOptions; // MUST BE MEMOIZED
+}): {
+  LoadingButton: () => React.ReactElement;
+  results: T[];
+  page: number;
+  isLoading: boolean;
+  loadMore: (currentPage: any) => Promise<void>;
+} {
   const [page, setPage] = React.useState(1);
+  const [pages, setPages] = React.useState(0);
+  const [results, setResults] = React.useState<T[]>([]);
   const [isLoading, setLoading] = React.useState(false);
 
   const loadMore = React.useCallback(
     async (currentPage) => {
       setLoading(true);
-      await callbackFnc(currentPage + 1);
-      setPage((p) => p + 1);
+      const r = await apiCall({ ...options, page: currentPage });
+      setPages(r.numberOfPages ?? r.pages ?? 0);
+      setPage(currentPage);
+      if (r.data) {
+        setResults((existing) => [...existing, ...r.data]);
+      }
       setLoading(false);
     },
-    [callbackFnc]
+    [apiCall, options]
   );
 
+  React.useEffect(() => {
+    loadMore(1);
+  }, [loadMore]);
+
+  const onClick = React.useCallback(() => {
+    loadMore(page + 1);
+  }, [loadMore, page]);
+
+  const total = +options.limit * pages;
+  const current = +options.limit * page;
   return {
+    results,
+    page,
+    loadMore,
+    isLoading,
     LoadingButton: () => (
       <>
-        {isLoading && <CenteredSpinner />}
-        {
-          <div
-            className={css`
-              display: flex;
-              justify-content: center;
-              margin-top: 2rem;
-            `}
-          >
-            <Button onClick={() => loadMore(page)}>load more</Button>
-          </div>
-        }
+        {results.length > 0 && current <= total && (
+          <>
+            {isLoading && <CenteredSpinner />}
+            {!isLoading && (
+              <div
+                className={css`
+                  display: flex;
+                  justify-content: center;
+                  margin-top: 2rem;
+                `}
+              >
+                <Button onClick={onClick}>load more</Button>
+              </div>
+            )}
+          </>
+        )}
       </>
     ),
   };
-};
+}
 
 export default usePagination;

@@ -101,6 +101,8 @@
     "electronmon": "^2.0.2",
     "gh-pages": "^3.2.3",
     "husky": "^7.0.4",
+    "lint-staged": "^12.3.7",
+    "prettier": "^2.6.2",
     "sirv-cli": "^2.0.2",
     "wait-on": "^6.0.1"
   },
@@ -109,15 +111,9 @@
       "path": "cz-conventional-changelog"
     }
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
-  },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css,scss}": [
-      "prettier — single-quote — write",
+      "prettier",
       "eslint --rule 'no-console: [\"error\", { \"allow\": [\"warn\", \"error\"] }]'"
     ]
   }

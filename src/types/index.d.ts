@@ -6,6 +6,13 @@ declare global {
     [key: string]: string | number;
   }
 
+  interface APIPaginatedResult<T> {
+    data: T[];
+    pages?: number;
+    numberOfPages?: number; // FIXME: this a shitty duplicate type of key situation from the api
+    count: number;
+  }
+
   interface ResonateImage {
     width: number;
     height: number;

@@ -36,15 +36,17 @@ export const SmallTileDetails: React.FC<{
           flex-grow: 1;
         `}
       />
-      <div
-        className={css`
-          display: flex;
-          align-items: center;
-          margin-right: 1rem;
-        `}
-      >
-        {moreActions}
-      </div>
+      {moreActions && (
+        <div
+          className={css`
+            display: flex;
+            align-items: center;
+            margin-right: 1rem;
+          `}
+        >
+          {moreActions}
+        </div>
+      )}
     </>
   );
 };

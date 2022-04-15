@@ -51,6 +51,23 @@ export const CenteredSpinner: React.FC = () => {
   );
 };
 
+export const FullScreenSpinner: React.FC = () => {
+  return (
+    <div
+      className={css`
+        position: absolute;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      `}
+    >
+      <Spinner />
+    </div>
+  );
+};
+
 export const Spinner: React.FC = () => {
   return (
     <div className={spinnerClass}>
