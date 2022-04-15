@@ -1,6 +1,5 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { FaUnlock } from "react-icons/fa";
 import { updateTrackGroup } from "../services/Api";
 import Button from "./common/Button";
 import Input from "./common/Input";

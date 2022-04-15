@@ -266,6 +266,21 @@ export const registerPlay = (
   );
 };
 
+export const buyTrack = async (userId: number, trackId: number) => {
+  return fetchWrapper(
+    `users/${userId}/plays/buy`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        tid: trackId,
+      }),
+    },
+    {
+      apiVersion: "v1",
+    }
+  );
+};
+
 export const checkPlayCountOfTrackIds = async (
   ids: number[]
 ): Promise<{ track_id: number; count: number }[]> => {

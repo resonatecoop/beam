@@ -12,8 +12,8 @@ import {
 } from "../../services/Api";
 import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
 import { SpinningStar } from "./FavoriteTrack";
-import Button from "./Button";
 import { CenteredSpinner } from "./Spinner";
+import TrackPopupDetails from "./TrackPopupDetails";
 
 const TrackPopup: React.FC<{
   trackId?: number;
@@ -137,63 +137,7 @@ const TrackPopup: React.FC<{
           size="small"
         >
           {trackId && !track && <CenteredSpinner />}
-          {track && (
-            <div
-              className={css`
-                margin-bottom: 1rem;
-                display: flex;
-                flex-direction: column;
-              `}
-            >
-              <div
-                className={css`
-                  margin-bottom: 1rem;
-                  display: flex;
-                  align-items: center;
-                `}
-              >
-                <img
-                  src={track.images.small?.url ?? track.cover}
-                  alt={track.title}
-                  width={100}
-                  height={100}
-                  className={css`
-                    margin-right: 1rem;
-                  `}
-                />
-                <div>
-                  <p
-                    className={css`
-                      font-size: 1.1rem;
-                    `}
-                  >
-                    {track.title}
-                  </p>
-                  <p
-                    className={css`
-                      color: #444;
-                      font-size: 1rem;
-                    `}
-                  >
-                    {track.artist}
-                  </p>
-                </div>
-              </div>
-              <div
-                className={css`
-                  display: flex;
-                  justify-content: space-between;
-                  align-items: center;
-                `}
-              >
-                <p>
-                  You're <strong>{9 - track.plays}</strong> plays away from
-                  owning this song
-                </p>
-                <Button compact>Buy now</Button>
-              </div>
-            </div>
-          )}
+          {track && <TrackPopupDetails track={track} />}
           <ul
             className={css`
               list-style: none;
@@ -205,7 +149,7 @@ const TrackPopup: React.FC<{
                   <SpinningStar
                     spinning={isLoadingFavorite}
                     full={isFavorite}
-                  />{" "}
+                  />
                   {isFavorite ? "Remove from favorites" : "Add to favorites"}
                 </ListButton>
               </li>
