@@ -1,9 +1,11 @@
 import { css } from "@emotion/css";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import { useGlobalStateContext } from "../contexts/globalState";
 import { logInUserWithPassword } from "../services/Api";
 import Button from "./common/Button";
+import Disclaimer from "./common/Disclaimer";
 import Input from "./common/Input";
 import Modal from "./common/Modal";
 
@@ -13,19 +15,12 @@ const formWrapper = css`
   align-items: flex-start;
 `;
 
-const pClass = css`
-  display: flex;
-  margin: 0.5rem 0;
-  padding-bottom: 0.25rem;
-  justify-content: space-between;
-  border-bottom: 1px solid #ddd;
-`;
-
 const Header = () => {
   const {
     state: { user, token: cachedToken },
     dispatch,
   } = useGlobalStateContext();
+  const navigate = useNavigate();
 
   const [openLogin, setOpenLogin] = React.useState(false);
   const [token, setToken] = React.useState<string>(cachedToken ?? "");
@@ -37,8 +32,12 @@ const Header = () => {
   }, [cachedToken]);
 
   const onClickOpen = React.useCallback(() => {
-    setOpenLogin(true);
-  }, []);
+    if (cachedToken) {
+      navigate("/profile");
+    } else {
+      setOpenLogin(true);
+    }
+  }, [navigate, cachedToken]);
 
   const onClose = React.useCallback(() => {
     setOpenLogin(false);
@@ -71,13 +70,6 @@ const Header = () => {
     setOpenLogin(false);
   };
 
-  const logout = (e?: React.MouseEvent<HTMLButtonElement>) => {
-    e?.preventDefault();
-    dispatch({ type: "setToken", token: "" });
-    dispatch({ type: "setLoggedInUser", user: undefined });
-    setOpenLogin(false);
-  };
-
   const onLogIn = async (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
     const { access_token: token } = await logInUserWithPassword({
@@ -97,31 +89,6 @@ const Header = () => {
         {cachedToken && cachedToken !== "" ? user?.nickname : "Log in"}
       </Button>
       <Modal open={openLogin} onClose={onClose} size="small">
-        {user && (
-          <div
-            className={css`
-              margin: 0 0 1rem;
-              display: flex;
-              flex-direction: column;
-            `}
-          >
-            <p className={pClass}>
-              <strong>nickname: </strong> {user.nickname}
-            </p>
-            <p className={pClass} style={{ flexDirection: "column" }}>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <strong>credits: </strong> {user.credits}
-              </div>
-              <small style={{ textAlign: "right" }}>
-                Want to add credits to your account? Use{" "}
-                <a href="https://stream.resonate.coop/discover">the web app.</a>
-              </small>
-            </p>
-            <p className={pClass}>
-              <strong>role: </strong> {user.role}
-            </p>
-          </div>
-        )}
         {/** if the user is on the dev environment, we can't use the v1 api,
          * cause it requires CORS, but if they are in the app, then we can
          * use the API */}
@@ -157,18 +124,7 @@ const Header = () => {
             )}
           </>
         )}
-        {cachedToken && <Button onClick={logout}>Log out</Button>}
-        <p
-          className={css`
-            margin-top: 1rem;
-          `}
-        >
-          Using resonate means you agree with the{" "}
-          <a href="https://community.resonate.is/docs?topic=1865">
-            terms and conditions outlined here
-          </a>
-          .
-        </p>
+        <Disclaimer />
       </Modal>
     </>
   );
