@@ -178,4 +178,9 @@ declare global {
     | ArtistSearchResult
     | TrackSearchResult
     | LabelSearchResult;
+
+  interface Stat {
+    date: string;
+    plays: number;
+  }
 }

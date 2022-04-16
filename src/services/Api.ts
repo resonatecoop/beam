@@ -174,6 +174,15 @@ export const addTracksToTrackGroup = async (
   });
 };
 
+export const fetchuserStats = async (
+  from: string,
+  to: string
+): Promise<Stat[]> => {
+  return fetchWrapper(`user/plays/stats?from=${from}&to=2022-04-15`, {
+    method: "GET",
+  });
+};
+
 export const fetchUserCollection = async (
   options?: APIOptions
 ): Promise<APIPaginatedResult<Track>> => {
