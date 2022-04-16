@@ -25,6 +25,11 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
     }
   }, [user, track.id]);
 
+  const remainingCost = calculateRemainingCost(track.plays);
+
+  const enoughCredit =
+    0 < +(user?.credits ?? "0") - +formatCredit(remainingCost);
+
   return (
     <div
       className={css`
@@ -85,9 +90,14 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
               You're <strong>{9 - track.plays}</strong> plays away from owning
               this song
             </p>
-            <Button compact onClick={onBuyClick}>
-              Buy now
-            </Button>
+            {enoughCredit && (
+              <Button compact onClick={onBuyClick}>
+                Buy now
+              </Button>
+            )}
+            {!enoughCredit && (
+              <a href="https://stream.resonate.coop/discover">Add credits</a>
+            )}
           </>
         )}
         {(purchaseSuccess || track.plays === 9) && (
@@ -120,11 +130,10 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
         <dl>
           <dt>Total remaining cost</dt>
           <dd>
-            {calculateRemainingCost(track.plays)}{" "}
+            {formatCredit(remainingCost)}{" "}
             <small>
               (€
-              {((calculateRemainingCost(track.plays) / 1022) * 1.25).toFixed(2)}
-              )
+              {((remainingCost / 1022) * 1.25).toFixed(2)})
             </small>
           </dd>
         </dl>
