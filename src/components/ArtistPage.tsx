@@ -7,6 +7,7 @@ import {
   fetchArtistTopTracks,
 } from "../services/Api";
 import LinkToWeb from "./common/LinkToWeb";
+import OverflowableText from "./common/OverflowableText";
 import { CenteredSpinner } from "./common/Spinner";
 import TrackTable from "./common/TrackTable";
 
@@ -72,7 +73,9 @@ export const ArtistPage: React.FC = () => {
               {artist.name}
             </h3>
           </div>
-          <p className={padding}>{artist.bio}</p>
+          <div className={padding}>
+            <OverflowableText text={artist.bio} />
+          </div>
           <p className={padding}>
             {artist.links.map((link) => (
               <LinkToWeb key={link.href} link={link} />
@@ -90,7 +93,11 @@ export const ArtistPage: React.FC = () => {
               {releases.map((release) => (
                 <div key={release.id} style={{ marginBottom: "1rem" }}>
                   <h4>{release.title}</h4>
-                  <p className={padding}>{release.about}</p>
+                  {release.about && (
+                    <div className={padding}>
+                      <OverflowableText text={release.about} />
+                    </div>
+                  )}
 
                   <TrackTable
                     tracks={release.items.map((item) => item.track)}
