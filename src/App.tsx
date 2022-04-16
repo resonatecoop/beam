@@ -14,9 +14,12 @@ import { bp } from "./constants";
 import PlaylistTracks from "./components/PlaylistTracks";
 import ArtistPage from "./components/ArtistPage";
 import Favorites from "./components/Favorites";
+import History from "./components/History";
+
 import TrackgroupPage from "./components/TrackgroupPage";
 import TagList from "./components/TagList";
 import SearchResults from "./components/SearchResults";
+import Collection from "./components/Collection";
 
 injectGlobal`
   * {
@@ -123,6 +126,8 @@ function App() {
             />
 
             <Route path="favorites" element={<Favorites />} />
+            <Route path="history" element={<History />} />
+            <Route path="collection" element={<Collection />} />
           </Route>
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

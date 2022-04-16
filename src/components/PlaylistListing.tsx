@@ -7,6 +7,12 @@ import { fetchUserTrackGroups } from "../services/Api";
 import AddPlaylist from "./AddPlaylist";
 import { listButtonClass } from "./common/ListButton";
 
+const divider = css`
+  margin: 0 0 1rem;
+  border: none;
+  border-top: 1px solid #aaa;
+`;
+
 export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
   onClick,
 }) => {
@@ -55,16 +61,28 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
         className={css`
           list-style: none;
 
-          > li:nth-child(odd) {
+          > li:nth-of-type(odd) {
             background-color: #dfdfdf;
           }
         `}
       >
         <li>
+          <NavLink className={listButtonClass} to="/library/history">
+            History
+          </NavLink>
+        </li>
+        <hr className={divider} />
+        <li>
+          <NavLink className={listButtonClass} to="/library/collection">
+            Collection
+          </NavLink>
+        </li>
+        <li>
           <NavLink className={listButtonClass} to="/library/favorites">
             Favorites
           </NavLink>
         </li>
+        <hr className={divider} />
         {playlists?.map((playlist) => (
           <li key={playlist.id} className={css``}>
             <NavLink

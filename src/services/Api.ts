@@ -174,6 +174,18 @@ export const addTracksToTrackGroup = async (
   });
 };
 
+export const fetchUserCollection = async (
+  options?: APIOptions
+): Promise<APIPaginatedResult<Track>> => {
+  return fetchWrapper("user/collection/", { method: "GET" }, options, true);
+};
+
+export const fetchuserHistory = async (
+  options?: APIOptions
+): Promise<APIPaginatedResult<Track>> => {
+  return fetchWrapper("user/plays/history/", { method: "GET" }, options, true);
+};
+
 export const fetchUserFavorites = async (
   options?: APIOptions
 ): Promise<APIPaginatedResult<Track>> => {
