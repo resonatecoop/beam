@@ -24,9 +24,7 @@ const Profile: React.FC = () => {
   const [stats, setStats] = React.useState<{ date: string; plays: Number }[]>(
     []
   );
-  const date = new Date();
-  const start = subDays(date, 7);
-  const end = date;
+  const [date] = React.useState(new Date());
 
   const logout = (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
@@ -35,11 +33,12 @@ const Profile: React.FC = () => {
   };
 
   const fetchStats = React.useCallback(async () => {
+    const start = subDays(date, 7);
     const stats = await fetchuserStats(
       format(start, formatStr),
-      format(end, formatStr)
+      format(date, formatStr)
     );
-    const days = differenceInDays(end, start);
+    const days = differenceInDays(date, start);
     const dates = [];
     for (let i = 0; i < days; i++) {
       dates.push({
@@ -50,7 +49,7 @@ const Profile: React.FC = () => {
       });
     }
     setStats(dates);
-  }, [start, end]);
+  }, [date]);
 
   React.useEffect(() => {
     fetchStats();
