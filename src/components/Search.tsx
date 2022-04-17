@@ -1,5 +1,4 @@
 import { css } from "@emotion/css";
-import { debounce } from "lodash";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";

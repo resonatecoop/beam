@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "@emotion/css";
-import { FaEllipsisV, FaFont, FaPlus } from "react-icons/fa";
+import { FaCode, FaEllipsisV, FaFont, FaPlus } from "react-icons/fa";
 import IconButton from "./IconButton";
 import Modal from "./Modal";
 import ListButton, { listButtonClass } from "./ListButton";
@@ -15,6 +15,7 @@ import { SpinningStar } from "./FavoriteTrack";
 import { CenteredSpinner } from "./Spinner";
 import TrackPopupDetails from "./TrackPopupDetails";
 import { NavLink } from "react-router-dom";
+import SharePopUp from "./SharePopUp";
 
 const TrackPopup: React.FC<{
   trackId?: number;
@@ -24,10 +25,12 @@ const TrackPopup: React.FC<{
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isFavorite, setIsFavorite] = React.useState(false);
   const [artistId, setArtistId] = React.useState<number>();
+  const [trackgroup, setTrackgroup] = React.useState<Trackgroup>();
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false);
   const [track, setTrack] = React.useState<TrackWithUserCounts>();
   const [selectedTrackIds, setSelectedTrackIds] = React.useState<number[]>([]);
   const [isPlaylistPickerOpen, setIsPlaylistPickerOpen] = React.useState(false);
+  const [isShareOpen, setIsShareOpen] = React.useState(false);
 
   const openMenu = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -42,6 +45,15 @@ const TrackPopup: React.FC<{
       e.stopPropagation();
       setIsMenuOpen(false);
       setIsPlaylistPickerOpen(true);
+    },
+    []
+  );
+
+  const openShare = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.stopPropagation();
+      setIsMenuOpen(false);
+      setIsShareOpen(true);
     },
     []
   );
@@ -64,6 +76,7 @@ const TrackPopup: React.FC<{
       } else if (groupId) {
         const result = await fetchTrackGroup(groupId);
         setArtistId(result.creator_id);
+        setTrackgroup(result);
         trackIds.push(...result.items.map((item) => item.track.id));
       } else {
         throw new Error(
@@ -121,6 +134,13 @@ const TrackPopup: React.FC<{
         </Modal>
       )}
 
+      <SharePopUp
+        open={isShareOpen}
+        onClose={() => setIsShareOpen(false)}
+        track={track}
+        trackgroup={trackgroup}
+      />
+
       {selectedTrackIds.length > 0 && (
         <Modal
           open={isPlaylistPickerOpen}
@@ -158,6 +178,11 @@ const TrackPopup: React.FC<{
                 </ListButton>
               </li>
             )}
+            <li>
+              <ListButton onClick={openShare}>
+                <FaCode /> Share &amp; embed
+              </ListButton>
+            </li>
             <li>
               <ListButton onClick={openAddToPlaylist}>
                 <FaPlus /> Add to playlist
