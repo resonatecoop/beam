@@ -331,7 +331,7 @@ export const fetchSearchResults = (
   return fetchWrapper(
     "search/",
     { method: "GET" },
-    // FIXME: figure out what to do here
-    { q: encodeURIComponent(decodeURI(searchString)) }
+    // NOTE: API is looking for actual "+" (%2B) values instead of whitespace (%20)
+    { q: searchString.replace(/ /g, "+") }
   );
 };

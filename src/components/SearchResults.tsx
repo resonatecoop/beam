@@ -45,6 +45,9 @@ export const SearchResults: React.FC = () => {
                 <>
                   <img
                     src={result.images?.["profile_photo-sm"]}
+                    className={css`
+                      background-color: #ddd;
+                    `}
                     width={120}
                     height={120}
                     alt={result.name}
