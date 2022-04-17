@@ -29,6 +29,10 @@ export function usePagination<T>({
   const [results, setResults] = React.useState<T[]>([]);
   const [isLoading, setLoading] = React.useState(false);
 
+  React.useEffect(() => {
+    setResults([]);
+  }, [options]);
+
   const loadMore = React.useCallback(
     async (currentPage) => {
       setLoading(true);

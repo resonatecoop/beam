@@ -3,7 +3,7 @@ import { css } from "@emotion/css";
 import { useGlobalStateContext } from "../contexts/globalState";
 import Button from "./common/Button";
 import Disclaimer from "./common/Disclaimer";
-import { fetchuserStats } from "../services/Api";
+import { fetchUserStats } from "../services/Api";
 import { format, subDays, differenceInDays, addDays } from "date-fns";
 
 const pClass = css`
@@ -34,7 +34,7 @@ const Profile: React.FC = () => {
 
   const fetchStats = React.useCallback(async () => {
     const start = subDays(date, 7);
-    const stats = await fetchuserStats(
+    const stats = await fetchUserStats(
       format(start, formatStr),
       format(date, formatStr)
     );
@@ -73,7 +73,7 @@ const Profile: React.FC = () => {
           <p className={pClass}>
             <strong>nickname: </strong> {user.nickname}
           </p>
-          <p className={pClass} style={{ flexDirection: "column" }}>
+          <div className={pClass} style={{ flexDirection: "column" }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <strong>credits: </strong> {user.credits}
             </div>
@@ -81,7 +81,7 @@ const Profile: React.FC = () => {
               Want to add credits to your account? Use{" "}
               <a href="https://stream.resonate.coop/discover">the web app.</a>
             </small>
-          </p>
+          </div>
           <p className={pClass}>
             <strong>role: </strong> {user.role}
           </p>

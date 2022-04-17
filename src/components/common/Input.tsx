@@ -1,8 +1,17 @@
 import React from "react";
 
-import { css, cx } from "@emotion/css";
+import styled from "@emotion/styled";
 
-const inputClass = css`
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  name: string;
+  value: string;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
+}
+
+const InputEl = styled.input`
   border: 1px solid #dfdfdf;
   padding: 0.5rem;
   font-size: 1rem;
@@ -11,24 +20,8 @@ const inputClass = css`
   background-color: white;
 `;
 
-export const Input: React.FC<{
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  name: string;
-  value: string;
-  placeholder?: string;
-  disabled?: boolean;
-  className?: string;
-}> = ({ onChange, disabled, name, value, className, placeholder }) => {
-  return (
-    <input
-      name={name}
-      placeholder={placeholder}
-      className={cx(inputClass, className)}
-      onChange={onChange}
-      value={value}
-      disabled={disabled}
-    />
-  );
+export const Input: React.FC<Props> = ({ onChange, ...props }) => {
+  return <InputEl onChange={onChange} {...props} />;
 };
 
 export default Input;

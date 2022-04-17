@@ -23,7 +23,7 @@ const headerClass = css`
   top: 0;
   background-color: #fff;
 
-  a {
+  > a {
     text-decoration: none;
     color: black;
     margin-right: 1rem;

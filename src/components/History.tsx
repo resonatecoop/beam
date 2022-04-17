@@ -1,12 +1,12 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { fetchuserHistory } from "../services/Api";
+import { fetchUserHistory } from "../services/Api";
 import usePagination from "../utils/usePagination";
 import TrackTable from "./common/TrackTable";
 
 export const History: React.FC = () => {
   const { LoadingButton, results } = usePagination<Track>({
-    apiCall: React.useCallback(fetchuserHistory, []),
+    apiCall: React.useCallback(fetchUserHistory, []),
     options: React.useMemo(() => ({ limit: 50 }), []),
   });
 

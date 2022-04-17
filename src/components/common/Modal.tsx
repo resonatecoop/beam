@@ -4,18 +4,7 @@ import styled from "@emotion/styled";
 import { bp } from "../../constants";
 import IconButton from "./IconButton";
 import ReactDOM from "react-dom";
-
-const background = css`
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0, 0, 0); /* Fallback color */
-  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
-`;
+import Background from "./Background";
 
 const wrapper = css`
   position: fixed;
@@ -110,7 +99,7 @@ export const Modal: React.FC<{
 
   return ReactDOM.createPortal(
     <>
-      <div className={background} onClick={onCloseWrapper}></div>
+      <Background onClick={onCloseWrapper} />
       <div className={wrapper}>
         <Content size={size}>
           <div>

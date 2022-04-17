@@ -6,6 +6,7 @@ import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchTrack } from "../services/Api";
 import Button from "./common/Button";
 import TrackList from "./common/TrackList";
+import EmptyBox from "./common/EmptyBox";
 
 export const Queue: React.FC = () => {
   const {
@@ -79,19 +80,7 @@ export const Queue: React.FC = () => {
         </Button>
       </div>
       {playerQueue?.length === 0 && (
-        <div
-          className={css`
-            width: 100%;
-            text-align: center;
-            height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #777;
-          `}
-        >
-          Your queue is empty :( Find some songs to play!
-        </div>
+        <EmptyBox>Your queue is empty :( Find some songs to play!</EmptyBox>
       )}
       <div>
         <TrackList tracks={playerQueue} />

@@ -1,32 +1,9 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { Link } from "react-router-dom";
+import { tags } from "../constants";
 import NewReleases from "./NewReleases";
 import StaffPicks from "./StaffPicks";
-
-const tags = [
-  "ambient",
-  "acoustic",
-  "alternative",
-  "chill",
-  "dream-pop",
-  "electro",
-  "electronic",
-  "experimental",
-  "folk",
-  "funk",
-  "hiphop",
-  "house",
-  "indie-pop",
-  "indie-rock",
-  "instrumental",
-  "jazz",
-  "metal",
-  "podcasts",
-  "pop",
-  "punk",
-  "reggea",
-];
 
 export const Home: React.FC = () => {
   return (
@@ -51,7 +28,7 @@ export const Home: React.FC = () => {
                 margin-bottom: 0.25rem;
               `}
             >
-              <Link to={`/tag/${tag}`}>{tag}</Link>
+              <Link to={`/tag/${tag}`}>#{tag}</Link>
             </li>
           ))}
         </ul>

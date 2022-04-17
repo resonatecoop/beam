@@ -1,7 +1,7 @@
 import { resonateUrl } from "../constants";
 import { GlobalState } from "../contexts/globalState";
 
-const API = `${resonateUrl}/api/`;
+const API = `${resonateUrl}api/`;
 
 const fetchWrapper = async (
   url: string,
@@ -174,7 +174,7 @@ export const addTracksToTrackGroup = async (
   });
 };
 
-export const fetchuserStats = async (
+export const fetchUserStats = async (
   from: string,
   to: string
 ): Promise<Stat[]> => {
@@ -183,13 +183,24 @@ export const fetchuserStats = async (
   });
 };
 
+export const fetchUserArtistHistory = async (
+  options?: APIOptions
+): Promise<APIPaginatedResult<{ uid: number; meta_value: string }>> => {
+  return fetchWrapper(
+    "user/plays/history/artists",
+    { method: "GET" },
+    options,
+    true
+  );
+};
+
 export const fetchUserCollection = async (
   options?: APIOptions
 ): Promise<APIPaginatedResult<Track>> => {
   return fetchWrapper("user/collection/", { method: "GET" }, options, true);
 };
 
-export const fetchuserHistory = async (
+export const fetchUserHistory = async (
   options?: APIOptions
 ): Promise<APIPaginatedResult<Track>> => {
   return fetchWrapper("user/plays/history/", { method: "GET" }, options, true);

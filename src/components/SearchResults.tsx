@@ -8,6 +8,7 @@ import {
   isTrackSearchResult,
 } from "../typeguards";
 import ClickToPlay from "./common/ClickToPlay";
+import EmptyBox from "./common/EmptyBox";
 import ResultListItem from "./common/ResultListItem";
 import SmallTileDetails from "./common/SmallTileDetails";
 
@@ -34,6 +35,9 @@ export const SearchResults: React.FC = () => {
             list-style: none;
           `}
         >
+          {searchResults.length === 0 && (
+            <EmptyBox>No results found, try another search!</EmptyBox>
+          )}
           {searchResults.map((result) => (
             <ResultListItem>
               {(isArtistSearchResult(result) ||

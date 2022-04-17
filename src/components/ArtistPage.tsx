@@ -92,13 +92,28 @@ export const ArtistPage: React.FC = () => {
               <h3 style={{ marginTop: "1rem" }}>Releases</h3>
               {releases.map((release) => (
                 <div key={release.id} style={{ marginBottom: "1rem" }}>
-                  <h4>{release.title}</h4>
-                  {release.about && (
-                    <div className={padding}>
-                      <OverflowableText text={release.about} />
+                  <div
+                    className={css`
+                      // margin: 1rem;
+                      display: flex;
+                    `}
+                  >
+                    <img
+                      src={release.images.small?.url}
+                      alt={release.title}
+                      className={css`
+                        margin: 0 1rem 1rem 0;
+                      `}
+                    />
+                    <div>
+                      <h4>{release.title}</h4>
+                      {release.about && (
+                        <div>
+                          <OverflowableText text={release.about} />
+                        </div>
+                      )}
                     </div>
-                  )}
-
+                  </div>
                   <TrackTable
                     tracks={release.items.map((item) => item.track)}
                   />
