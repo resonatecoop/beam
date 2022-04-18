@@ -9,6 +9,7 @@ import {
 import LinkToWeb from "./common/LinkToWeb";
 import OverflowableText from "./common/OverflowableText";
 import { CenteredSpinner } from "./common/Spinner";
+import Tags from "./common/Tags";
 import TrackTable from "./common/TrackTable";
 
 const padding = css`
@@ -96,22 +97,31 @@ export const ArtistPage: React.FC = () => {
                     className={css`
                       // margin: 1rem;
                       display: flex;
+                      margin-bottom: 1rem;
                     `}
                   >
                     <img
                       src={release.images.small?.url}
                       alt={release.title}
+                      height={release.images.small?.height}
+                      width={release.images.small?.width}
                       className={css`
                         margin: 0 1rem 1rem 0;
                       `}
                     />
                     <div>
                       <h4>{release.title}</h4>
+
                       {release.about && (
-                        <div>
+                        <div
+                          className={css`
+                            margin-bottom: 1rem;
+                          `}
+                        >
                           <OverflowableText text={release.about} />
                         </div>
                       )}
+                      <Tags tags={release.tags} />
                     </div>
                   </div>
                   <TrackTable

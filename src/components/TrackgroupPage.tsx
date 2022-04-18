@@ -3,6 +3,7 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { fetchTrackGroup } from "../services/Api";
 import { CenteredSpinner } from "./common/Spinner";
+import Tags from "./common/Tags";
 import TrackTable from "./common/TrackTable";
 
 const padding = css`
@@ -62,7 +63,9 @@ export const TrackgroupPage: React.FC = () => {
             </h3>
           </div>
           <p className={padding}>{trackgroup.about}</p>
-
+          <div className={padding}>
+            <Tags tags={trackgroup.tags} />
+          </div>
           {trackgroup && (
             <>
               <TrackTable tracks={trackgroup.items.map((item) => item.track)} />

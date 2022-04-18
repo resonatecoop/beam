@@ -1,13 +1,14 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { tags } from "../constants";
 import { fetchUserArtistHistory } from "../services/Api";
 import Background from "./common/Background";
 import IconButton from "./common/IconButton";
 import InlineForm from "./common/InlineForm";
 import Input from "./common/Input";
+import Tags from "./common/Tags";
 
 export const Search: React.FC = () => {
   const navigate = useNavigate();
@@ -109,29 +110,8 @@ export const Search: React.FC = () => {
                 margin-top: 1rem;
               `}
             >
-              <ul
-                className={css`
-                  margin-bottom: 1rem;
-                `}
-              >
-                {tags.map((tag) => (
-                  <li
-                    key={tag}
-                    className={css`
-                      display: inline-block;
-                      background-color: white;
-                      padding: 0.25rem 0.4rem 0.25rem 0;
-                    `}
-                  >
-                    <Link
-                      to={`/tag/${tag}`}
-                      onClick={() => setIsSearching(false)}
-                    >
-                      #{tag}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <Tags onClick={() => setIsSearching(false)} tags={tags} />
+
               <h5>Listening history:</h5>
               <ul
                 className={css`
