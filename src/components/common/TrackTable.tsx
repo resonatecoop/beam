@@ -3,6 +3,7 @@ import React from "react";
 import { FaPause, FaPlay } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "../../contexts/globalState";
+import { fetchUserTrackGroup } from "../../services/Api";
 
 import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
 import { FavoriteTrack } from "./FavoriteTrack";
@@ -13,8 +14,10 @@ import TrackPopup from "./TrackPopup";
 
 const TrackRow: React.FC<{
   track: TrackWithUserCounts;
+  trackgroupId?: string;
   addTracksToQueue: (id: number) => void;
-}> = ({ track, addTracksToQueue }) => {
+  reload: () => Promise<void>;
+}> = ({ track, addTracksToQueue, trackgroupId, reload }) => {
   const {
     state: { playerQueueIds, playing },
     dispatch,
@@ -118,69 +121,84 @@ const TrackRow: React.FC<{
         </div>
       </td>
       <td>
-        <TrackPopup trackId={track.id} compact />
+        <TrackPopup
+          trackId={track.id}
+          compact
+          groupId={trackgroupId}
+          reload={reload}
+        />
       </td>
     </tr>
   );
 };
 
-export const TrackTable: React.FC<{ tracks: Track[] }> = React.memo(
-  ({ tracks }) => {
-    const { dispatch } = useGlobalStateContext();
-    const [displayTracks, setDisplayTracks] = React.useState<
-      TrackWithUserCounts[]
-    >([]);
+export const TrackTable: React.FC<{
+  tracks: Track[];
+  trackgroupId?: string;
+}> = React.memo(({ tracks, trackgroupId }) => {
+  const { dispatch } = useGlobalStateContext();
+  const [displayTracks, setDisplayTracks] = React.useState<
+    TrackWithUserCounts[]
+  >([]);
 
-    const fetchTracks = React.useCallback(async (checkTracks: Track[]) => {
-      const newTracks = await mapFavoriteAndPlaysToTracks(checkTracks);
+  const fetchTracks = React.useCallback(async (checkTracks: Track[]) => {
+    const newTracks = await mapFavoriteAndPlaysToTracks(checkTracks);
 
-      setDisplayTracks(newTracks);
-    }, []);
+    setDisplayTracks(newTracks);
+  }, []);
 
-    React.useEffect(() => {
-      fetchTracks(tracks);
-    }, [tracks, fetchTracks]);
+  React.useEffect(() => {
+    fetchTracks(tracks);
+  }, [tracks, fetchTracks]);
 
-    const addTracksToQueue = React.useCallback(
-      (id: number) => {
-        const idx = tracks.findIndex((track) => track.id === id);
-        dispatch({
-          type: "addTrackIdsToFrontOfQueue",
-          idsToAdd: tracks.slice(idx, tracks.length).map((track) => track.id),
-        });
-      },
-      [dispatch, tracks]
-    );
+  const addTracksToQueue = React.useCallback(
+    (id: number) => {
+      const idx = tracks.findIndex((track) => track.id === id);
+      dispatch({
+        type: "addTrackIdsToFrontOfQueue",
+        idsToAdd: tracks.slice(idx, tracks.length).map((track) => track.id),
+      });
+    },
+    [dispatch, tracks]
+  );
 
-    if (displayTracks.length === 0) {
-      return <CenteredSpinner />;
+  const reload = React.useCallback(async () => {
+    if (trackgroupId) {
+      const newTracks = await fetchUserTrackGroup(trackgroupId);
+      fetchTracks(newTracks.items.map((i) => i.track));
     }
+  }, [fetchTracks, trackgroupId]);
 
-    return (
-      <Table style={{ marginBottom: "2rem" }}>
-        <thead>
-          <tr>
-            <th />
-            <th />
-            <th>Title</th>
-            <th>Album</th>
-            <th>Artist</th>
-            <th />
-            <th />
-          </tr>
-        </thead>
-        <tbody>
-          {displayTracks?.map((track) => (
-            <TrackRow
-              key={track.id}
-              track={track}
-              addTracksToQueue={addTracksToQueue}
-            />
-          ))}
-        </tbody>
-      </Table>
-    );
+  if (displayTracks.length === 0) {
+    return <CenteredSpinner />;
   }
-);
+
+  return (
+    <Table style={{ marginBottom: "2rem" }}>
+      <thead>
+        <tr>
+          <th />
+          <th />
+          <th>Title</th>
+          <th>Album</th>
+          <th>Artist</th>
+          <th />
+          <th />
+        </tr>
+      </thead>
+      <tbody>
+        {displayTracks?.map((track) => (
+          <TrackRow
+            key={track.id}
+            track={track}
+            addTracksToQueue={addTracksToQueue}
+            trackgroupId={trackgroupId}
+            reload={reload}
+          />
+        ))}
+      </tbody>
+    </Table>
+  );
+});
 
 export default TrackTable;

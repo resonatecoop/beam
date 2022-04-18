@@ -1,6 +1,6 @@
 import React from "react";
 import { css } from "@emotion/css";
-import { FaCode, FaEllipsisV, FaFont, FaPlus } from "react-icons/fa";
+import { FaCode, FaEllipsisV, FaFont, FaMinus, FaPlus } from "react-icons/fa";
 import IconButton from "./IconButton";
 import Modal from "./Modal";
 import ListButton, { listButtonClass } from "./ListButton";
@@ -9,6 +9,7 @@ import {
   addTrackToUserFavorites,
   fetchTrack,
   fetchTrackGroup,
+  removeTracksFromTrackGroup,
 } from "../../services/Api";
 import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
 import { SpinningStar } from "./FavoriteTrack";
@@ -16,12 +17,17 @@ import { CenteredSpinner } from "./Spinner";
 import TrackPopupDetails from "./TrackPopupDetails";
 import { NavLink } from "react-router-dom";
 import SharePopUp from "./SharePopUp";
+import { useGlobalStateContext } from "../../contexts/globalState";
 
 const TrackPopup: React.FC<{
   trackId?: number;
   groupId?: string;
   compact?: boolean;
-}> = ({ trackId, groupId, compact }) => {
+  reload?: () => Promise<void>;
+}> = ({ trackId, groupId, compact, reload }) => {
+  const {
+    state: { user },
+  } = useGlobalStateContext();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isFavorite, setIsFavorite] = React.useState(false);
   const [artistId, setArtistId] = React.useState<number>();
@@ -47,6 +53,22 @@ const TrackPopup: React.FC<{
       setIsPlaylistPickerOpen(true);
     },
     []
+  );
+
+  const removeFromPlaylist = React.useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.stopPropagation();
+      if (user && groupId && trackId) {
+        await removeTracksFromTrackGroup(groupId, {
+          tracks: [{ track_id: trackId }],
+        });
+        if (reload) {
+          reload();
+        }
+      }
+      setIsMenuOpen(false);
+    },
+    [user, groupId, reload, trackId]
   );
 
   const openShare = React.useCallback(
@@ -188,6 +210,13 @@ const TrackPopup: React.FC<{
                 <FaPlus /> Add to playlist
               </ListButton>
             </li>
+            {trackId && groupId && (
+              <li>
+                <ListButton onClick={removeFromPlaylist}>
+                  <FaMinus /> Remove from playlist
+                </ListButton>
+              </li>
+            )}
             {artistId && (
               <li>
                 <NavLink

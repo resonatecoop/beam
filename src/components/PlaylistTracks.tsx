@@ -12,8 +12,7 @@ export const PlaylistTracks: React.FC = () => {
   let { playlistId } = useParams();
   const [isLoading, setIsLoading] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
-  const [playlist, setPlaylist] = React.useState<Trackgroup>();
-  const [tracks, setTracks] = React.useState<Track[]>();
+  const [playlist, setPlaylist] = React.useState<TrackgroupDetail>();
 
   const fetchTracks = React.useCallback(async (playlistId: string) => {
     setIsLoading(true);
@@ -22,7 +21,6 @@ export const PlaylistTracks: React.FC = () => {
     setPlaylist(trackgroup);
 
     setIsLoading(false);
-    setTracks(trackgroup.items.map((item) => item.track));
   }, []);
 
   React.useEffect(() => {
@@ -82,7 +80,12 @@ export const PlaylistTracks: React.FC = () => {
         <PlaylistTitleEditing playlist={playlist} onDone={onDone} />
       )}
       {isLoading && <CenteredSpinner />}
-      {!isLoading && tracks && <TrackTable tracks={tracks} />}
+      {!isLoading && playlist && (
+        <TrackTable
+          tracks={playlist.items.map((item) => item.track)}
+          trackgroupId={playlist.id}
+        />
+      )}
     </div>
   );
 };

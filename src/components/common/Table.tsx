@@ -7,7 +7,7 @@ export const Table = styled.table`
 
   & tbody tr {
     transition: 0.25s background-color;
-    &:nth-child(odd) {
+    &:nth-of-type(odd) {
       background-color: #dfdfdf;
     }
     &:hover {

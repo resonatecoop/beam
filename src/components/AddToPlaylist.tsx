@@ -63,7 +63,7 @@ export const AddToPlaylist: React.FC<{
             <li
               key={playlist.id}
               className={css`
-                &:nth-child(odd) {
+                &:nth-of-type(odd) {
                   background-color: #dfdfdf;
                 }
               `}

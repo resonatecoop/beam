@@ -68,7 +68,10 @@ export const TrackgroupPage: React.FC = () => {
           </div>
           {trackgroup && (
             <>
-              <TrackTable tracks={trackgroup.items.map((item) => item.track)} />
+              <TrackTable
+                trackgroupId={trackgroup.id}
+                tracks={trackgroup.items.map((item) => item.track)}
+              />
             </>
           )}
         </>
