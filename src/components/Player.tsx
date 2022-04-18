@@ -6,11 +6,11 @@ import "react-h5-audio-player/lib/styles.css";
 import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchTrack, registerPlay } from "../services/Api";
 import { MdQueueMusic } from "react-icons/md";
-import IconButton from "./common/IconButton";
 import { useNavigate } from "react-router-dom";
 import { bp } from "../constants";
 import { FavoriteTrack } from "./common/FavoriteTrack";
 import { buildStreamURL, mapFavoriteAndPlaysToTracks } from "../utils/tracks";
+import Button from "./common/Button";
 
 const playerClass = css`
   min-height: 48px;
@@ -160,16 +160,20 @@ const Player = () => {
             }
           `}
         />
-        <IconButton
+        <Button
           onClick={onClickQueue}
+          compact
+          variant="link"
           className={css`
+            margin-left: 2rem;
             @media (max-width: ${bp.small}px) {
               display: none;
             }
           `}
+          startIcon={<MdQueueMusic style={{}} />}
         >
-          <MdQueueMusic style={{ color: "#868686" }} />
-        </IconButton>
+          Queue
+        </Button>
       </div>
     </div>
   );
