@@ -26,7 +26,7 @@ export const NewReleases: React.FC = () => {
   const [trackgroups, setTrackgroups] = React.useState<Trackgroup[]>([]);
 
   const fetchTrackGroupsCallback = React.useCallback(async () => {
-    const result = await fetchTrackGroups({ limit: 8 });
+    const result = await fetchTrackGroups({ limit: 4 });
     setTrackgroups(result);
   }, []);
 
@@ -42,7 +42,11 @@ export const NewReleases: React.FC = () => {
           <li key={group.id} className={newReleasesLi}>
             {group.images.medium && (
               <ClickToPlay
-                image={group.images.medium}
+                image={{
+                  ...group.images.medium,
+                  width: 400,
+                  height: 400,
+                }}
                 title={group.title}
                 groupId={group.id}
               />
