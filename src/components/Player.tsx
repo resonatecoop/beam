@@ -70,10 +70,17 @@ const Player = () => {
     }
   }, [fetchTrackCallback, playerQueueIds]);
 
-  const onEnded = React.useCallback(() => {
+  const onEnded = React.useCallback(async () => {
+    if (!mostlyListened && currentTrack && user) {
+      try {
+        await registerPlay(user?.id, currentTrack.id);
+      } catch (e) {
+        console.error(e);
+      }
+    }
     dispatch({ type: "popFromFrontOfQueue" });
     setMostlyListened(false);
-  }, [dispatch]);
+  }, [currentTrack, dispatch, mostlyListened, user]);
 
   const onClickQueue = React.useCallback(() => {
     navigate("/library/queue");
@@ -85,7 +92,7 @@ const Player = () => {
         !mostlyListened &&
         currentTrack &&
         user &&
-        e.target.currentTime > currentTrack.duration / 2
+        e.target.currentTime > 45
       ) {
         setMostlyListened(true);
         try {
