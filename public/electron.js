@@ -1,5 +1,5 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol } = require("electron");
+const { app, BrowserWindow, protocol, shell } = require("electron");
 const path = require("path");
 
 // Create the native browser window.
@@ -59,23 +59,6 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
-
-  // app.webContents.session.webRequest.onBeforeSendHeaders(
-  //   (details, callback) => {
-  //     const { requestHeaders } = details;
-  //     UpsertKeyValue(requestHeaders, "Access-Control-Allow-Origin", ["*"]);
-  //     callback({ requestHeaders });
-  //   }
-  // );
-
-  // app.webContents.session.webRequest.onHeadersReceived((details, callback) => {
-  //   const { responseHeaders } = details;
-  //   UpsertKeyValue(responseHeaders, "Access-Control-Allow-Origin", ["*"]);
-  //   UpsertKeyValue(responseHeaders, "Access-Control-Allow-Headers", ["*"]);
-  //   callback({
-  //     responseHeaders,
-  //   });
-  // });
 });
 
 // Quit when all windows are closed, except on macOS.
@@ -90,33 +73,17 @@ app.on("window-all-closed", function () {
 // If your app has no need to navigate or only needs to navigate to known pages,
 // it is a good idea to limit navigation outright to that known scope,
 // disallowing any other kinds of navigation.
-const allowedNavigationDestinations = "";
 app.on("web-contents-created", (event, contents) => {
   contents.on("will-navigate", (event, navigationUrl) => {
     const parsedUrl = new URL(navigationUrl);
 
-    if (!allowedNavigationDestinations.includes(parsedUrl.origin)) {
-      event.preventDefault();
+    event.preventDefault();
+
+    if (["https:", "http:", "mailto:"].includes(parsedUrl.protocol)) {
+      shell.openExternal(navigationUrl);
     }
   });
 });
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-// Attempting to bypass CORS requirement. Test this:
-// https://pratikpc.medium.com/bypassing-cors-with-electron-ab7eaf331605
-
-function UpsertKeyValue(obj, keyToChange, value) {
-  const keyToChangeLower = keyToChange.toLowerCase();
-  for (const key of Object.keys(obj)) {
-    if (key.toLowerCase() === keyToChangeLower) {
-      // Reassign old key
-      obj[key] = value;
-      // Done
-      return;
-    }
-  }
-  // Insert at end instead
-  obj[keyToChange] = value;
-}
