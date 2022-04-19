@@ -155,30 +155,38 @@ const Player = () => {
           )}
         </div>
       )}
+      {!currentTrack && (
+        <div className={trackInfo}>
+          Current queue is empty, click on something to play!
+        </div>
+      )}
       <div
         className={css`
           display: flex;
           align-items: center;
+          justify-content: flex-end;
           flex-grow: 1;
           @media (max-width: ${bp.small}px) {
             width: 100%;
           }
         `}
       >
-        <AudioPlayer
-          src={buildStreamURL(playerQueueIds[0], user?.clientId)}
-          ref={playerRef}
-          autoPlayAfterSrcChange
-          onEnded={onEnded}
-          onListen={onListen}
-          layout="horizontal"
-          className={css`
-            &.rhap_container {
-              box-shadow: none;
-              padding: 0;
-            }
-          `}
-        />
+        {currentTrack && (
+          <AudioPlayer
+            src={buildStreamURL(currentTrack.id, user?.clientId)}
+            ref={playerRef}
+            autoPlayAfterSrcChange
+            onEnded={onEnded}
+            onListen={onListen}
+            layout="horizontal"
+            className={css`
+              &.rhap_container {
+                box-shadow: none;
+                padding: 0;
+              }
+            `}
+          />
+        )}
         <Button
           onClick={onClickQueue}
           compact
