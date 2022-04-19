@@ -45,3 +45,12 @@ export function isLabelSearchResult(
   }
   return (entity as LabelSearchResult).kind === "label";
 }
+
+export function isTrackWithUserCounts(
+  entity: unknown
+): entity is TrackWithUserCounts {
+  if (!entity) {
+    return false;
+  }
+  return (entity as TrackWithUserCounts).favorite !== undefined;
+}
