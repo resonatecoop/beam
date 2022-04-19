@@ -3,13 +3,14 @@ import React from "react";
 import { FaPause, FaPlay } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "../../contexts/globalState";
+import { isTrackWithUserCounts } from "../../typeguards";
 
 import { FavoriteTrack } from "./FavoriteTrack";
 import IconButton from "./IconButton";
 import TrackPopup from "./TrackPopup";
 
 const TrackRow: React.FC<{
-  track: TrackWithUserCounts;
+  track: TrackWithUserCounts | Track;
   trackgroupId?: string;
   addTracksToQueue: (id: number) => void;
   reload: () => Promise<void>;
@@ -58,9 +59,7 @@ const TrackRow: React.FC<{
         }
       `}
     >
-      <td>
-        <FavoriteTrack track={track} />
-      </td>
+      <td>{isTrackWithUserCounts(track) && <FavoriteTrack track={track} />}</td>
       <td>
         {(!playing || currentTrackId !== track.id) && (
           <IconButton compact className="play-button" onClick={onTrackPlay}>
@@ -111,26 +110,28 @@ const TrackRow: React.FC<{
         </Link>
       </td>
       <td>
-        <div
-          className={css`
-            display: flex;
-          `}
-        >
+        {isTrackWithUserCounts(track) && (
           <div
             className={css`
-              width: ${track.plays * 3}px;
-              height: 1rem;
-              background-color: var(--magenta);
+              display: flex;
             `}
-          />
-          <div
-            className={css`
-              width: ${(9 - track.plays) * 3}px;
-              height: 1rem;
-              background-color: #cfcfcf;
-            `}
-          />
-        </div>
+          >
+            <div
+              className={css`
+                width: ${track.plays * 3}px;
+                height: 1rem;
+                background-color: var(--magenta);
+              `}
+            />
+            <div
+              className={css`
+                width: ${(9 - track.plays) * 3}px;
+                height: 1rem;
+                background-color: #cfcfcf;
+              `}
+            />
+          </div>
+        )}
       </td>
       <td>
         <TrackPopup

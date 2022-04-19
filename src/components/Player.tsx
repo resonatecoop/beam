@@ -11,6 +11,7 @@ import { bp } from "../constants";
 import { FavoriteTrack } from "./common/FavoriteTrack";
 import { buildStreamURL, mapFavoriteAndPlaysToTracks } from "../utils/tracks";
 import Button from "./common/Button";
+import { isTrackWithUserCounts } from "../typeguards";
 
 const playerClass = css`
   min-height: 48px;
@@ -54,15 +55,23 @@ const Player = () => {
   } = useGlobalStateContext();
   let navigate = useNavigate();
   const playerRef = React.useRef<any>();
-
-  const [currentTrack, setCurrentTrack] = React.useState<TrackWithUserCounts>();
+  const [currentTrack, setCurrentTrack] = React.useState<
+    TrackWithUserCounts | Track
+  >();
   const [mostlyListened, setMostlyListened] = React.useState(false);
 
-  const fetchTrackCallback = React.useCallback(async (id: number) => {
-    const track = await fetchTrack(id);
-    const mappedTrack = (await mapFavoriteAndPlaysToTracks([track]))[0];
-    setCurrentTrack(mappedTrack);
-  }, []);
+  const fetchTrackCallback = React.useCallback(
+    async (id: number) => {
+      const track = await fetchTrack(id);
+      if (user) {
+        const mappedTrack = (await mapFavoriteAndPlaysToTracks([track]))[0];
+        setCurrentTrack(mappedTrack);
+      } else {
+        setCurrentTrack(track);
+      }
+    },
+    [user]
+  );
 
   React.useEffect(() => {
     if (playerQueueIds && playerQueueIds[0]) {
@@ -107,9 +116,13 @@ const Player = () => {
   );
 
   React.useEffect(() => {
-    if (playerRef?.current && playing) {
+    if (
+      playerRef?.current &&
+      playing &&
+      playerRef.current.audio.current.paused
+    ) {
       playerRef.current.audio.current.play();
-    } else if (playerRef?.current) {
+    } else if (playerRef?.current && playerRef.current.audio.current.playing) {
       playerRef.current.audio.current.pause();
     }
   }, [playing]);
@@ -132,41 +145,51 @@ const Player = () => {
             <div>{currentTrack.album}</div>
             <div>{currentTrack.artist}</div>
           </div>
-          <div
-            className={css`
-              flex-grow: 1;
-              text-align: right;
-              padding-right: 1rem;
-            `}
-          >
-            <FavoriteTrack track={currentTrack} />
-          </div>
+          {isTrackWithUserCounts(currentTrack) && user && (
+            <div
+              className={css`
+                flex-grow: 1;
+                text-align: right;
+                padding-right: 1rem;
+              `}
+            >
+              <FavoriteTrack track={currentTrack} />
+            </div>
+          )}
+        </div>
+      )}
+      {!currentTrack && (
+        <div className={trackInfo}>
+          Current queue is empty, click on something to play!
         </div>
       )}
       <div
         className={css`
           display: flex;
           align-items: center;
+          justify-content: flex-end;
           flex-grow: 1;
           @media (max-width: ${bp.small}px) {
             width: 100%;
           }
         `}
       >
-        <AudioPlayer
-          src={buildStreamURL(playerQueueIds[0], user?.clientId)}
-          ref={playerRef}
-          autoPlayAfterSrcChange
-          onEnded={onEnded}
-          onListen={onListen}
-          layout="horizontal"
-          className={css`
-            &.rhap_container {
-              box-shadow: none;
-              padding: 0;
-            }
-          `}
-        />
+        {playerQueueIds.length > 0 && (
+          <AudioPlayer
+            src={buildStreamURL(playerQueueIds[0], user?.clientId)}
+            ref={playerRef}
+            autoPlayAfterSrcChange
+            onEnded={onEnded}
+            onListen={onListen}
+            layout="horizontal"
+            className={css`
+              &.rhap_container {
+                box-shadow: none;
+                padding: 0;
+              }
+            `}
+          />
+        )}
         <Button
           onClick={onClickQueue}
           compact

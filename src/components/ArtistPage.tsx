@@ -84,13 +84,13 @@ export const ArtistPage: React.FC = () => {
           </p>
           {tracks && (
             <>
-              <h3>Top Tracks</h3>
+              <h4>Top Tracks</h4>
               <TrackTable tracks={tracks} />
             </>
           )}
           {releases && (
             <>
-              <h3 style={{ marginTop: "1rem" }}>Releases</h3>
+              <h4 style={{ marginTop: "1rem" }}>Releases</h4>
               {releases.map((release) => (
                 <div key={release.id} style={{ marginBottom: "1rem" }}>
                   <div

@@ -23,7 +23,9 @@ const StaffPicks: React.FC = () => {
   const [tracks, setTracks] = React.useState<Track[]>();
 
   const fetchStaffPicksCallback = React.useCallback(async () => {
-    const result = await fetchTrackGroup(staffPicks[random(staffPicks.length)]);
+    const result = await fetchTrackGroup(
+      staffPicks[random(staffPicks.length - 1)]
+    );
     setLatestStaffPick(result);
 
     setTracks(result?.items.map((item) => item.track));
@@ -34,6 +36,10 @@ const StaffPicks: React.FC = () => {
       dispatch({
         type: "addTrackIdsToFrontOfQueue",
         idsToAdd: tracks?.map((track) => track.id) ?? [],
+      });
+      dispatch({
+        type: "setPlaying",
+        playing: true,
       });
     }
   }, [dispatch, tracks]);

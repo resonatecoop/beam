@@ -7,12 +7,15 @@ import { fetchTrack } from "../services/Api";
 import Button from "./common/Button";
 import TrackList from "./common/TrackList";
 import EmptyBox from "./common/EmptyBox";
+import { FullScreenSpinner } from "./common/Spinner";
 
 export const Queue: React.FC = () => {
   const {
     state: { playerQueueIds },
     dispatch,
   } = useGlobalStateContext();
+
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [playerQueue, setPlayerQueue] = React.useState<Track[]>([]);
 
@@ -31,6 +34,7 @@ export const Queue: React.FC = () => {
 
   const fetchQueueDetails = React.useCallback(async () => {
     if (playerQueueIds && playerQueueIds.length > 0) {
+      setIsLoading(true);
       await Promise.all(
         playerQueueIds.map((id) => {
           return fetchTrack(id);
@@ -52,6 +56,7 @@ export const Queue: React.FC = () => {
           })
         );
       });
+      setIsLoading(false);
     } else {
       setPlayerQueue([]);
     }
@@ -63,6 +68,8 @@ export const Queue: React.FC = () => {
 
   return (
     <>
+      {isLoading && <FullScreenSpinner />}
+
       <div
         className={css`
           display: flex;
@@ -72,19 +79,25 @@ export const Queue: React.FC = () => {
         `}
       >
         <h3>Queue</h3>
-        <Button compact onClick={shuffleQueue}>
-          <MdShuffle /> Shuffle
-        </Button>
-        <Button compact onClick={clearQueue}>
-          Clear Queue
-        </Button>
+        {!isLoading && playerQueue?.length > 0 && (
+          <>
+            <Button compact onClick={shuffleQueue}>
+              <MdShuffle /> Shuffle
+            </Button>
+            <Button compact onClick={clearQueue}>
+              Clear queue
+            </Button>
+          </>
+        )}
       </div>
-      {playerQueue?.length === 0 && (
+      {!isLoading && playerQueue?.length === 0 && (
         <EmptyBox>Your queue is empty :( Find some songs to play!</EmptyBox>
       )}
-      <div>
-        <TrackList tracks={playerQueue} />
-      </div>
+      {!isLoading && (
+        <div data-cy="queue">
+          <TrackList tracks={playerQueue} />
+        </div>
+      )}
     </>
   );
 };

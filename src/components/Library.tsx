@@ -34,7 +34,12 @@ export const Library: React.FC = () => {
           margin-left: 300px;
         `}
       >
-        <div>
+        <div
+          className={css`
+            position: relative;
+            min-height: 100vh;
+          `}
+        >
           <Outlet />
         </div>
       </div>

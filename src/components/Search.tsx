@@ -3,6 +3,7 @@ import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { tags } from "../constants";
+import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchUserArtistHistory } from "../services/Api";
 import Background from "./common/Background";
 import IconButton from "./common/IconButton";
@@ -11,6 +12,9 @@ import Input from "./common/Input";
 import Tags from "./common/Tags";
 
 export const Search: React.FC = () => {
+  const {
+    state: { user },
+  } = useGlobalStateContext();
   const navigate = useNavigate();
   const [search, setSearch] = React.useState("");
   const [isSearching, setIsSearching] = React.useState(false);
@@ -48,9 +52,11 @@ export const Search: React.FC = () => {
   );
 
   const loadSuggestions = React.useCallback(async () => {
-    const artistResults = await fetchUserArtistHistory({ limit: 3 });
-    setArtists(artistResults.data);
-  }, []);
+    if (user) {
+      const artistResults = await fetchUserArtistHistory({ limit: 3 });
+      setArtists(artistResults.data);
+    }
+  }, [user]);
 
   React.useEffect(() => {
     if (isSearching) {
@@ -112,19 +118,23 @@ export const Search: React.FC = () => {
             >
               <Tags onClick={() => setIsSearching(false)} tags={tags} />
 
-              <h5>Listening history:</h5>
-              <ul
-                className={css`
-                  margin-top: 0.25rem;
-                  list-style: none;
-                `}
-              >
-                {artists.map((a) => (
-                  <li key={a.uid}>
-                    <a href={`/library/artist/${a.uid}`}>{a.meta_value}</a>
-                  </li>
-                ))}
-              </ul>
+              {artists.length > 0 && (
+                <>
+                  <h5>Listening history:</h5>
+                  <ul
+                    className={css`
+                      margin-top: 0.25rem;
+                      list-style: none;
+                    `}
+                  >
+                    {artists.map((a) => (
+                      <li key={a.uid}>
+                        <a href={`/library/artist/${a.uid}`}>{a.meta_value}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
             </div>
           </div>
         )}
