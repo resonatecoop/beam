@@ -1,6 +1,6 @@
 name: CI/CD Electron App on version tag
 
-on:
+on: 
   push:
     # Sequence of patterns matched against refs/tags
     tags:

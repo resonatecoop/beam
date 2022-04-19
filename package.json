@@ -72,7 +72,7 @@
     },
     "win": {
       "target": "nsis",
-      "icon": "build/icons.icns",
+      "icon": "build/icon.ico",
       "publish": [
         "github"
       ]
