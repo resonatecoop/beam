@@ -186,6 +186,18 @@ export const removeTracksFromTrackGroup = async (
   });
 };
 
+export const setNewTracksOnTrackGroup = async (
+  id: string,
+  data: {
+    tracks: { track_id: number; index?: number }[];
+  }
+) => {
+  return fetchWrapper(`user/trackgroups/${id}/items`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+};
+
 export const fetchUserStats = async (
   from: string,
   to: string

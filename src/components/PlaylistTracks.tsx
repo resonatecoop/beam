@@ -2,6 +2,7 @@ import { css } from "@emotion/css";
 import React from "react";
 import { FaEdit, FaEye, FaLock } from "react-icons/fa";
 import { useParams } from "react-router-dom";
+import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchUserTrackGroup } from "../services/Api";
 import IconButton from "./common/IconButton";
 import { CenteredSpinner } from "./common/Spinner";
@@ -10,6 +11,9 @@ import PlaylistTitleEditing from "./PlaylistTitleEditing";
 
 export const PlaylistTracks: React.FC = () => {
   let { playlistId } = useParams();
+  const {
+    state: { user },
+  } = useGlobalStateContext();
   const [isLoading, setIsLoading] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
   const [playlist, setPlaylist] = React.useState<TrackgroupDetail>();
@@ -84,6 +88,7 @@ export const PlaylistTracks: React.FC = () => {
         <TrackTable
           tracks={playlist.items.map((item) => item.track)}
           trackgroupId={playlist.id}
+          editable={playlist.creator_id === user?.id}
         />
       )}
     </div>
