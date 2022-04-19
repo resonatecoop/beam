@@ -116,9 +116,13 @@ const Player = () => {
   );
 
   React.useEffect(() => {
-    if (playerRef?.current && playing) {
+    if (
+      playerRef?.current &&
+      playing &&
+      playerRef.current.audio.current.paused
+    ) {
       playerRef.current.audio.current.play();
-    } else if (playerRef?.current) {
+    } else if (playerRef?.current && playerRef.current.audio.current.playing) {
       playerRef.current.audio.current.pause();
     }
   }, [playing]);
