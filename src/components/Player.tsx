@@ -55,7 +55,6 @@ const Player = () => {
   } = useGlobalStateContext();
   let navigate = useNavigate();
   const playerRef = React.useRef<any>();
-
   const [currentTrack, setCurrentTrack] = React.useState<
     TrackWithUserCounts | Track
   >();
@@ -171,9 +170,9 @@ const Player = () => {
           }
         `}
       >
-        {currentTrack && (
+        {playerQueueIds.length > 0 && (
           <AudioPlayer
-            src={buildStreamURL(currentTrack.id, user?.clientId)}
+            src={buildStreamURL(playerQueueIds[0], user?.clientId)}
             ref={playerRef}
             autoPlayAfterSrcChange
             onEnded={onEnded}

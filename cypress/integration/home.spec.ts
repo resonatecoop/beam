@@ -33,13 +33,21 @@ describe("home page", () => {
     cy.get("h3").should("contain", "Staff picks");
   });
 
-  it("should be able to play a staff pick playlist", () => {
+  it.only("should be able to play a staff pick playlist", () => {
     cy.intercept("https://api.resonate.coop/v1/stream/*").as("getTrackAudio");
 
     cy.get("h4").next("button").click();
     cy.wait(["@getTrackAudio"]).then(() => {
-      console.log("waited");
       expectPlayingAudio();
     });
+  });
+
+  it("should navigate to a new releases playlist", () => {
+    cy.get("h3")
+      .contains("New releases")
+      .next("ul")
+      .within(() => {
+        cy.get("a").first().click();
+      });
   });
 });

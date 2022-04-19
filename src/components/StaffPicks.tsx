@@ -37,6 +37,10 @@ const StaffPicks: React.FC = () => {
         type: "addTrackIdsToFrontOfQueue",
         idsToAdd: tracks?.map((track) => track.id) ?? [],
       });
+      dispatch({
+        type: "setPlaying",
+        playing: true,
+      });
     }
   }, [dispatch, tracks]);
 

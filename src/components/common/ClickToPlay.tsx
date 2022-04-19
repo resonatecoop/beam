@@ -87,6 +87,10 @@ const ClickToPlay: React.FC<{
         idsToAdd: [trackId],
       });
     }
+    dispatch({
+      type: "setPlaying",
+      playing: true,
+    });
   }, [dispatch, groupId, trackId]);
 
   const onClickQueue = React.useCallback(async () => {
