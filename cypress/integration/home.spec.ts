@@ -4,9 +4,6 @@ const expectPlayingAudio = () => {
   cy.get("audio,video").should((els) => {
     let audible = false;
     els.each((i, el) => {
-      console.log(el);
-      // @ts-ignore
-      console.log(el.duration, el.paused, el.muted);
       // @ts-ignore
       if (el.duration > 0 && !el.paused && !el.muted) {
         audible = true;
@@ -33,7 +30,7 @@ describe("home page", () => {
     cy.get("h3").should("contain", "Staff picks");
   });
 
-  it.only("should be able to play a staff pick playlist", () => {
+  it("should be able to play a staff pick playlist", () => {
     cy.intercept("https://api.resonate.coop/v1/stream/*").as("getTrackAudio");
 
     cy.get("h4").next("button").click();

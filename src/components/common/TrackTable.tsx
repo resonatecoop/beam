@@ -17,13 +17,19 @@ export const TrackTable: React.FC<{
   editable?: boolean;
 }> = React.memo(({ tracks, trackgroupId, editable }) => {
   const [dragId, setDragId] = React.useState<string>();
-
+  const {
+    state: { user },
+    dispatch,
+  } = useGlobalStateContext();
   const handleDrag = (ev: React.DragEvent<HTMLTableRowElement>) => {
     setDragId(ev.currentTarget.id);
   };
+  const [displayTracks, setDisplayTracks] = React.useState<
+    (TrackWithUserCounts | Track)[]
+  >([]);
 
   const determineNewTrackOrder = produce(
-    (oldTracks: TrackWithUserCounts[], droppedInId: string) => {
+    (oldTracks: (TrackWithUserCounts | Track)[], droppedInId: string) => {
       const dragIdx = oldTracks.findIndex((track) => `${track.id}` === dragId);
       const dropIdx = oldTracks.findIndex(
         (track) => `${track.id}` === droppedInId
@@ -49,16 +55,17 @@ export const TrackTable: React.FC<{
     }
   };
 
-  const { dispatch } = useGlobalStateContext();
-  const [displayTracks, setDisplayTracks] = React.useState<
-    TrackWithUserCounts[]
-  >([]);
-
-  const fetchTracks = React.useCallback(async (checkTracks: Track[]) => {
-    const newTracks = await mapFavoriteAndPlaysToTracks(checkTracks);
-
-    setDisplayTracks(newTracks);
-  }, []);
+  const fetchTracks = React.useCallback(
+    async (checkTracks: Track[]) => {
+      if (user) {
+        const newTracks = await mapFavoriteAndPlaysToTracks(checkTracks);
+        setDisplayTracks(newTracks);
+      } else {
+        setDisplayTracks(checkTracks);
+      }
+    },
+    [user]
+  );
 
   React.useEffect(() => {
     fetchTracks(tracks);
