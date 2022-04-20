@@ -6,6 +6,7 @@ import {
   fetchArtistReleases,
   fetchArtistTopTracks,
 } from "../services/Api";
+import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
 import LinkToWeb from "./common/LinkToWeb";
 import OverflowableText from "./common/OverflowableText";
 import { CenteredSpinner } from "./common/Spinner";
@@ -100,11 +101,10 @@ export const ArtistPage: React.FC = () => {
                       margin-bottom: 1rem;
                     `}
                   >
-                    <img
+                    <ImageWithPlaceholder
                       src={release.images.small?.url}
                       alt={release.title}
-                      height={release.images.small?.height}
-                      width={release.images.small?.width}
+                      size={release.images.small?.height ?? 120}
                       className={css`
                         margin: 0 1rem 1rem 0;
                       `}

@@ -33,7 +33,7 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
       setPlaylists(result);
       if (
         !playlistId &&
-        (pathname.includes("playlist") || pathname === "/library")
+        (pathname.includes("playlist/") || pathname === "/library")
       ) {
         navigate(`/library/playlist/${result[0]?.id ?? ""}`);
       }
@@ -66,6 +66,13 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
           }
         `}
       >
+        <li>
+          <NavLink className={listButtonClass} to="/library/explore/playlists">
+            Explore
+          </NavLink>
+        </li>
+        <hr className={divider} />
+
         <li>
           <NavLink className={listButtonClass} to="/library/history">
             History

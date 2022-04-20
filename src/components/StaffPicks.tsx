@@ -6,6 +6,7 @@ import { useGlobalStateContext } from "../contexts/globalState";
 
 import { fetchTrackGroup } from "../services/Api";
 import Button from "./common/Button";
+import { CenteredSpinner } from "./common/Spinner";
 import TrackList from "./common/TrackList";
 
 const staffPicks = [
@@ -18,17 +19,20 @@ const staffPicks = [
 
 const StaffPicks: React.FC = () => {
   const { dispatch } = useGlobalStateContext();
+  const [isLoading, setIsLoading] = React.useState(false);
   const [latestStaffPick, setLatestStaffPick] =
     React.useState<TrackgroupDetail>();
   const [tracks, setTracks] = React.useState<Track[]>();
 
   const fetchStaffPicksCallback = React.useCallback(async () => {
+    setIsLoading(true);
     const result = await fetchTrackGroup(
       staffPicks[random(staffPicks.length - 1)]
     );
     setLatestStaffPick(result);
 
     setTracks(result?.items.map((item) => item.track));
+    setIsLoading(false);
   }, []);
 
   const onPlayClick = React.useCallback(() => {
@@ -48,10 +52,6 @@ const StaffPicks: React.FC = () => {
     fetchStaffPicksCallback();
   }, [fetchStaffPicksCallback]);
 
-  if (!latestStaffPick) {
-    return null;
-  }
-
   return (
     <div className={css``}>
       <div
@@ -68,26 +68,29 @@ const StaffPicks: React.FC = () => {
           Playlists by the people building Resonate showcasing some of their
           favorite music
         </p>
-        <div
-          className={css`
-            display: flex;
-            align-items: center;
+        {isLoading && <CenteredSpinner />}
+        {latestStaffPick && (
+          <div
+            className={css`
+              display: flex;
+              align-items: center;
 
-            > h4 {
-              margin-bottom: 0;
-              padding-bottom: 0;
-              padding-right: 1rem;
-            }
-          `}
-        >
-          <h4>{latestStaffPick.title}</h4>
-          {tracks && (
-            <Button compact startIcon={<FaPlay />} onClick={onPlayClick}>
-              Play
-            </Button>
-          )}
-        </div>
-        {latestStaffPick.about}
+              > h4 {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                padding-right: 1rem;
+              }
+            `}
+          >
+            <h4>{latestStaffPick.title}</h4>
+            {tracks && (
+              <Button compact startIcon={<FaPlay />} onClick={onPlayClick}>
+                Play
+              </Button>
+            )}
+          </div>
+        )}
+        {latestStaffPick?.about}
       </div>
 
       {tracks && <TrackList tracks={tracks} />}

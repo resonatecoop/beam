@@ -12,6 +12,7 @@ import { FavoriteTrack } from "./common/FavoriteTrack";
 import { buildStreamURL, mapFavoriteAndPlaysToTracks } from "../utils/tracks";
 import Button from "./common/Button";
 import { isTrackWithUserCounts } from "../typeguards";
+import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
 
 const playerClass = css`
   min-height: 48px;
@@ -131,10 +132,9 @@ const Player = () => {
     <div className={playerClass}>
       {currentTrack && (
         <div className={trackInfo}>
-          <img
+          <ImageWithPlaceholder
             src={currentTrack.images.small?.url ?? currentTrack.cover}
-            height={50}
-            width={50}
+            size={50}
             alt={currentTrack.title}
             className={css`
               background-color: #efefef;

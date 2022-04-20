@@ -3,7 +3,7 @@ export {};
 
 declare global {
   interface APIOptions {
-    [key: string]: string | number;
+    [key: string]: string | number | undefined;
   }
 
   interface APIPaginatedResult<T> {
@@ -154,7 +154,7 @@ declare global {
     name: string;
     id: number;
     links: { href: string; text: string }[];
-    images: ArtistImage;
+    images?: ArtistImage;
     bio: string;
     country: string;
   }
