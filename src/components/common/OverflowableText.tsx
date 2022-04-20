@@ -2,7 +2,7 @@ import { truncate } from "lodash";
 import React from "react";
 import Button from "./Button";
 
-export const OverflowableText: React.FC<{ text: string }> = ({ text }) => {
+export const OverflowableText: React.FC<{ text?: string }> = ({ text }) => {
   const truncateLength = 200;
   const [isExpandable, setIsExpandable] = React.useState(false);
   const [isExpanded, setIsExpanded] = React.useState(false);
@@ -11,7 +11,7 @@ export const OverflowableText: React.FC<{ text: string }> = ({ text }) => {
   );
 
   React.useEffect(() => {
-    if (text.length > truncateLength) {
+    if ((text?.length ?? 0) > truncateLength) {
       setIsExpandable(true);
     }
   }, [text]);
@@ -22,7 +22,7 @@ export const OverflowableText: React.FC<{ text: string }> = ({ text }) => {
 
   React.useEffect(() => {
     setDisplayText(
-      isExpanded ? text : truncate(text, { length: truncateLength })
+      isExpanded ? text ?? "" : truncate(text ?? "", { length: truncateLength })
     );
   }, [text, isExpanded]);
 

@@ -12,7 +12,7 @@ import StaffPicks from "../StaffPicks";
 export const Playlists: React.FC = () => {
   const { LoadingButton, results, isLoading } = usePagination<Trackgroup>({
     apiCall: React.useCallback(fetchTrackGroups, []),
-    options: React.useMemo(() => ({ limit: 50 }), []),
+    options: React.useMemo(() => ({ limit: 50, type: "playlist" }), []),
   });
 
   return (
