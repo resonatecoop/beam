@@ -46,6 +46,9 @@ export const SearchResults: React.FC = () => {
           <li>
             <NavLink to="labels">Labels</NavLink>
           </li>
+          <li>
+            <NavLink to="releases">Releases</NavLink>
+          </li>
         </ul>
       </div>
       <div
