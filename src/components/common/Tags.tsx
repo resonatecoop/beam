@@ -17,7 +17,7 @@ export const Tags: React.FC<{ tags: string[]; onClick?: () => void }> = ({
           className={css`
             display: inline-block;
             background-color: white;
-            padding: 0.25rem 0.4rem 0.25rem 0;
+            padding: 0.25rem 0.4rem 0.25rem;
             margin-right: 0.25rem;
             margin-bottom: 0.25rem;
           `}
