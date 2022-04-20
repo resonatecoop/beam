@@ -30,14 +30,14 @@ export const SearchResults: React.FC = () => {
     <>
       <h3>Results for "{searchString}"</h3>
       <div>
+        {searchResults.length === 0 && (
+          <EmptyBox>No results found, try another search!</EmptyBox>
+        )}
         <ul
           className={css`
             list-style: none;
           `}
         >
-          {searchResults.length === 0 && (
-            <EmptyBox>No results found, try another search!</EmptyBox>
-          )}
           {searchResults.map((result) => (
             <ResultListItem>
               {(isArtistSearchResult(result) ||

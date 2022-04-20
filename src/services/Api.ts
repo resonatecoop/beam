@@ -67,6 +67,10 @@ export const logInUserWithPassword = async ({
   );
 };
 
+/**
+ * User endpoints
+ */
+
 export const fetchUserProfile = async (): Promise<LoggedInUser> => {
   return fetchWrapper("user/profile/", {
     method: "GET",
@@ -87,7 +91,7 @@ export const fetchUserPlaylists = async (
 };
 
 interface FetchTrackGroupFilter extends APIOptions {
-  type: TrackgroupType;
+  type?: TrackgroupType;
 }
 
 // FIXME: What's the difference between fetching a user's playlists
@@ -107,14 +111,15 @@ export const fetchUserTrackGroups = async (
 };
 
 export const fetchTrackGroups = async (
-  options: APIOptions
-): Promise<Trackgroup[]> => {
+  options?: FetchTrackGroupFilter
+): Promise<APIPaginatedResult<Trackgroup>> => {
   return fetchWrapper(
     "trackgroups",
     {
       method: "GET",
     },
-    options
+    options,
+    true
   );
 };
 
@@ -280,6 +285,56 @@ export const fetchByTag = async ({
     true
   );
 };
+/**
+ *  Label endpoints
+ */
+
+export const fetchLabels = (
+  options?: APIOptions
+): Promise<APIPaginatedResult<Label>> => {
+  return fetchWrapper(`labels`, { method: "GET" }, options, true);
+};
+
+export const fetchLabel = (labelId: number): Promise<Label> => {
+  return fetchWrapper(`labels/${labelId}`, {
+    method: "GET",
+  });
+};
+
+export const fetchLabelReleases = (labelId: number): Promise<Release[]> => {
+  return fetchWrapper(`labels/${labelId}/releases`, {
+    method: "GET",
+  });
+};
+
+export const fetchLabelArtists = (labelId: number): Promise<LabelArtist[]> => {
+  return fetchWrapper(`labels/${labelId}/artists`, {
+    method: "GET",
+  });
+};
+
+export const fetchLabelAlbums = (labelId: number): Promise<LabelAlbum[]> => {
+  return fetchWrapper(`labels/${labelId}/albums`, {
+    method: "GET",
+  });
+};
+
+/**
+ * Artist endpoints
+ */
+
+export const fetchArtists = (
+  options?: APIOptions
+): Promise<APIPaginatedResult<Artist>> => {
+  return fetchWrapper(
+    `artists`,
+    {
+      method: "GET",
+    },
+    options,
+    true
+  );
+};
 
 export const fetchArtist = (artistId: number): Promise<Artist> => {
   return fetchWrapper(`artists/${artistId}`, {
@@ -287,9 +342,7 @@ export const fetchArtist = (artistId: number): Promise<Artist> => {
   });
 };
 
-export const fetchArtistReleases = (
-  artistId: number
-): Promise<ArtistRelease[]> => {
+export const fetchArtistReleases = (artistId: number): Promise<Release[]> => {
   return fetchWrapper(`artists/${artistId}/releases`, {
     method: "GET",
   });
@@ -300,6 +353,10 @@ export const fetchArtistTopTracks = (artistId: number): Promise<Track[]> => {
     method: "GET",
   });
 };
+
+/**
+ * Track endpoints
+ */
 
 export const fetchTrack = (trackId: number): Promise<Track> => {
   return fetchWrapper(`tracks/${trackId}`, {
@@ -348,6 +405,10 @@ export const checkPlayCountOfTrackIds = async (
     }),
   });
 };
+
+/**
+ *  Search endpoints
+ */
 
 export const fetchSearchResults = (
   searchString: string

@@ -8,6 +8,7 @@ import { bp } from "../../constants";
 import { useGlobalStateContext } from "../../contexts/globalState";
 import { fetchTrackGroup } from "../../services/Api";
 import IconButton from "./IconButton";
+import ImageWithPlaceholder from "./ImageWithPlaceholder";
 
 type WrapperProps = {
   width: number;
@@ -120,12 +121,7 @@ const ClickToPlay: React.FC<{
         </IconButton>
       </div>
       {image && (
-        <img
-          src={image.url}
-          alt={title}
-          width={image.width}
-          height={image.height}
-        />
+        <ImageWithPlaceholder src={image.url} alt={title} size={image.width} />
       )}
     </Wrapper>
   );

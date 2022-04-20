@@ -25,19 +25,21 @@ export const Library: React.FC = () => {
         `}
       >
         <BackButton />
+
         <h2 className={css``}>Library</h2>
 
         <PlaylistListing onClick={onClick} />
       </div>
       <div
         className={css`
-          margin-left: 300px;
+          margin-left: 320px;
+          margin-top: 0.5rem;
         `}
       >
         <div
           className={css`
             position: relative;
-            min-height: 100vh;
+            max-height: 100%;
           `}
         >
           <Outlet />

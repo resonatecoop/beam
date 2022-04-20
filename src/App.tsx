@@ -20,6 +20,11 @@ import TrackgroupPage from "./components/TrackgroupPage";
 import TagList from "./components/TagList";
 import SearchResults from "./components/SearchResults";
 import Collection from "./components/Collection";
+import LabelPage from "./components/LabelPage";
+import Explore from "./components/Explore";
+import Playlists from "./components/Explore/Playlists";
+import Artists from "./components/Explore/Artists";
+import Labels from "./components/Explore/Labels";
 
 injectGlobal`
   * {
@@ -74,6 +79,10 @@ injectGlobal`
       color: var(--dark-magenta);
     }
   }
+
+  img {
+    background: #dfdfdf;
+  }
 `;
 
 const appWrapper = css`
@@ -118,7 +127,13 @@ function App() {
           <Route path="/library" element={<Library />}>
             <Route path="queue" element={<Queue />} />
             <Route path="search" element={<SearchResults />} />
+            <Route path="explore" element={<Explore />}>
+              <Route path="playlists" element={<Playlists />} />
+              <Route path="artists" element={<Artists />} />
+              <Route path="labels" element={<Labels />} />
+            </Route>
             <Route path="playlist/:playlistId" element={<PlaylistTracks />} />
+            <Route path="label/:labelId" element={<LabelPage />} />
             <Route path="artist/:artistId" element={<ArtistPage />} />
             <Route
               path="trackgroup/:trackgroupId"

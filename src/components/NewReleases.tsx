@@ -1,33 +1,20 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { Link } from "react-router-dom";
-import { bp } from "../constants";
 import { fetchTrackGroups } from "../services/Api";
 import ClickToPlay from "./common/ClickToPlay";
+import GridListItem from "./common/GridListItem";
+import LargeTileDetail from "./common/LargeTileDetail";
 import TrackPopup from "./common/TrackPopup";
 
 const newReleasesUl = css``;
-
-const newReleasesLi = css`
-  display: inline-flex;
-  flex-direction: column;
-  margin: 0.5rem 1rem 0.75rem 0;
-
-  @media (max-width: ${bp.medium}px) {
-    margin-right: 0;
-  }
-
-  img {
-    background: #dfdfdf;
-  }
-`;
 
 export const NewReleases: React.FC = () => {
   const [trackgroups, setTrackgroups] = React.useState<Trackgroup[]>([]);
 
   const fetchTrackGroupsCallback = React.useCallback(async () => {
     const result = await fetchTrackGroups({ limit: 4 });
-    setTrackgroups(result);
+    setTrackgroups(result.data);
   }, []);
 
   React.useEffect(() => {
@@ -39,7 +26,7 @@ export const NewReleases: React.FC = () => {
       <h3>New releases</h3>
       <ul className={newReleasesUl}>
         {trackgroups.map((group) => (
-          <li key={group.id} className={newReleasesLi}>
+          <GridListItem key={group.id} maxWidth={400}>
             {group.images.medium && (
               <ClickToPlay
                 image={{
@@ -51,43 +38,20 @@ export const NewReleases: React.FC = () => {
                 groupId={group.id}
               />
             )}
-            <div
-              className={css`
-                display: flex;
-                margin: 0.5rem 0;
-                justify-content: space-between;
-              `}
-            >
-              <div
-                className={css`
-                  display: flex;
-                  flex-direction: column;
-                `}
-              >
-                <span
-                  className={css`
-                    font-size: 1.1rem;
-                  `}
-                >
-                  <Link to={`/library/trackgroup/${group.id}`}>
-                    {group.title}
-                  </Link>
-                </span>
-                <span
-                  className={css`
-                    margin-top: 0.5rem;
-                    color: #444;
-                    text-decoration: none;
-                  `}
-                >
-                  <Link to={`/library/artist/${group.creator_id}`}>
-                    {group.display_artist}
-                  </Link>
-                </span>
-              </div>
-              <TrackPopup groupId={group.id} />
-            </div>
-          </li>
+            <LargeTileDetail
+              title={
+                <Link to={`/library/trackgroup/${group.id}`}>
+                  {group.title}
+                </Link>
+              }
+              subtitle={
+                <Link to={`/library/artist/${group.creator_id}`}>
+                  {group.display_artist}
+                </Link>
+              }
+              moreActions={<TrackPopup groupId={group.id} />}
+            />
+          </GridListItem>
         ))}
       </ul>
     </div>

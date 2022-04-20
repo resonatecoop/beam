@@ -3,6 +3,10 @@ import React from "react";
 import Button from "../components/common/Button";
 import { CenteredSpinner } from "../components/common/Spinner";
 
+interface PaginationOptions extends APIOptions {
+  limit: number;
+}
+
 /**
  * A helper that handles pagination
  * @param {
@@ -16,7 +20,7 @@ export function usePagination<T>({
   options,
 }: {
   apiCall: (props: any) => Promise<APIPaginatedResult<T>>;
-  options: APIOptions; // MUST BE MEMOIZED
+  options: PaginationOptions; // MUST BE MEMOIZED
 }): {
   LoadingButton: () => React.ReactElement;
   results: T[];
