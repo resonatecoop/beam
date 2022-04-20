@@ -117,13 +117,13 @@ const Player = () => {
   );
 
   React.useEffect(() => {
-    if (
-      playerRef?.current &&
-      playing &&
-      playerRef.current.audio.current.paused
-    ) {
+    if (playerRef?.current && playing && !playerRef.current.isPlaying()) {
       playerRef.current.audio.current.play();
-    } else if (playerRef?.current && playerRef.current.audio.current.playing) {
+    } else if (
+      playerRef?.current &&
+      !playing &&
+      playerRef.current.isPlaying()
+    ) {
       playerRef.current.audio.current.pause();
     }
   }, [playing]);
@@ -178,7 +178,6 @@ const Player = () => {
           <AudioPlayer
             src={buildStreamURL(playerQueueIds[0], user?.clientId)}
             ref={playerRef}
-            autoPlayAfterSrcChange
             onEnded={onEnded}
             onListen={onListen}
             layout="horizontal"
