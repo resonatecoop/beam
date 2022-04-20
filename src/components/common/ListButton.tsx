@@ -59,7 +59,8 @@ export const listButtonClass = css`
   }
 
   &.active {
-    background-color: #cfcfcf;
+    background-color: var(--magenta);
+    color: white;
   }
 
   svg {
