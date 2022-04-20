@@ -80,7 +80,7 @@ const TrackRow: React.FC<{
           text-overflow: ellipsis;
         `}
       >
-        {track.id} {track.title}
+        {track.title}
       </td>
       <td
         className={css`
