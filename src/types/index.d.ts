@@ -117,7 +117,7 @@ declare global {
     track: Track;
   }
 
-  interface ArtistRelease extends Trackgroup {
+  interface Release extends Trackgroup {
     items: TrackgroupItem[];
   }
 
@@ -148,6 +148,31 @@ declare global {
     tags: string[];
     _id: string;
     score: number;
+  }
+
+  interface Label {
+    name: string;
+    id: number;
+    links: { href: string; text: string }[];
+    images: ArtistImage;
+    bio: string;
+    country: string;
+  }
+
+  interface LabelArtist {
+    name: string;
+    id: number;
+    images: ArtistImage;
+  }
+
+  interface LabelAlbum {
+    title: string;
+    cover: string;
+    duration: number;
+    display_artist: string;
+    creator_id: number;
+    various: boolean;
+    items: TrackgroupItem[];
   }
 
   interface TrackSearchResult extends SearchResultBase {

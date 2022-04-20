@@ -280,6 +280,37 @@ export const fetchByTag = async ({
     true
   );
 };
+/**
+ *  Label endpoints
+ */
+
+export const fetchLabel = (labelId: number): Promise<Label> => {
+  return fetchWrapper(`labels/${labelId}`, {
+    method: "GET",
+  });
+};
+
+export const fetchLabelReleases = (labelId: number): Promise<Release[]> => {
+  return fetchWrapper(`labels/${labelId}/releases`, {
+    method: "GET",
+  });
+};
+
+export const fetchLabelArtists = (labelId: number): Promise<LabelArtist[]> => {
+  return fetchWrapper(`labels/${labelId}/artists`, {
+    method: "GET",
+  });
+};
+
+export const fetchLabelAlbums = (labelId: number): Promise<LabelAlbum[]> => {
+  return fetchWrapper(`labels/${labelId}/albums`, {
+    method: "GET",
+  });
+};
+
+/**
+ * Artist endpoints
+ */
 
 export const fetchArtist = (artistId: number): Promise<Artist> => {
   return fetchWrapper(`artists/${artistId}`, {
@@ -287,9 +318,7 @@ export const fetchArtist = (artistId: number): Promise<Artist> => {
   });
 };
 
-export const fetchArtistReleases = (
-  artistId: number
-): Promise<ArtistRelease[]> => {
+export const fetchArtistReleases = (artistId: number): Promise<Release[]> => {
   return fetchWrapper(`artists/${artistId}/releases`, {
     method: "GET",
   });
@@ -300,6 +329,10 @@ export const fetchArtistTopTracks = (artistId: number): Promise<Track[]> => {
     method: "GET",
   });
 };
+
+/**
+ * Track endpoints
+ */
 
 export const fetchTrack = (trackId: number): Promise<Track> => {
   return fetchWrapper(`tracks/${trackId}`, {

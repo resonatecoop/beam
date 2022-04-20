@@ -20,6 +20,7 @@ import TrackgroupPage from "./components/TrackgroupPage";
 import TagList from "./components/TagList";
 import SearchResults from "./components/SearchResults";
 import Collection from "./components/Collection";
+import LabelPage from "./components/LabelPage";
 
 injectGlobal`
   * {
@@ -119,6 +120,7 @@ function App() {
             <Route path="queue" element={<Queue />} />
             <Route path="search" element={<SearchResults />} />
             <Route path="playlist/:playlistId" element={<PlaylistTracks />} />
+            <Route path="label/:labelId" element={<LabelPage />} />
             <Route path="artist/:artistId" element={<ArtistPage />} />
             <Route
               path="trackgroup/:trackgroupId"
