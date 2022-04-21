@@ -2,6 +2,7 @@ import { css } from "@emotion/css";
 import { random } from "lodash";
 import React from "react";
 import { FaPlay } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "../contexts/globalState";
 
 import { fetchTrackGroup } from "../services/Api";
@@ -82,7 +83,11 @@ const StaffPicks: React.FC = () => {
               }
             `}
           >
-            <h4>{latestStaffPick.title}</h4>
+            <h4>
+              <Link to={`/library/trackgroup/${latestStaffPick.id}`}>
+                {latestStaffPick.title}
+              </Link>
+            </h4>
             {tracks && (
               <Button compact startIcon={<FaPlay />} onClick={onPlayClick}>
                 Play

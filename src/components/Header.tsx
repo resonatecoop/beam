@@ -69,7 +69,7 @@ const Header: React.FC = () => {
       />
       <Search />
       {user && token && token !== "" && (
-        <Link to="/library/favorites">Library</Link>
+        <Link to="/library/explore/playlists">Library</Link>
       )}
       <Login />
     </header>
