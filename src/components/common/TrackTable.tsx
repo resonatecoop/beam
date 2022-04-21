@@ -16,6 +16,7 @@ export const TrackTable: React.FC<{
   trackgroupId?: string;
   editable?: boolean;
 }> = React.memo(({ tracks, trackgroupId, editable }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
   const [dragId, setDragId] = React.useState<string>();
   const {
     state: { user },
@@ -57,12 +58,14 @@ export const TrackTable: React.FC<{
 
   const fetchTracks = React.useCallback(
     async (checkTracks: Track[]) => {
+      setIsLoading(true);
       if (user) {
         const newTracks = await mapFavoriteAndPlaysToTracks(checkTracks);
         setDisplayTracks(newTracks);
       } else {
         setDisplayTracks(checkTracks);
       }
+      setIsLoading(false);
     },
     [user]
   );
@@ -75,8 +78,10 @@ export const TrackTable: React.FC<{
     (id: number) => {
       const idx = tracks.findIndex((track) => track.id === id);
       dispatch({
-        type: "addTrackIdsToFrontOfQueue",
-        idsToAdd: tracks.slice(idx, tracks.length).map((track) => track.id),
+        type: "setPlayerQueueIds",
+        playerQueueIds: tracks
+          .slice(idx, tracks.length)
+          .map((track) => track.id),
       });
     },
     [dispatch, tracks]
@@ -89,7 +94,7 @@ export const TrackTable: React.FC<{
     }
   }, [fetchTracks, trackgroupId]);
 
-  if (displayTracks.length === 0) {
+  if (isLoading) {
     return <CenteredSpinner />;
   }
 
@@ -119,6 +124,13 @@ export const TrackTable: React.FC<{
             handleDrop={handleDrop}
           />
         ))}
+        {displayTracks.length === 0 && (
+          <tr>
+            <td colSpan={999} style={{ textAlign: "center" }}>
+              There's no tracks yet in this playlist!
+            </td>
+          </tr>
+        )}
       </tbody>
     </Table>
   );

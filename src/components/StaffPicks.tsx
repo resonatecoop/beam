@@ -39,8 +39,8 @@ const StaffPicks: React.FC = () => {
   const onPlayClick = React.useCallback(() => {
     if (tracks) {
       dispatch({
-        type: "addTrackIdsToFrontOfQueue",
-        idsToAdd: tracks?.map((track) => track.id) ?? [],
+        type: "setPlayerQueueIds",
+        playerQueueIds: tracks?.map((track) => track.id) ?? [],
       });
       dispatch({
         type: "setPlaying",

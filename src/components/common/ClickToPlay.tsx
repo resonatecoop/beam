@@ -78,14 +78,14 @@ const ClickToPlay: React.FC<{
     if (groupId) {
       await fetchTrackGroup(groupId).then((result) => {
         dispatch({
-          type: "addTrackIdsToFrontOfQueue",
-          idsToAdd: result.items.map((item) => item.track.id),
+          type: "setPlayerQueueIds",
+          playerQueueIds: result.items.map((item) => item.track.id),
         });
       });
     } else if (trackId) {
       dispatch({
-        type: "addTrackIdsToFrontOfQueue",
-        idsToAdd: [trackId],
+        type: "setPlayerQueueIds",
+        playerQueueIds: [trackId],
       });
     }
     dispatch({
