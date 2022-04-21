@@ -25,6 +25,7 @@ export function usePagination<T>({
   LoadingButton: () => React.ReactElement;
   results: T[];
   page: number;
+  refresh: () => void;
   isLoading: boolean;
   loadMore: (currentPage: any) => Promise<void>;
 } {
@@ -38,13 +39,13 @@ export function usePagination<T>({
   }, [options]);
 
   const loadMore = React.useCallback(
-    async (currentPage) => {
+    async (currentPage: number, reset?: boolean) => {
       setLoading(true);
       const r = await apiCall({ ...options, page: currentPage });
       setPages(r.numberOfPages ?? r.pages ?? 0);
       setPage(currentPage);
       if (r.data) {
-        setResults((existing) => [...existing, ...r.data]);
+        setResults((existing) => [...(reset ? [] : existing), ...r.data]);
       }
       setLoading(false);
     },
@@ -64,6 +65,9 @@ export function usePagination<T>({
   return {
     results,
     page,
+    refresh: React.useCallback(() => {
+      loadMore(1, true);
+    }, [loadMore]),
     loadMore,
     isLoading,
     LoadingButton: () => (

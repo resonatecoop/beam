@@ -1,14 +1,22 @@
 import { css } from "@emotion/css";
 import React from "react";
+import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchUserHistory } from "../services/Api";
 import usePagination from "../utils/usePagination";
 import TrackTable from "./common/TrackTable";
 
 export const History: React.FC = () => {
-  const { LoadingButton, results } = usePagination<Track>({
+  const {
+    state: { playerQueueIds },
+  } = useGlobalStateContext();
+  const { LoadingButton, results, refresh } = usePagination<Track>({
     apiCall: React.useCallback(fetchUserHistory, []),
     options: React.useMemo(() => ({ limit: 50 }), []),
   });
+
+  React.useEffect(() => {
+    refresh();
+  }, [playerQueueIds, refresh]);
 
   return (
     <div

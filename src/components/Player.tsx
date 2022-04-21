@@ -128,6 +128,14 @@ const Player = () => {
     }
   }, [playing]);
 
+  const onPause = React.useCallback(() => {
+    dispatch({ type: "setPlaying", playing: false });
+  }, [dispatch]);
+
+  const onPlay = React.useCallback(() => {
+    dispatch({ type: "setPlaying", playing: true });
+  }, [dispatch]);
+
   return (
     <div className={playerClass}>
       {currentTrack && (
@@ -179,6 +187,8 @@ const Player = () => {
             src={buildStreamURL(playerQueueIds[0], user?.clientId)}
             ref={playerRef}
             onEnded={onEnded}
+            onPause={onPause}
+            onPlay={onPlay}
             onListen={onListen}
             layout="horizontal"
             className={css`
@@ -192,7 +202,7 @@ const Player = () => {
         <Button
           onClick={onClickQueue}
           compact
-          variant="link"
+          variant="outlined"
           className={css`
             margin-left: 2rem;
             @media (max-width: ${bp.small}px) {
