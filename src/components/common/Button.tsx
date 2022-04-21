@@ -4,11 +4,13 @@ import styled from "@emotion/styled";
 
 export interface Compactable {
   compact?: boolean;
-  variant?: "link";
+  variant?: "link" | "outlined";
 }
 
 const CustomButton = styled.button<Compactable>`
   background: none;
+  border: none;
+
   transition: 0.25s background-color, 0.25s color;
 
   ${(props) => {
@@ -19,6 +21,23 @@ const CustomButton = styled.button<Compactable>`
 
           &:hover:not(:disabled) {
             color: var(--dark-magenta);
+          }
+        `;
+      case "outlined":
+        return `
+          color: var(--magenta);
+          background-color: transparent;
+          border: 2px solid var(--magenta);
+          padding: ${props.compact ? ".3rem .5rem" : "1rem"};
+
+          &:hover:not(:disabled) {
+            color: var(--dark-magenta);
+            border: 2px solid var(--dark-magenta);
+          }
+
+          &[disabled] {
+            color: #ddd;
+            border-color: #ddd;
           }
         `;
       default:
@@ -33,7 +52,6 @@ const CustomButton = styled.button<Compactable>`
         `;
     }
   }}
-  border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -48,12 +66,14 @@ const CustomButton = styled.button<Compactable>`
   }
 
   & .startIcon {
-    margin-right: 1rem;
+    margin-top: 0.1rem;
+    margin-right: 0.5rem;
     line-height: 0.785rem;
   }
 
   & .endIcon {
-    margin-left: 1rem;
+    margin-top: 0.1rem;
+    margin-left: 0.5rem;
     line-height: 0.785rem;
   }
 `;

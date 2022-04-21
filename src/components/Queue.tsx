@@ -1,6 +1,5 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { shuffle } from "lodash";
 import { MdShuffle } from "react-icons/md";
 import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchTrack } from "../services/Api";
@@ -78,8 +77,8 @@ export const Queue: React.FC = () => {
         <h3>Queue</h3>
         {!isLoading && playerQueue?.length > 0 && (
           <>
-            <Button compact onClick={shuffleQueue}>
-              <MdShuffle /> Shuffle
+            <Button compact onClick={shuffleQueue} startIcon={<MdShuffle />}>
+              Shuffle
             </Button>
             <Button compact onClick={clearQueue}>
               Clear queue

@@ -202,7 +202,7 @@ const Player = () => {
         <Button
           onClick={onClickQueue}
           compact
-          variant="link"
+          variant="outlined"
           className={css`
             margin-left: 2rem;
             @media (max-width: ${bp.small}px) {

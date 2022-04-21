@@ -131,6 +131,10 @@ export const fetchTrackGroup = async (
   });
 };
 
+/**
+ * User track groups
+ */
+
 export const createTrackGroup = async (data: {
   cover: string;
   title: string;
@@ -200,6 +204,12 @@ export const setNewTracksOnTrackGroup = async (
   return fetchWrapper(`user/trackgroups/${id}/items`, {
     method: "PUT",
     body: JSON.stringify(data),
+  });
+};
+
+export const deleteUserTrackGroup = async (id: string) => {
+  return fetchWrapper(`user/trackgroups/${id}`, {
+    method: "DELETE",
   });
 };
 

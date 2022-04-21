@@ -1,6 +1,8 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { updateTrackGroup } from "../services/Api";
+import { FaTrash } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import { deleteUserTrackGroup, updateTrackGroup } from "../services/Api";
 import Button from "./common/Button";
 import Input from "./common/Input";
 import TextArea from "./common/TextArea";
@@ -9,6 +11,7 @@ const PlaylistTitleEditing: React.FC<{
   playlist: Trackgroup;
   onDone: () => void;
 }> = ({ playlist, onDone }) => {
+  const navigate = useNavigate();
   const [playlistTitle, setPlaylistTitle] = React.useState(playlist.title);
   const [about, setAbout] = React.useState(playlist.about ?? "");
   const [isPrivate, setPrivate] = React.useState(playlist.private);
@@ -35,6 +38,11 @@ const PlaylistTitleEditing: React.FC<{
     },
     [playlist, playlistTitle, onDone, isPrivate, about]
   );
+
+  const onDelete = React.useCallback(async () => {
+    await deleteUserTrackGroup(playlist.id);
+    navigate("/library/playlist");
+  }, [playlist.id, navigate]);
 
   const togglePrivate = () => {
     setPrivate((v) => !v);
@@ -85,6 +93,15 @@ const PlaylistTitleEditing: React.FC<{
           justify-content: flex-end;
         `}
       >
+        <Button
+          onClick={onDelete}
+          startIcon={<FaTrash />}
+          variant="outlined"
+          disabled
+        >
+          Delete
+        </Button>
+
         <Button onClick={onSave}>Save</Button>
       </div>
     </div>
