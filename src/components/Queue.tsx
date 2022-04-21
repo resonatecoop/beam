@@ -24,13 +24,10 @@ export const Queue: React.FC = () => {
   }, [dispatch]);
 
   const shuffleQueue = React.useCallback(() => {
-    const first = playerQueueIds[0];
-    const shuffled = shuffle(playerQueueIds.slice(1));
     dispatch({
-      type: "setPlayerQueueIds",
-      playerQueueIds: [first, ...shuffled],
+      type: "shuffleQueue",
     });
-  }, [dispatch, playerQueueIds]);
+  }, [dispatch]);
 
   const fetchQueueDetails = React.useCallback(async () => {
     if (playerQueueIds && playerQueueIds.length > 0) {

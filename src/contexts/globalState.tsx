@@ -1,5 +1,6 @@
 import React, { createContext } from "react";
 import produce from "immer";
+import { shuffle } from "lodash";
 
 export interface GlobalState {
   user?: LoggedInUser;
@@ -31,6 +32,10 @@ type PopFromFrontOfQueue = {
   type: "popFromFrontOfQueue";
 };
 
+type ShuffleQueue = {
+  type: "shuffleQueue";
+};
+
 type SetState = {
   type: "setState";
   state: GlobalState;
@@ -60,7 +65,8 @@ type Actions =
   | PopFromFrontOfQueue
   | SetPlaying
   | ClearQueue
-  | SetPlayerQueueIds;
+  | SetPlayerQueueIds
+  | ShuffleQueue;
 
 const stateReducer = produce((draft: GlobalState, action: Actions) => {
   let newDraft = draft;
@@ -85,6 +91,17 @@ const stateReducer = produce((draft: GlobalState, action: Actions) => {
     case "setPlayerQueueIds":
       newDraft.playerQueueIds = action.playerQueueIds;
       break;
+    case "shuffleQueue": {
+      let shuffled: number[] = [];
+      if (draft.playing) {
+        const first = draft.playerQueueIds[0];
+        shuffled = [first, ...shuffle(draft.playerQueueIds.slice(1))];
+      } else {
+        shuffled = shuffle(draft.playerQueueIds);
+      }
+      newDraft.playerQueueIds = shuffled;
+      break;
+    }
     case "clearQueue":
       newDraft.playerQueueIds = [];
       break;
