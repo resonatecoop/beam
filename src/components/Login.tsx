@@ -1,19 +1,20 @@
-import { css } from "@emotion/css";
+// import { css } from "@emotion/css";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../auth";
 
 import { useGlobalStateContext } from "../contexts/globalState";
-import { logInUserWithPassword } from "../services/Api";
+// import { logInUserWithPassword } from "../services/Api";
 import Button from "./common/Button";
 import Disclaimer from "./common/Disclaimer";
-import Input from "./common/Input";
+// import Input from "./common/Input";
 import Modal from "./common/Modal";
 
-const formWrapper = css`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-`;
+// const formWrapper = css`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-start;
+// `;
 
 const Header = () => {
   const {
@@ -21,78 +22,93 @@ const Header = () => {
     dispatch,
   } = useGlobalStateContext();
   const navigate = useNavigate();
-
+  // const { userData } = useAuth();
+  const { signIn, userData } = useAuth();
   const [openLogin, setOpenLogin] = React.useState(false);
-  const [token, setToken] = React.useState<string>(cachedToken ?? "");
-  const [username, setUsername] = React.useState<string>("");
-  const [password, setPassword] = React.useState<string>("");
+  // const [token, setToken] = React.useState<string>(
+  //   userData?.access_token ?? ""
+  // );
+  // const [username, setUsername] = React.useState<string>("");
+  // const [password, setPassword] = React.useState<string>("");
 
   React.useEffect(() => {
-    setToken(cachedToken ?? "");
-  }, [cachedToken]);
-
-  const onClickOpen = React.useCallback(() => {
-    if (cachedToken) {
-      navigate("/profile");
-    } else {
-      setOpenLogin(true);
+    // setToken(userData?.access_token ?? "");
+    if (userData && userData?.access_token !== "") {
+      dispatch({ type: "setToken", token: userData.access_token });
     }
-  }, [navigate, cachedToken]);
+  }, [userData, dispatch]);
+
+  // const onClickOpen = React.useCallback(() => {
+  //   if (cachedToken) {
+  //     navigate("/profile");
+  //   } else {
+  //     setOpenLogin(true);
+  //   }
+  // }, [navigate, cachedToken]);
 
   const onClose = React.useCallback(() => {
     setOpenLogin(false);
   }, []);
 
-  const onChangeToken = React.useCallback(
-    (e?: React.ChangeEvent<HTMLInputElement>) => {
-      setToken(e?.target?.value ?? "");
-    },
-    []
-  );
+  // const onChangeToken = React.useCallback(
+  //   (e?: React.ChangeEvent<HTMLInputElement>) => {
+  //     setToken(e?.target?.value ?? "");
+  //   },
+  //   []
+  // );
 
-  const onChangeEmail = React.useCallback(
-    (e?: React.ChangeEvent<HTMLInputElement>) => {
-      setUsername(e?.target?.value ?? "");
-    },
-    []
-  );
+  // const onChangeEmail = React.useCallback(
+  //   (e?: React.ChangeEvent<HTMLInputElement>) => {
+  //     setUsername(e?.target?.value ?? "");
+  //   },
+  //   []
+  // );
 
-  const onChangePassword = React.useCallback(
-    (e?: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(e?.target?.value ?? "");
-    },
-    []
-  );
+  // const onChangePassword = React.useCallback(
+  //   (e?: React.ChangeEvent<HTMLInputElement>) => {
+  //     setPassword(e?.target?.value ?? "");
+  //   },
+  //   []
+  // );
 
-  const onSubmitToken = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  // const onSubmitToken = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  //   e?.preventDefault();
+  //   dispatch({ type: "setToken", token: token });
+  //   setOpenLogin(false);
+  // };
+
+  // const onLogIn = async (e?: React.MouseEvent<HTMLButtonElement>) => {
+  //   e?.preventDefault();
+  //   const { access_token: token } = await logInUserWithPassword({
+  //     username,
+  //     password,
+  //   });
+  //   setPassword("");
+  //   dispatch({ type: "setToken", token });
+  //   setOpenLogin(false);
+  // };
+
+  const onOAuth2Click = async (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
-    dispatch({ type: "setToken", token: token });
-    setOpenLogin(false);
+    if (userData && userData.access_token !== "") {
+      navigate("/profile");
+    } else {
+      signIn();
+    }
   };
 
-  const onLogIn = async (e?: React.MouseEvent<HTMLButtonElement>) => {
-    e?.preventDefault();
-    const { access_token: token } = await logInUserWithPassword({
-      username,
-      password,
-    });
-    setPassword("");
-    dispatch({ type: "setToken", token });
-    setOpenLogin(false);
-  };
-
-  const isDev = window.location.origin.includes("localhost:8080");
+  // const isDev = window.location.origin.includes("localhost:8080");
 
   return (
     <>
-      <Button onClick={onClickOpen}>
+      <Button onClick={onOAuth2Click}>
         {cachedToken && cachedToken !== "" ? user?.nickname : "Log in"}
       </Button>
       <Modal open={openLogin} onClose={onClose} size="small">
         {/** if the user is on the dev environment, we can't use the v1 api,
          * cause it requires CORS, but if they are in the app, then we can
          * use the API */}
-        {(!cachedToken || cachedToken === "") && (
+        {/* {(!cachedToken || cachedToken === "") && (
           <>
             {isDev && (
               <form className={formWrapper}>
@@ -123,7 +139,7 @@ const Header = () => {
               </form>
             )}
           </>
-        )}
+        )} */}
         <Disclaimer />
       </Modal>
     </>

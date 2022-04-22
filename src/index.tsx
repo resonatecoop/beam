@@ -10,10 +10,29 @@ import { SnackBarContextProvider } from "contexts/SnackbarContext";
 import { ThemeProvider } from "@emotion/react";
 import { theme } from "utils/theme";
 
+import { useNavigate } from "react-router-dom";
+
+const AppHistory: {
+  navigate: null | ((v: any) => void);
+  push: (v: any) => void;
+} = {
+  navigate: null,
+  push: (page, ...rest) => AppHistory.navigate?.(page, ...rest),
+};
+
+const NavigateSetter = () => {
+  AppHistory.navigate = useNavigate();
+  return null;
+};
+
+// @ts-ignore
+window.AppHistory = AppHistory;
+
 const InsideRouter = () => (
   <ThemeProvider theme={theme}>
     <SnackBarContextProvider>
       <GlobalStateProvider>
+        <NavigateSetter />
         <App />
       </GlobalStateProvider>
     </SnackBarContextProvider>

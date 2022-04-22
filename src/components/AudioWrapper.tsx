@@ -4,7 +4,7 @@ import { GlobalState, useGlobalStateContext } from "contexts/globalState";
 import React from "react";
 import AudioPlayer from "react-h5-audio-player";
 import { ImLoop } from "react-icons/im";
-import { registerPlay } from "../services/Api";
+import { getToken, registerPlay } from "../services/Api";
 
 import { buildStreamURL } from "../utils/tracks";
 import IconButton from "./common/IconButton";
@@ -119,7 +119,15 @@ export const AudioWrapper: React.FC<{
   const getAudioSrc = React.useCallback(async () => {
     const streamUrl = buildStreamURL(currentTrack.id, user?.clientId);
     try {
-      const result = await fetch(streamUrl);
+      const { token } = getToken();
+      const result = await fetch(streamUrl, {
+        credentials: "include",
+        mode: "cors",
+        headers: {
+          "Content-Type": "audio/x-m4a; charset=utf-8",
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
       const blob = await result.blob();
       if (blob) {
         playerRef.current.audio.current.src = URL.createObjectURL(blob);
@@ -150,7 +158,6 @@ export const AudioWrapper: React.FC<{
   return (
     <>
       <AudioPlayer
-        // src={buildStreamURL(currentTrack.id, user?.clientId)}
         ref={playerRef}
         onEnded={onEnded}
         onPause={onPause}

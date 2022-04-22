@@ -30,6 +30,10 @@ import Tracks from "./components/Explore/Tracks";
 import SnackbarContext from "contexts/SnackbarContext";
 import Snackbar from "components/common/Snackbar";
 import styled from "@emotion/styled";
+import { AuthProvider } from "./auth";
+import { oidcConfig } from "auth/config";
+
+// export default History;
 
 injectGlobal`
   * {
@@ -134,7 +138,7 @@ function App() {
   }, [fetchUserProfileCallback, token]);
 
   return (
-    <>
+    <AuthProvider {...oidcConfig} autoSignIn={false}>
       {isDisplayed && <Snackbar />}
       <Wrapper>
         <Header />
@@ -170,7 +174,7 @@ function App() {
         </div>
         <Player />
       </Wrapper>
-    </>
+    </AuthProvider>
   );
 }
 

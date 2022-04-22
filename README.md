@@ -19,10 +19,20 @@ Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-Note on local authentication - you will have to grab your `token` from [https://stream.resonate.coop](https://stream.resonate.coop).
-Log in normally through the [web app](https://stream.resonate.coop/login) and then visit your profile's endpoint to view your `token`:
+### Logging in.
 
-[https://stream.resonate.coop/api/v2/user/profile/](https://stream.resonate.coop/api/v2/user/profile/)
+By default, most of the app will work without logging in, but if you want to log in you'll need a `client_secret`. Logging in will let you play complete songs, manage your playlists, etc.
+
+First, create a local .env file:
+
+```bash
+cp .env .env.local
+```
+
+Then, you'll need to set `REACT_APP_CLIENT_SECRET` to be the client \
+secret for your client app. If you're working on beam directly, \
+you can message [Si](https://community.resonate.is/u/psi/summary) \
+to get a client secret.
 
 ### Production build
 

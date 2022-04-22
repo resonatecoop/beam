@@ -1,7 +1,25 @@
 import { resonateUrl } from "../constants";
-import { GlobalState } from "../contexts/globalState";
 
 const API = `${resonateUrl}api/`;
+
+export const getToken = (apiVersion?: string | number) => {
+  let token: string | undefined = undefined;
+  try {
+    const stateString = localStorage.getItem("state");
+    const state = JSON.parse(stateString ?? "");
+    token = state?.token;
+  } catch (e) {}
+
+  let version = apiVersion ?? "v3";
+
+  try {
+    const oauthStateString = localStorage.getItem("oauth");
+    const oauthState = JSON.parse(oauthStateString ?? "");
+    token = oauthState.access_token;
+    version = apiVersion ?? "v3";
+  } catch (e) {}
+  return { token: token, version };
+};
 
 const fetchWrapper = async (
   url: string,
@@ -9,13 +27,7 @@ const fetchWrapper = async (
   apiOptions?: APIOptions,
   pagination?: boolean
 ) => {
-  const apiVersion = apiOptions?.apiVersion ?? "v2";
-
-  const stateString = localStorage.getItem("state");
-  let state: undefined | GlobalState;
-  try {
-    state = JSON.parse(stateString ?? "");
-  } catch (e) {}
+  const { token, version: apiVersion } = getToken(apiOptions?.apiVersion);
   let fullUrl = `${API}${apiVersion}/${url}`;
   if (apiOptions && options.method === "GET") {
     const params = new URLSearchParams();
@@ -27,9 +39,7 @@ const fetchWrapper = async (
   return fetch(fullUrl, {
     headers: {
       "Content-Type": "application/json",
-      ...(state && state.token
-        ? { Authorization: `Bearer ${state.token}` }
-        : {}),
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     ...options,
   })
@@ -44,28 +54,28 @@ const fetchWrapper = async (
     });
 };
 
-export const logInUserWithPassword = async ({
-  username,
-  password,
-}: {
-  username: string;
-  password: string;
-}): Promise<{
-  access_token: string;
-  access_token_expires: string;
-  client_id: string;
-}> => {
-  return fetchWrapper(
-    "oauth2/password",
-    {
-      method: "POST",
-      body: JSON.stringify({ username, password }),
-    },
-    {
-      apiVersion: "v1",
-    }
-  );
-};
+// export const logInUserWithPassword = async ({
+//   username,
+//   password,
+// }: {
+//   username: string;
+//   password: string;
+// }): Promise<{
+//   access_token: string;
+//   access_token_expires: string;
+//   client_id: string;
+// }> => {
+//   return fetchWrapper(
+//     "oauth2/password",
+//     {
+//       method: "POST",
+//       body: JSON.stringify({ username, password }),
+//     },
+//     {
+//       apiVersion: "v1",
+//     }
+//   );
+// };
 
 /**
  * User endpoints
@@ -393,31 +403,19 @@ export const registerPlay = (
   userId: number,
   trackId: number
 ): Promise<void> => {
-  return fetchWrapper(
-    `users/${userId}/plays`,
-    {
-      method: "POST",
-      body: JSON.stringify({ tid: trackId }),
-    },
-    {
-      apiVersion: "v1",
-    }
-  );
+  return fetchWrapper(`user/plays`, {
+    method: "POST",
+    body: JSON.stringify({ track_id: trackId }),
+  });
 };
 
 export const buyTrack = async (userId: number, trackId: number) => {
-  return fetchWrapper(
-    `users/${userId}/plays/buy`,
-    {
-      method: "POST",
-      body: JSON.stringify({
-        tid: trackId,
-      }),
-    },
-    {
-      apiVersion: "v1",
-    }
-  );
+  return fetchWrapper(`user/plays/buy`, {
+    method: "POST",
+    body: JSON.stringify({
+      track_id: trackId,
+    }),
+  });
 };
 
 export const checkPlayCountOfTrackIds = async (
