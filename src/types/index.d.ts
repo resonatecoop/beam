@@ -2,6 +2,13 @@
 export {};
 
 declare global {
+  interface Window {
+		darkMode: { 
+                  toggle: () => void 
+                  system: () => void
+                 };
+  }
+
   interface APIOptions {
     [key: string]: string | number | undefined;
   }
