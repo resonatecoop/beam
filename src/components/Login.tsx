@@ -98,7 +98,7 @@ const Header = () => {
               <form className={formWrapper}>
                 <label>
                   Because you're developing the app you need to log in with your
-                  own <code>clientId</code>. You can copy it from any v2 API
+                  own <code>token</code>. You can copy it from any v2 API
                   request header on stream.resonate.coop. It's a hack until the
                   authentication situation is fixed.
                 </label>
