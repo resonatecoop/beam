@@ -26,5 +26,5 @@ export const tags = [
   "podcasts",
   "pop",
   "punk",
-  "reggea",
+  "reggae",
 ];
