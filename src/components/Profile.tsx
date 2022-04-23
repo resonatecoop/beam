@@ -54,6 +54,28 @@ const Profile: React.FC = () => {
   React.useEffect(() => {
     fetchStats();
   }, [fetchStats]);
+  const toggleDarkMode = async () => {
+    const isDarkMode = await window.darkMode.toggle()
+    if (
+      document
+      && document.getElementById('theme-source') !== null
+      && 'innerHTML' in document.getElementById('theme-source')
+    ) {
+      document.getElementById('theme-source').innerHTML = isDarkMode ? 'Dark' : 'Light'
+    }
+  }
+  
+  const resetToSystem = async () => {
+    await window.darkMode.system()
+    if (
+      document
+      && document.getElementById('theme-source') !== null
+      && 'innerHTML' in document.getElementById('theme-source')
+    ) {
+      document.getElementById('theme-source').innerHTML = 'System'
+    }
+  }
+
 
   return (
     <div
@@ -62,6 +84,8 @@ const Profile: React.FC = () => {
         max-width: 820px;
       `}
     >
+      <Button onClick={toggleDarkMode}>Toggle Dark Mode</Button>
+      <Button onClick={resetToSystem}>Reset to System Theme</Button>
       {user && (
         <div
           className={css`
