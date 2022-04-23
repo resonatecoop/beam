@@ -19,8 +19,8 @@ Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-Note on local authentication - you will have to grab your `clientId` from https://stream.resonate.coop.
-Log in normally through the web app and then visit your profile's endpoint to view your `clientId`:
+Note on local authentication - you will have to grab your `token` from https://stream.resonate.coop.
+Log in normally through the web app and then visit your profile's endpoint to view your `token`:
 
 https://stream.resonate.coop/api/v2/user/profile/ 
 
