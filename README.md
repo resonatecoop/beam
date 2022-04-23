@@ -9,6 +9,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ```
 git clone git@github.com:simonv3/beam.git
 cd beam
+yarn install
 yarn start
 ```
 
@@ -17,6 +18,11 @@ Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
+
+Note on local authentication - you will have to grab your `clientId` from https://stream.resonate.coop.
+Log in normally through the web app and then visit your profile's endpoint to view your `clientId`:
+
+https://stream.resonate.coop/api/v2/user/profile/ 
 
 ## Production build
 
