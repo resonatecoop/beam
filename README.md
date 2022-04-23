@@ -4,11 +4,12 @@ This is a music player that uses Resonate's API.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# Development
+## Development
 
-```
+```bash
 git clone git@github.com:simonv3/beam.git
 cd beam
+yarn install
 yarn start
 ```
 
@@ -18,41 +19,54 @@ Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-## Production build
+Note on local authentication - you will have to grab your `token` from [https://stream.resonate.coop](https://stream.resonate.coop).
+Log in normally through the [web app](https://stream.resonate.coop/login) and then visit your profile's endpoint to view your `token`:
 
-```
+[https://stream.resonate.coop/api/v2/user/profile/](https://stream.resonate.coop/api/v2/user/profile/)
+
+### Production build
+
+```bash
 yarn build
 ```
 
 You can then run that locally with
 
-```
+```bash
 yarn serve
 ```
 
-## Tests
+### Tests
 
-```
+for unit tests:
+
+```bash
 yarn test
 ```
 
-# Electron
+for cypress tests:
 
-Set up using https://mmazzarolo.com/blog/2021-08-12-building-an-electron-application-using-create-react-app/
+```bash
+yarn cypress:open
+```
+
+## Electron
+
+Set up using [this blog post](https://mmazzarolo.com/blog/2021-08-12-building-an-electron-application-using-create-react-app/)
 
 To try it locally do:
 
-```
+```bash
 yarn electron:start
 ```
 
 To build it for your system:
 
-```
+```bash
 yarn electron:package:<linux|mac|windows>
 ```
 
-# Preparing a release
+## Preparing a release
 
 In a distinct commit that _just_ bumps the version.
 
