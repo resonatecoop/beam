@@ -55,14 +55,16 @@ const Profile: React.FC = () => {
     fetchStats();
   }, [fetchStats]);
   const toggleDarkMode = async () => {
-    const isDarkMode = window.darkMode.toggle()
-    const themeSource = document.getElementById('theme-source')
-    if (
-      document
-      && themeSource
-      && 'innerHTML' in themeSource
-    ) {
-      themeSource.innerHTML = isDarkMode ? 'Dark' : 'Light'
+    if (window.darkMode) {
+      const isDarkMode = window.darkMode.toggle()
+      const themeSource = document.getElementById('theme-source')
+      if (
+        document
+        && themeSource
+        && 'innerHTML' in themeSource
+      ) {
+        themeSource.innerHTML = isDarkMode ? 'Dark' : 'Light'
+      }
     }
   }
 
@@ -86,8 +88,10 @@ const Profile: React.FC = () => {
         max-width: 820px;
       `}
     >
+  {window.darkMode && <>
       <Button onClick={toggleDarkMode}>Toggle Dark Mode</Button>
       <Button onClick={resetToSystem}>Reset to System Theme</Button>
+   </>}
       {user && (
         <div
           className={css`

@@ -3,7 +3,7 @@ export {};
 
 declare global {
   interface Window {
-		darkMode: {
+    darkMode?: {
       toggle: () => boolean 
       system: () => void
     };
