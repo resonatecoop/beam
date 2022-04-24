@@ -2,8 +2,9 @@ import { css } from "@emotion/css";
 import React from "react";
 import { FaPause, FaPlay } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useGlobalStateContext } from "../../contexts/globalState";
-import { isTrackWithUserCounts } from "../../typeguards";
+import { useGlobalStateContext } from "contexts/globalState";
+import { isTrackWithUserCounts } from "typeguards";
+import useDraggableTrack from "utils/useDraggableTrack";
 
 import { FavoriteTrack } from "./FavoriteTrack";
 import IconButton from "./IconButton";
@@ -14,7 +15,6 @@ const TrackRow: React.FC<{
   trackgroupId?: string;
   addTracksToQueue: (id: number) => void;
   reload: () => Promise<void>;
-  handleDrag: (val: React.DragEvent<HTMLTableRowElement>) => void;
   handleDrop: (val: React.DragEvent<HTMLTableRowElement>) => void;
   editable?: boolean;
 }> = ({
@@ -22,7 +22,6 @@ const TrackRow: React.FC<{
   addTracksToQueue,
   trackgroupId,
   reload,
-  handleDrag,
   handleDrop,
   editable,
 }) => {
@@ -30,7 +29,7 @@ const TrackRow: React.FC<{
     state: { playerQueueIds, playing },
     dispatch,
   } = useGlobalStateContext();
-
+  const { onDragStart, onDragEnd } = useDraggableTrack();
   const currentTrackId = playerQueueIds[0];
 
   const onTrackPlay = React.useCallback(() => {
@@ -40,20 +39,6 @@ const TrackRow: React.FC<{
 
   const onTrackPause = React.useCallback(() => {
     dispatch({ type: "setPlaying", playing: false });
-  }, [dispatch]);
-
-  const onDragStart = React.useCallback(
-    (ev: React.DragEvent<HTMLTableRowElement>) => {
-      dispatch({
-        type: "setDraggingTrackId",
-        draggingTrackId: +ev.currentTarget.id,
-      });
-    },
-    [dispatch]
-  );
-
-  const onDragEnd = React.useCallback(() => {
-    dispatch({ type: "setDraggingTrackId", draggingTrackId: undefined });
   }, [dispatch]);
 
   return (

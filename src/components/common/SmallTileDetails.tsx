@@ -49,6 +49,7 @@ export const SmallTileDetails: React.FC<{
       <div
         className={css`
           flex-grow: 1;
+          pointer-events: none;
         `}
       />
       {moreActions && (

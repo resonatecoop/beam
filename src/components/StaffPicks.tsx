@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import { random } from "lodash";
 import React from "react";
 import { FaPlay } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useGlobalStateContext } from "../contexts/globalState";
 
 import { fetchTrackGroup } from "../services/Api";
@@ -21,6 +21,8 @@ const staffPicks = [
 const StaffPicks: React.FC = () => {
   const { dispatch } = useGlobalStateContext();
   const [isLoading, setIsLoading] = React.useState(false);
+  const { pathname } = useLocation();
+  const editable = pathname.includes("library");
   const [latestStaffPick, setLatestStaffPick] =
     React.useState<TrackgroupDetail>();
   const [tracks, setTracks] = React.useState<Track[]>();
@@ -98,7 +100,7 @@ const StaffPicks: React.FC = () => {
         {latestStaffPick?.about}
       </div>
 
-      {tracks && <TrackList tracks={tracks} />}
+      {tracks && <TrackList tracks={tracks} draggable={editable} />}
     </div>
   );
 };

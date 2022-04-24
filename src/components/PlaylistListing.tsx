@@ -17,7 +17,7 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
   onClick,
 }) => {
   const {
-    state: { user, draggingTrackId },
+    state: { user },
   } = useGlobalStateContext();
   const { playlistId } = useParams();
   const { pathname } = useLocation();
@@ -46,17 +46,6 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
       fetchPlaylistsCallback(userId);
     }
   }, [fetchPlaylistsCallback, userId]);
-
-  const onDrop = React.useCallback(
-    (id) => {
-      if (draggingTrackId && id) {
-        addTracksToTrackGroup(id, {
-          tracks: [{ track_id: draggingTrackId }],
-        });
-      }
-    },
-    [draggingTrackId]
-  );
 
   return (
     <div
@@ -102,22 +91,64 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
         </li>
         <hr className={divider} />
         {playlists?.map((playlist) => (
-          <li
-            key={playlist.id}
-            className={css``}
-            onDrop={() => onDrop(playlist.id)}
-            onDragOver={(ev) => ev.preventDefault()}
-            // onDragEnter={onDrop}
-          >
-            <NavLink
-              className={listButtonClass}
-              to={`/library/playlist/${playlist.id}`}
-            >
-              {playlist.title}
-            </NavLink>
-          </li>
+          <PlaylistLI key={playlist.id} playlist={playlist} />
         ))}
       </ul>
     </div>
+  );
+};
+
+const PlaylistLI: React.FC<{ playlist: Trackgroup }> = ({ playlist }) => {
+  const {
+    state: { draggingTrackId },
+  } = useGlobalStateContext();
+  const [isHoveringOver, setIsHoveringOver] = React.useState(false);
+
+  const onDragEnter = () => {
+    setIsHoveringOver(true);
+  };
+
+  const onDragLeave = () => {
+    setIsHoveringOver(false);
+  };
+
+  const onDrop = React.useCallback(
+    (id) => {
+      if (draggingTrackId && id) {
+        addTracksToTrackGroup(id, {
+          tracks: [{ track_id: draggingTrackId }],
+        });
+      }
+      setIsHoveringOver(false);
+    },
+    [draggingTrackId]
+  );
+
+  return (
+    <li
+      key={playlist.id}
+      className={
+        isHoveringOver
+          ? css`
+              background-color: var(--magenta) !important;
+
+              > a {
+                color: white;
+              }
+            `
+          : ""
+      }
+      onDrop={() => onDrop(playlist.id)}
+      onDragOver={(ev) => ev.preventDefault()}
+      onDragEnter={onDragEnter}
+      onDragLeave={onDragLeave}
+    >
+      <NavLink
+        className={listButtonClass}
+        to={`/library/playlist/${playlist.id}`}
+      >
+        {playlist.title}
+      </NavLink>
+    </li>
   );
 };

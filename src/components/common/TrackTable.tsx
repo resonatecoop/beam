@@ -1,13 +1,12 @@
-import produce from "immer";
 import { cloneDeep, isEqual } from "lodash";
 import React from "react";
-import { useGlobalStateContext } from "../../contexts/globalState";
-import {
-  fetchUserTrackGroup,
-  setNewTracksOnTrackGroup,
-} from "../../services/Api";
+import { useGlobalStateContext } from "contexts/globalState";
+import { fetchUserTrackGroup, setNewTracksOnTrackGroup } from "services/Api";
 
-import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
+import {
+  determineNewTrackOrder,
+  mapFavoriteAndPlaysToTracks,
+} from "utils/tracks";
 import { CenteredSpinner } from "./Spinner";
 import Table from "./Table";
 import TrackRow from "./TrackRow";
@@ -24,34 +23,9 @@ export const TrackTable: React.FC<{
       dispatch,
     } = useGlobalStateContext();
 
-    const handleDrag = (ev: React.DragEvent<HTMLTableRowElement>) => {
-      dispatch({
-        type: "setDraggingTrackId",
-        draggingTrackId: +ev.currentTarget.id,
-      });
-    };
-
     const [displayTracks, setDisplayTracks] = React.useState<
       (TrackWithUserCounts | Track)[]
     >([]);
-
-    const determineNewTrackOrder = produce(
-      (
-        oldTracks: (TrackWithUserCounts | Track)[],
-        droppedInId: string,
-        draggingTrackId: number
-      ) => {
-        const dragIdx = oldTracks.findIndex(
-          (track) => track.id === draggingTrackId
-        );
-        const dropIdx = oldTracks.findIndex(
-          (track) => `${track.id}` === droppedInId
-        );
-        const draggedItem = oldTracks.splice(dragIdx, 1);
-        oldTracks.splice(dropIdx, 0, draggedItem[0]);
-        return oldTracks;
-      }
-    );
 
     const handleDrop = React.useCallback(
       async (ev: React.DragEvent<HTMLTableRowElement>) => {
@@ -75,13 +49,7 @@ export const TrackTable: React.FC<{
           }
         }
       },
-      [
-        determineNewTrackOrder,
-        displayTracks,
-        editable,
-        trackgroupId,
-        draggingTrackId,
-      ]
+      [displayTracks, editable, trackgroupId, draggingTrackId]
     );
 
     const fetchTracks = React.useCallback(
@@ -150,7 +118,6 @@ export const TrackTable: React.FC<{
               trackgroupId={trackgroupId}
               reload={reload}
               editable={editable}
-              handleDrag={handleDrag}
               handleDrop={handleDrop}
             />
           ))}
