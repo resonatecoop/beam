@@ -42,14 +42,29 @@ const TrackRow: React.FC<{
     dispatch({ type: "setPlaying", playing: false });
   }, [dispatch]);
 
+  const onDragStart = React.useCallback(
+    (ev: React.DragEvent<HTMLTableRowElement>) => {
+      dispatch({
+        type: "setDraggingTrackId",
+        draggingTrackId: +ev.currentTarget.id,
+      });
+    },
+    [dispatch]
+  );
+
+  const onDragEnd = React.useCallback(() => {
+    dispatch({ type: "setDraggingTrackId", draggingTrackId: undefined });
+  }, [dispatch]);
+
   return (
     <tr
       key={track.id}
       id={`${track.id}`}
       onDragOver={(ev) => ev.preventDefault()}
-      draggable={editable}
-      onDragStart={handleDrag}
+      draggable={true}
+      onDragStart={onDragStart}
       onDrop={handleDrop}
+      onDragEnd={onDragEnd}
       className={css`
         > td > .play-button {
           opacity: 0;

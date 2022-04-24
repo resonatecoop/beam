@@ -7,6 +7,7 @@ export interface GlobalState {
   playerQueueIds: number[];
   token?: string;
   playing?: boolean;
+  draggingTrackId?: number;
 }
 
 type SetLoggedInUser = {
@@ -56,6 +57,11 @@ type SetPlayerQueueIds = {
   playerQueueIds: number[];
 };
 
+type SetDraggingTrackId = {
+  type: "setDraggingTrackId";
+  draggingTrackId: number | undefined;
+};
+
 type Actions =
   | SetLoggedInUser
   | SetState
@@ -66,7 +72,8 @@ type Actions =
   | SetPlaying
   | ClearQueue
   | SetPlayerQueueIds
-  | ShuffleQueue;
+  | ShuffleQueue
+  | SetDraggingTrackId;
 
 const stateReducer = produce((draft: GlobalState, action: Actions) => {
   let newDraft = draft;
@@ -110,6 +117,9 @@ const stateReducer = produce((draft: GlobalState, action: Actions) => {
       break;
     case "setPlaying":
       newDraft.playing = action.playing;
+      break;
+    case "setDraggingTrackId":
+      newDraft.draggingTrackId = action.draggingTrackId;
       break;
     default:
       break;

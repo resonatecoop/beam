@@ -1,3 +1,4 @@
+import produce from "immer";
 import {
   checkPlayCountOfTrackIds,
   checkTrackIdsForFavorite,
@@ -13,11 +14,13 @@ export const mapFavoriteAndPlaysToTracks = async (
   );
   const plays = await checkPlayCountOfTrackIds(checkTracks.map((c) => c.id));
 
-  return checkTracks.map((t) => ({
-    ...t,
-    favorite: !!favorites.find((f) => f.track_id === t.id),
-    plays: plays.find((f) => f.track_id === t.id)?.count ?? 0,
-  }));
+  return checkTracks.map(
+    produce((t) => ({
+      ...t,
+      favorite: !!favorites.find((f) => f.track_id === t.id),
+      plays: plays.find((f) => f.track_id === t.id)?.count ?? 0,
+    }))
+  );
 };
 
 export function formatCredit(tokens: number) {
