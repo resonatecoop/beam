@@ -1,0 +1,14 @@
+{
+  "data": {
+    "name": "Schmee",
+    "clientId": "1234",
+    "credits": "1.23",
+    "id": 123,
+    "legacyId": 222,
+    "nickname": "schmee",
+    "ownerGroups": [],
+    "role": "listener",
+    "token": "4321",
+    "uid": 1234
+  }
+}

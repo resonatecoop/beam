@@ -70,7 +70,7 @@ export const FullScreenSpinner: React.FC = () => {
 
 export const Spinner: React.FC = () => {
   return (
-    <div className={spinnerClass}>
+    <div className={spinnerClass} data-cy="spinner">
       <div></div>
       <div></div>
     </div>

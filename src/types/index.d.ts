@@ -4,8 +4,8 @@ export {};
 declare global {
   interface Window {
     darkMode?: {
-      toggle: () => boolean 
-      system: () => void
+      toggle: () => boolean;
+      system: () => void;
     };
   }
 

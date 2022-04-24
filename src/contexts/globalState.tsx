@@ -144,8 +144,12 @@ export const GlobalStateProvider: React.FC<GlobalStateProviderProps> = ({
 }) => {
   const storedStateString = localStorage.getItem("state");
   let storedState = undefined;
+
   try {
     storedState = JSON.parse(storedStateString ?? "");
+    if (!storedState.playerQueueIds) {
+      storedState.playerQueueIds = [];
+    }
   } catch (e) {}
   const [state, dispatch] = React.useReducer(
     stateReducer,
