@@ -25,7 +25,10 @@ export function isArtistSearchResult(
   if (!entity) {
     return false;
   }
-  return (entity as ArtistSearchResult).kind === "artist";
+  return (
+    (entity as ArtistSearchResult).kind === "artist" ||
+    (entity as ArtistSearchResult).kind === "band"
+  );
 }
 
 export function isTrackSearchResult(
@@ -44,6 +47,15 @@ export function isLabelSearchResult(
     return false;
   }
   return (entity as LabelSearchResult).kind === "label";
+}
+
+export function isAlbumSearchResult(
+  entity: unknown
+): entity is AlbumSearchResult {
+  if (!entity) {
+    return false;
+  }
+  return (entity as AlbumSearchResult).kind === "album";
 }
 
 export function isTrackWithUserCounts(

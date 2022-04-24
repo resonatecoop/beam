@@ -3,12 +3,14 @@ import React from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { fetchSearchResults } from "../services/Api";
 import {
+  isAlbumSearchResult,
   isArtistSearchResult,
   isLabelSearchResult,
   isTrackSearchResult,
 } from "../typeguards";
 import ClickToPlay from "./common/ClickToPlay";
 import EmptyBox from "./common/EmptyBox";
+import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
 import ResultListItem from "./common/ResultListItem";
 import SmallTileDetails from "./common/SmallTileDetails";
 
@@ -43,19 +45,18 @@ export const SearchResults: React.FC = () => {
               {(isArtistSearchResult(result) ||
                 isLabelSearchResult(result)) && (
                 <>
-                  <img
+                  <ImageWithPlaceholder
                     src={result.images?.["profile_photo-sm"]}
                     className={css`
                       background-color: #ddd;
                     `}
-                    width={120}
-                    height={120}
+                    size={120}
                     alt={result.name}
                   />
                   <SmallTileDetails
                     title={
                       <Link to={`/library/artist/${result.user_id}`}>
-                        {result.name}
+                        {result.kind}: {result.name}
                       </Link>
                     }
                     subtitle={""}
@@ -69,15 +70,38 @@ export const SearchResults: React.FC = () => {
                     <ClickToPlay
                       title={result.title}
                       image={result.images.small}
+                      trackId={result.track_id}
+                    />
+                  )}
+                  <SmallTileDetails
+                    title={`Track: ${result.title}`}
+                    subtitle={result.display_artist}
+                  />
+                </>
+              )}
+              {isAlbumSearchResult(result) && (
+                <>
+                  {result.images?.small && (
+                    <ClickToPlay
+                      title={result.title}
+                      image={result.images.small}
+                      groupId={result.track_group_id}
                     />
                   )}
                   <SmallTileDetails
                     title={
-                      <Link to={`/library/artist/${result.track_id}`}>
-                        {result.title}
+                      <Link to={`/library/trackgroup/${result.track_group_id}`}>
+                        {result.kind}: {result.title}
                       </Link>
                     }
-                    subtitle={result.display_artist}
+                    subtitle={
+                      <>
+                        by:{" "}
+                        <Link to={`/library/artist/${result.creator_id}`}>
+                          {result.display_artist}
+                        </Link>
+                      </>
+                    }
                   />
                 </>
               )}
