@@ -1,6 +1,10 @@
 name: Lint Commit Messages
-on: [push, pull_request, pull_request_target]
-
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+  
 jobs:
   commitlint:
     runs-on: ubuntu-latest
