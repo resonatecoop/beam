@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+const API_V2 = "https://stream.resonate.coop/api/v2/";
+
 const expectPlayingAudio = () => {
   cy.get("audio,video").should((els) => {
     let audible = false;
@@ -16,15 +18,14 @@ const expectPlayingAudio = () => {
 };
 
 describe("home page", () => {
-  beforeEach(() => {
-    // Cypress starts out with a blank slate for each test
-    // so we must tell it to visit our website with the `cy.visit()` command.
-    // Since we want to visit the same URL at the start of all our tests,
-    // we include it in our beforeEach function so that it runs before each test
-    cy.visit("/");
-  });
-
   describe("unauthenticated", () => {
+    beforeEach(() => {
+      // Cypress starts out with a blank slate for each test
+      // so we must tell it to visit our website with the `cy.visit()` command.
+      // Since we want to visit the same URL at the start of all our tests,
+      // we include it in our beforeEach function so that it runs before each test
+      cy.visit("/");
+    });
     it("navigate the home page", () => {
       cy.get("h2").should("contain", "co-operative");
       cy.get("h3").should("contain", "New releases");
@@ -65,7 +66,6 @@ describe("home page", () => {
       cy.location().should((loc) => {
         expect(loc.href).contain("library/artist");
       });
-      cy.get("h4").contains("Top Tracks");
       cy.get("h4").contains("Releases");
 
       cy.get("table").contains("Title");
@@ -86,6 +86,51 @@ describe("home page", () => {
       cy.get("[data-cy='queue'] img").should("not.have.length", 0);
       cy.get("button").contains("Clear queue").click();
       cy.get("div").contains("Your queue is empty");
+    });
+  });
+
+  describe("authenticated", () => {
+    beforeEach(() => {
+      window.localStorage.setItem("state", JSON.stringify({ token: "1234" }));
+      cy.visit("/");
+      cy.intercept("GET", API_V2 + "user/profile", { fixture: "user.json" }).as(
+        "getProfile"
+      );
+      cy.wait("@getProfile").then(() => {});
+    });
+    it("should show the user's username in the header", () => {
+      cy.get("header").contains("schmee");
+    });
+
+    it("should be able to navigate to the user's library", () => {
+      cy.intercept("GET", API_V2 + "artists?limit=50&page=1").as("getArtists");
+      cy.intercept(
+        "GET",
+        API_V2 + "tracks/latest?limit=50&order=plays&page=1"
+      ).as("getPlays");
+      cy.get("a").contains("Library").click();
+      cy.get("h2").contains("Library");
+      cy.get("h3")
+        .contains("Explore Resonate")
+        .next("div")
+        .within(() => {
+          cy.get("li a").contains("Artists").click();
+        });
+      cy.wait("@getArtists").then(() => {
+        cy.get("img").should("have.length.above", 1);
+      });
+      cy.get("li a").contains("Labels").click();
+      cy.get("li a").contains("Releases").click();
+      cy.get("li a").contains("Tracks").click();
+      cy.get("select").select("plays");
+      cy.wait("@getPlays").then(() => {});
+      cy.get("h3")
+        .contains("Explore Resonate")
+        .next("div")
+        .next("div")
+        .within(() => {
+          cy.get("li a").should("have.length.above", 1);
+        });
     });
   });
 });
