@@ -6,6 +6,7 @@ import ResultListItem from "./common/ResultListItem";
 import SmallTileDetails from "./common/SmallTileDetails";
 import TrackPopup from "./common/TrackPopup";
 import usePagination from "../utils/usePagination";
+import Tags from "./common/Tags";
 
 export const TagList: React.FC = () => {
   const { tagString } = useParams();
@@ -15,7 +16,7 @@ export const TagList: React.FC = () => {
   const { LoadingButton, results } = usePagination<TagResult>({
     apiCall: fetchByTag,
     options: React.useMemo(
-      () => ({ tag: tagString ?? "", limit: 10 }),
+      () => ({ tag: tagString ?? "", limit: 20 }),
       [tagString]
     ),
   });
@@ -45,6 +46,7 @@ export const TagList: React.FC = () => {
                     {group.display_artist}
                   </Link>
                 }
+                footer={<Tags tags={group.tags} />}
                 moreActions={<TrackPopup groupId={group.track_group_id} />}
               />
             </ResultListItem>

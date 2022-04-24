@@ -125,7 +125,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/tag/:tagString" element={<TagList />} />
           <Route path="/library" element={<Library />}>
             <Route path="queue" element={<Queue />} />
             <Route path="search" element={<SearchResults />} />
@@ -139,6 +138,7 @@ function App() {
             <Route path="playlist/:playlistId" element={<PlaylistTracks />} />
             <Route path="label/:labelId" element={<LabelPage />} />
             <Route path="artist/:artistId" element={<ArtistPage />} />
+            <Route path="tag/:tagString" element={<TagList />} />
             <Route
               path="trackgroup/:trackgroupId"
               element={<TrackgroupPage />}
