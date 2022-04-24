@@ -3,7 +3,7 @@ import React from "react";
 import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
 import { bp } from "../constants";
 import { useGlobalStateContext } from "../contexts/globalState";
-import { fetchUserTrackGroups } from "../services/Api";
+import { addTracksToTrackGroup, fetchUserTrackGroups } from "../services/Api";
 import AddPlaylist from "./AddPlaylist";
 import { listButtonClass } from "./common/ListButton";
 
@@ -17,7 +17,7 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
   onClick,
 }) => {
   const {
-    state: { user },
+    state: { user, draggingTrackId },
   } = useGlobalStateContext();
   const { playlistId } = useParams();
   const { pathname } = useLocation();
@@ -46,6 +46,17 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
       fetchPlaylistsCallback(userId);
     }
   }, [fetchPlaylistsCallback, userId]);
+
+  const onDrop = React.useCallback(
+    (id) => {
+      if (draggingTrackId && id) {
+        addTracksToTrackGroup(id, {
+          tracks: [{ track_id: draggingTrackId }],
+        });
+      }
+    },
+    [draggingTrackId]
+  );
 
   return (
     <div
@@ -91,7 +102,13 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
         </li>
         <hr className={divider} />
         {playlists?.map((playlist) => (
-          <li key={playlist.id} className={css``}>
+          <li
+            key={playlist.id}
+            className={css``}
+            onDrop={() => onDrop(playlist.id)}
+            onDragOver={(ev) => ev.preventDefault()}
+            // onDragEnter={onDrop}
+          >
             <NavLink
               className={listButtonClass}
               to={`/library/playlist/${playlist.id}`}

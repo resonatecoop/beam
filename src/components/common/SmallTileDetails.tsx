@@ -4,8 +4,9 @@ import React from "react";
 export const SmallTileDetails: React.FC<{
   title: string | React.ReactElement;
   subtitle: string | React.ReactElement;
+  footer?: string | React.ReactElement;
   moreActions?: React.ReactElement;
-}> = ({ title, subtitle, moreActions }) => {
+}> = ({ title, subtitle, moreActions, footer }) => {
   return (
     <>
       <div
@@ -29,6 +30,20 @@ export const SmallTileDetails: React.FC<{
           `}
         >
           {subtitle}
+        </div>
+        <div
+          className={css`
+            color: #444;
+            font-size: 0.85rem;
+            margin-top: 0.25rem;
+            ul > li {
+              background-color: transparent;
+              margin-left: 0;
+              padding-left: 0;
+            }
+          `}
+        >
+          {footer}
         </div>
       </div>
       <div

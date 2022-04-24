@@ -368,6 +368,21 @@ export const fetchArtistTopTracks = (artistId: number): Promise<Track[]> => {
  * Track endpoints
  */
 
+export const fetchLatestTracks = (
+  options: APIOptions
+): Promise<APIPaginatedResult<Track>> => {
+  return fetchWrapper(
+    `tracks/${options.order !== "random" ? "latest" : ""}`,
+    {
+      method: "GET",
+    },
+    options,
+    true
+  ).then((results) => {
+    return { ...results, data: results.data.map((r: Track) => ({ ...r })) };
+  });
+};
+
 export const fetchTrack = (trackId: number): Promise<Track> => {
   return fetchWrapper(`tracks/${trackId}`, {
     method: "GET",

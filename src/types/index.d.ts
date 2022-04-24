@@ -144,12 +144,6 @@ declare global {
 
   interface Favorite extends Track {}
 
-  interface SearchResultBase {
-    tags: string[];
-    _id: string;
-    score: number;
-  }
-
   interface Label {
     name: string;
     id: number;
@@ -175,6 +169,12 @@ declare global {
     items: TrackgroupItem[];
   }
 
+  interface SearchResultBase {
+    tags: string[];
+    _id: string;
+    score: number;
+  }
+
   interface TrackSearchResult extends SearchResultBase {
     track_id: number;
     kind: "track";
@@ -194,15 +194,28 @@ declare global {
 
   interface ArtistSearchResult extends SearchResultBase {
     user_id: number;
-    kind: "artist";
+    kind: "artist" | "band";
     name: string;
-    twitter_handle: string;
+    twitter_handle: string | null;
     images?: ArtistImage;
   }
+
+  interface AlbumSearchResult extends SearchResultBase {
+    creator_id: number;
+    track_group_id: string;
+    slug: string;
+    kind: "album";
+    title: string;
+    images?: ImageSizes;
+    display_artist: string;
+    cover_metadata: CoverMetadata;
+  }
+
   type SearchResult =
     | ArtistSearchResult
     | TrackSearchResult
-    | LabelSearchResult;
+    | LabelSearchResult
+    | AlbumSearchResult;
 
   interface Stat {
     date: string;

@@ -17,13 +17,14 @@ export const PlaylistTracks: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
   const [playlist, setPlaylist] = React.useState<TrackgroupDetail>();
+  const [tracks, setTracks] = React.useState<Track[]>([]);
 
   const fetchTracks = React.useCallback(async (playlistId: string) => {
     setIsLoading(true);
 
     const trackgroup = await fetchUserTrackGroup(playlistId);
     setPlaylist(trackgroup);
-
+    setTracks(trackgroup.items.map((item) => item.track));
     setIsLoading(false);
   }, []);
 
@@ -86,7 +87,7 @@ export const PlaylistTracks: React.FC = () => {
       {isLoading && <CenteredSpinner />}
       {!isLoading && playlist && (
         <TrackTable
-          tracks={playlist.items.map((item) => item.track)}
+          tracks={tracks}
           trackgroupId={playlist.id}
           editable={playlist.creator_id === user?.id}
         />
