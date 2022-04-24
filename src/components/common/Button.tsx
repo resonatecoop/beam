@@ -52,12 +52,12 @@ const CustomButton = styled.button<Compactable>`
         `;
     }
   }}
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
+  display: inline-flex;
+  border-radius: 6px;
   font-size: 1rem;
+  justify-content: center;
   line-height: 1rem;
-  border-radius: 2px;
   margin-right: 0.25rem;
   white-space: nowrap;
 
