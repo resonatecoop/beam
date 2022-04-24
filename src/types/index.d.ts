@@ -3,10 +3,10 @@ export {};
 
 declare global {
   interface Window {
-		darkMode: { 
-                  toggle: () => void 
-                  system: () => void
-                 };
+		darkMode: {
+      toggle: () => boolean 
+      system: () => void
+    };
   }
 
   interface APIOptions {

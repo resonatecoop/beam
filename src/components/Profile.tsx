@@ -56,7 +56,7 @@ const Profile: React.FC = () => {
   }, [fetchStats]);
   const toggleDarkMode = async () => {
     const isDarkMode = window.darkMode.toggle()
-    const themeSource = document.getElementById('theme-source');
+    const themeSource = document.getElementById('theme-source')
     if (
       document
       && themeSource
@@ -68,7 +68,7 @@ const Profile: React.FC = () => {
 
   const resetToSystem = async () => {
     window.darkMode.system()
-    const themeSource = document.getElementById('theme-source');
+    const themeSource = document.getElementById('theme-source')
     if (
       document
       && themeSource
