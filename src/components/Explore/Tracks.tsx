@@ -60,6 +60,7 @@ export const Tracks: React.FC = () => {
             },
           },
         }))}
+        editable
       />
       <LoadingButton />
     </>

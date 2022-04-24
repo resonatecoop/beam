@@ -5,20 +5,32 @@ import SmallTileDetails from "./SmallTileDetails";
 import { Link } from "react-router-dom";
 import TrackPopup from "./TrackPopup";
 import ResultListItem from "./ResultListItem";
+import useDraggableTrack from "utils/useDraggableTrack";
 
 const staffPickUl = css``;
 
-const TrackList: React.FC<{ tracks: Track[] }> = ({ tracks }) => {
+const TrackList: React.FC<{ tracks: Track[]; editable?: boolean }> = ({
+  tracks,
+  editable,
+}) => {
   const localTracks = tracks.map((track, index) => ({
     ...track,
     key: `${track.id} + ${index}`,
   }));
 
+  const { onDragStart, onDragEnd } = useDraggableTrack();
+
   return (
     <>
       <ul className={staffPickUl}>
         {localTracks.map((track) => (
-          <ResultListItem key={track.key}>
+          <ResultListItem
+            key={track.key}
+            draggable={editable}
+            onDragEnd={onDragEnd}
+            onDragStart={onDragStart}
+            id={`${track.id}`}
+          >
             {track.images.small && (
               <ClickToPlay
                 trackId={track.id}

@@ -91,7 +91,7 @@ export const Queue: React.FC = () => {
       )}
       {!isLoading && (
         <div data-cy="queue">
-          <TrackList tracks={playerQueue} />
+          <TrackList tracks={playerQueue} editable />
         </div>
       )}
     </>

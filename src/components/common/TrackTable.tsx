@@ -24,13 +24,6 @@ export const TrackTable: React.FC<{
       dispatch,
     } = useGlobalStateContext();
 
-    const handleDrag = (ev: React.DragEvent<HTMLTableRowElement>) => {
-      dispatch({
-        type: "setDraggingTrackId",
-        draggingTrackId: +ev.currentTarget.id,
-      });
-    };
-
     const [displayTracks, setDisplayTracks] = React.useState<
       (TrackWithUserCounts | Track)[]
     >([]);
@@ -150,7 +143,6 @@ export const TrackTable: React.FC<{
               trackgroupId={trackgroupId}
               reload={reload}
               editable={editable}
-              handleDrag={handleDrag}
               handleDrop={handleDrop}
             />
           ))}
