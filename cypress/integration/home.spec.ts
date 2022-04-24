@@ -89,13 +89,14 @@ describe("home page", () => {
     });
   });
 
-  describe("authenticated", () => {
+  describe.only("authenticated", () => {
     beforeEach(() => {
       window.localStorage.setItem("state", JSON.stringify({ token: "1234" }));
+      console.log("window.localStorage", window.localStorage.getItem("state"));
+      cy.intercept("GET", API_V2 + "user/profile/", {
+        fixture: "user.json",
+      }).as("getProfile");
       cy.visit("/");
-      cy.intercept("GET", API_V2 + "user/profile", { fixture: "user.json" }).as(
-        "getProfile"
-      );
       cy.wait("@getProfile").then(() => {});
     });
     it("should show the user's username in the header", () => {
