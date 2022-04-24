@@ -26,6 +26,7 @@ import Playlists from "./components/Explore/Playlists";
 import Artists from "./components/Explore/Artists";
 import Labels from "./components/Explore/Labels";
 import Releases from "./components/Explore/Releases";
+import Tracks from "./components/Explore/Tracks";
 
 injectGlobal`
   * {
@@ -133,6 +134,7 @@ function App() {
               <Route path="artists" element={<Artists />} />
               <Route path="labels" element={<Labels />} />
               <Route path="releases" element={<Releases />} />
+              <Route path="tracks" element={<Tracks />} />
             </Route>
             <Route path="playlist/:playlistId" element={<PlaylistTracks />} />
             <Route path="label/:labelId" element={<LabelPage />} />

@@ -15,7 +15,7 @@ export const SearchResults: React.FC = () => {
 
             > li {
               display: inline-block;
-
+              margin-right: 1rem;
               a {
                 color: #000;
                 text-decoration: none;
@@ -48,6 +48,9 @@ export const SearchResults: React.FC = () => {
           </li>
           <li>
             <NavLink to="releases">Releases</NavLink>
+          </li>
+          <li>
+            <NavLink to="tracks">Tracks</NavLink>
           </li>
         </ul>
       </div>
