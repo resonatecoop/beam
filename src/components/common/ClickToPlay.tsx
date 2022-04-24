@@ -7,7 +7,7 @@ import { bp } from "../../constants";
 
 import { useGlobalStateContext } from "../../contexts/globalState";
 import { fetchTrackGroup } from "../../services/Api";
-import IconButton from "./IconButton";
+import Button from "./Button";
 import ImageWithPlaceholder from "./ImageWithPlaceholder";
 
 type WrapperProps = {
@@ -15,49 +15,62 @@ type WrapperProps = {
   height: number;
 };
 
+const PlayWrapper = styled.div<WrapperProps>`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
+  top: 0;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  color: white;
+  border: 0;
+  transition: 0.5s;
+
+  button {
+    color: white;
+    background-color: transparent;
+    font-size: 1rem;
+
+    &:nth-child(1) {
+      margin-bottom: 0.5rem;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
+  }
+
+  @media (max-width: ${bp.medium}px) {
+    width: 100%;
+    opacity: 1;
+    bottom: 0;
+    top: auto;
+    height: 100%;
+    position: absolute;
+
+    button {
+      font-size: 0.8rem;
+      border: 1px solid white;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+`;
+
 const Wrapper = styled.div<WrapperProps>`
   position: relative;
   max-width: 100%;
 
-  & .play {
-    display: flex;
-    position: absolute;
-    align-items: center;
-    justify-content: center;
-    width: ${(props) => props.width}px;
-    height: ${(props) => props.height}px;
-    top: 0;
-    opacity: 0;
-    background-color: rgba(0, 0, 0, 0.2);
-    color: white;
-    border: 0;
-    transition: 0.5s;
-
-    button {
-      color: white;
-    }
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.5);
-      opacity: 1;
-    }
-  }
-
-  button {
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-  }
-
   @media (max-width: ${bp.medium}px) {
     position: relative;
-    .play {
-      width: 100%;
-      opacity: 1;
-      bottom: 0;
-      top: auto;
-      height: 50px;
-      position: absolute;
-    }
 
     img {
       width: ${(props) => (props.width < 420 ? `${props.width}px` : "100%")};
@@ -112,14 +125,14 @@ const ClickToPlay: React.FC<{
 
   return (
     <Wrapper width={image?.width ?? 0} height={image?.height ?? 0}>
-      <div className="play">
-        <IconButton onClick={onClickPlay}>
-          <FaPlay />
-        </IconButton>
-        <IconButton onClick={onClickQueue}>
-          <MdQueue />
-        </IconButton>
-      </div>
+      <PlayWrapper width={image?.width ?? 0} height={image?.height ?? 0}>
+        <Button onClick={onClickPlay} startIcon={<FaPlay />} compact>
+          Play
+        </Button>
+        <Button onClick={onClickQueue} startIcon={<MdQueue />} compact>
+          Queue
+        </Button>
+      </PlayWrapper>
       {image && (
         <ImageWithPlaceholder src={image.url} alt={title} size={image.width} />
       )}
