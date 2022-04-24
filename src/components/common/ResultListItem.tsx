@@ -1,10 +1,15 @@
 import styled from "@emotion/styled";
 import { bp } from "../../constants";
 
-export const ResultListItem = styled.li`
+type Props = {
+  fullWidth?: boolean;
+};
+
+export const ResultListItem = styled.li<Props>`
   display: inline-flex;
   margin-right: 0.5rem;
-  width: 45%;
+  width: ${({ fullWidth }) => (fullWidth ? "100%" : "45%")};
+  transition: margin-top 0.25s;
   @media (max-width: ${bp.medium}px) {
     width: 100%;
   }

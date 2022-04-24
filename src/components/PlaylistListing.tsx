@@ -119,6 +119,7 @@ const PlaylistLI: React.FC<{ playlist: Trackgroup }> = ({ playlist }) => {
           tracks: [{ track_id: draggingTrackId }],
         });
       }
+      setIsHoveringOver(false);
     },
     [draggingTrackId]
   );

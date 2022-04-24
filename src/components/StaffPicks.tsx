@@ -100,7 +100,7 @@ const StaffPicks: React.FC = () => {
         {latestStaffPick?.about}
       </div>
 
-      {tracks && <TrackList tracks={tracks} editable={editable} />}
+      {tracks && <TrackList tracks={tracks} draggable={editable} />}
     </div>
   );
 };

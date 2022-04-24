@@ -52,3 +52,21 @@ export function calculateRemainingCost(count: number) {
 export function buildStreamURL(id?: number, clientId?: string) {
   return `${STREAM_API}${id}${clientId ? `?client_id=${clientId}` : ""}`;
 }
+
+export const determineNewTrackOrder = produce(
+  (
+    oldTracks: (TrackWithUserCounts | Track)[],
+    droppedInId: string,
+    draggingTrackId: number
+  ) => {
+    const dragIdx = oldTracks.findIndex(
+      (track) => track.id === draggingTrackId
+    );
+    const dropIdx = oldTracks.findIndex(
+      (track) => `${track.id}` === droppedInId
+    );
+    const draggedItem = oldTracks.splice(dragIdx, 1);
+    oldTracks.splice(dropIdx, 0, draggedItem[0]);
+    return oldTracks;
+  }
+);
