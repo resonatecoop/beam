@@ -9,18 +9,25 @@ import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "../contexts/globalState";
 import { bp } from "../constants";
 import Search from "./Search";
+import styled from "@emotion/styled";
+import { NewsBanner } from "./NewsBanner";
 
-const headerClass = css`
+const Wrapper = styled.header`
   min-height: 48px;
   border-bottom: 1px solid grey;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  width: 100%;
+  z-index: 10;
+  top: 0;
+`;
+
+const headerClass = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  position: fixed;
-  width: 100%;
-  z-index: 10;
-  top: 0;
   background-color: #fff;
 
   > a {
@@ -56,23 +63,27 @@ const Header: React.FC = () => {
   const {
     state: { user, token },
   } = useGlobalStateContext();
+
   return (
-    <header className={headerClass}>
-      <Link to="/">
-        <Logo className="full-logo" style={{ height: "46px" }} />
-        <Icon className="icon" style={{ height: "46px" }} />
-      </Link>
-      <div
-        className={css`
-          flex-grow: 1;
-        `}
-      />
-      <Search />
-      {user && token && token !== "" && (
-        <Link to="/library/explore/playlists">Library</Link>
-      )}
-      <Login />
-    </header>
+    <Wrapper>
+      <NewsBanner />
+      <div className={headerClass}>
+        <Link to="/">
+          <Logo className="full-logo" style={{ height: "46px" }} />
+          <Icon className="icon" style={{ height: "46px" }} />
+        </Link>
+        <div
+          className={css`
+            flex-grow: 1;
+          `}
+        />
+        <Search />
+        {user && token && token !== "" && (
+          <Link to="/library/explore/playlists">Library</Link>
+        )}
+        <Login />
+      </div>
+    </Wrapper>
   );
 };
 
