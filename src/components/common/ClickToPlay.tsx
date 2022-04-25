@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import SnackbarContext from "contexts/SnackbarContext";
 import React from "react";
 
 import { FaPlay } from "react-icons/fa";
@@ -86,7 +87,7 @@ const ClickToPlay: React.FC<{
   image: ResonateImage;
 }> = ({ groupId, title, image, trackId }) => {
   const { dispatch } = useGlobalStateContext();
-
+  const { displayMessage } = React.useContext(SnackbarContext);
   const onClickPlay = React.useCallback(async () => {
     if (groupId) {
       await fetchTrackGroup(groupId).then((result) => {
@@ -121,7 +122,8 @@ const ClickToPlay: React.FC<{
         idsToAdd: [trackId],
       });
     }
-  }, [dispatch, groupId, trackId]);
+    displayMessage("Added to queue");
+  }, [dispatch, groupId, trackId, displayMessage]);
 
   return (
     <Wrapper width={image?.width ?? 0} height={image?.height ?? 0}>

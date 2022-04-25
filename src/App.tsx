@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { injectGlobal, css } from "@emotion/css";
 
@@ -27,6 +27,8 @@ import Artists from "./components/Explore/Artists";
 import Labels from "./components/Explore/Labels";
 import Releases from "./components/Explore/Releases";
 import Tracks from "./components/Explore/Tracks";
+import SnackbarContext from "contexts/SnackbarContext";
+import Snackbar from "components/common/Snackbar";
 
 injectGlobal`
   * {
@@ -85,6 +87,17 @@ injectGlobal`
   img {
     background: #dfdfdf;
   }
+
+  @keyframes slide-up {
+    from {
+      opacity: 0;
+      transform: translateY(3rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 `;
 
 const appWrapper = css`
@@ -107,6 +120,8 @@ function App() {
     state: { token },
     dispatch,
   } = useGlobalStateContext();
+  const { isDisplayed } = useContext(SnackbarContext);
+
   const fetchUserProfileCallback = React.useCallback(async () => {
     const result = await fetchUserProfile();
     dispatch({ type: "setLoggedInUser", user: result });
@@ -119,40 +134,43 @@ function App() {
   }, [fetchUserProfileCallback, token]);
 
   return (
-    <div className={appWrapper}>
-      <Header />
-      <div className={contentWrapper}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/library" element={<Library />}>
-            <Route path="queue" element={<Queue />} />
-            <Route path="search" element={<SearchResults />} />
-            <Route path="explore" element={<Explore />}>
-              <Route path="playlists" element={<Playlists />} />
-              <Route path="artists" element={<Artists />} />
-              <Route path="labels" element={<Labels />} />
-              <Route path="releases" element={<Releases />} />
-              <Route path="tracks" element={<Tracks />} />
-            </Route>
-            <Route path="playlist/:playlistId" element={<PlaylistTracks />} />
-            <Route path="label/:labelId" element={<LabelPage />} />
-            <Route path="artist/:artistId" element={<ArtistPage />} />
-            <Route path="tag/:tagString" element={<TagList />} />
-            <Route
-              path="trackgroup/:trackgroupId"
-              element={<TrackgroupPage />}
-            />
+    <>
+      {isDisplayed && <Snackbar />}
+      <div className={appWrapper}>
+        <Header />
+        <div className={contentWrapper}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/library" element={<Library />}>
+              <Route path="queue" element={<Queue />} />
+              <Route path="search" element={<SearchResults />} />
+              <Route path="explore" element={<Explore />}>
+                <Route path="playlists" element={<Playlists />} />
+                <Route path="artists" element={<Artists />} />
+                <Route path="labels" element={<Labels />} />
+                <Route path="releases" element={<Releases />} />
+                <Route path="tracks" element={<Tracks />} />
+              </Route>
+              <Route path="playlist/:playlistId" element={<PlaylistTracks />} />
+              <Route path="label/:labelId" element={<LabelPage />} />
+              <Route path="artist/:artistId" element={<ArtistPage />} />
+              <Route path="tag/:tagString" element={<TagList />} />
+              <Route
+                path="trackgroup/:trackgroupId"
+                element={<TrackgroupPage />}
+              />
 
-            <Route path="favorites" element={<Favorites />} />
-            <Route path="history" element={<History />} />
-            <Route path="collection" element={<Collection />} />
-          </Route>
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
+              <Route path="favorites" element={<Favorites />} />
+              <Route path="history" element={<History />} />
+              <Route path="collection" element={<Collection />} />
+            </Route>
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </div>
+        <Player />
       </div>
-      <Player />
-    </div>
+    </>
   );
 }
 
