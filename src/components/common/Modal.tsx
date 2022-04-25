@@ -31,6 +31,7 @@ const Content = styled.div<ContentProps>`
   display: flex;
   flex-direction: column;
   width: ${(props) => (props.size === "small" ? "40%" : "80%")};
+  animation: 300ms ease-out forwards slide-up;
 
   @media (max-width: ${bp.medium}px) {
     width: 90%;
