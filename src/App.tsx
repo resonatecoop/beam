@@ -106,7 +106,7 @@ const appWrapper = css`
 `;
 
 const contentWrapper = css`
-  padding: calc(48px + 3rem) 1rem calc(48px + 5rem);
+  padding: 2rem 1rem calc(48px + 5rem);
   min-height: 100vh;
   background-color: #efefef;
 

@@ -15,6 +15,7 @@ export const Home: React.FC = () => {
         <ul
           className={css`
             margin-bottom: 1rem;
+            margin-top: 1rem;
           `}
         >
           <Tags tags={tags} />
