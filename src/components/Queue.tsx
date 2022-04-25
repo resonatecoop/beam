@@ -1,6 +1,7 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { MdShuffle } from "react-icons/md";
+import { BiSad } from "react-icons/bi";
 import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchTrack } from "../services/Api";
 import Button from "./common/Button";
@@ -111,7 +112,15 @@ export const Queue: React.FC = () => {
         )}
       </div>
       {!isLoading && playerQueue?.length === 0 && (
-        <EmptyBox>Your queue is empty :( Find some songs to play!</EmptyBox>
+        <EmptyBox>
+          <p>Your queue is empty</p>
+          <p>Find some tracks to play!</p>
+          <p>
+            You can click on song's play buttons, add them from the dropdown, or
+            click on their play and queue buttons.{" "}
+          </p>
+          <BiSad />
+        </EmptyBox>
       )}
       {!isLoading && (
         <div data-cy="queue">

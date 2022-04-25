@@ -6,13 +6,16 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { GlobalStateProvider } from "./contexts/globalState";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import { SnackBarContextProvider } from "contexts/SnackbarContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <GlobalStateProvider>
-        <App />
-      </GlobalStateProvider>
+      <SnackBarContextProvider>
+        <GlobalStateProvider>
+          <App />
+        </GlobalStateProvider>
+      </SnackBarContextProvider>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById("root")
