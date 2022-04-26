@@ -87,23 +87,30 @@ const ClickToPlay: React.FC<{
   image: ResonateImage;
 }> = ({ groupId, title, image, trackId }) => {
   const {
-    state: { playing },
+    state: { playing, playerQueueIds },
     dispatch,
   } = useGlobalStateContext();
   const { displayMessage } = React.useContext(SnackbarContext);
+
   const onClickPlay = React.useCallback(async () => {
     let ids: number[] = [];
     if (groupId) {
       const result = await fetchTrackGroup(groupId);
       ids = result.items.map((item) => item.track.id);
     } else if (trackId) {
-      ids = [trackId];
+      if (playerQueueIds.includes(trackId)) {
+        const indexOfTrack = playerQueueIds.indexOf(trackId);
+        const newTracks = playerQueueIds.slice(indexOfTrack);
+        ids = [...newTracks];
+      } else {
+        ids = [trackId];
+      }
     }
     dispatch({
       type: "setValuesDirectly",
       values: { playing: true, playerQueueIds: ids },
     });
-  }, [dispatch, groupId, trackId]);
+  }, [dispatch, groupId, trackId, playerQueueIds]);
 
   const onClickQueue = React.useCallback(async () => {
     if (groupId) {
@@ -126,15 +133,17 @@ const ClickToPlay: React.FC<{
     dispatch({ type: "setPlaying", playing: false });
   }, [dispatch]);
 
+  const currentlyPlaying = playing && playerQueueIds[0] === trackId;
+
   return (
     <Wrapper width={image?.width ?? 0} height={image?.height ?? 0}>
       <PlayWrapper width={image?.width ?? 0} height={image?.height ?? 0}>
-        {!playing && (
+        {!currentlyPlaying && (
           <Button onClick={onClickPlay} startIcon={<FaPlay />} compact>
             Play
           </Button>
         )}
-        {playing && (
+        {currentlyPlaying && (
           <Button onClick={onPause} startIcon={<FaPause />} compact>
             Pause
           </Button>
