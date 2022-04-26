@@ -62,6 +62,11 @@ type SetDraggingTrackId = {
   draggingTrackId: number | undefined;
 };
 
+type SetValuesDirectly = {
+  type: "setValuesDirectly";
+  values: Partial<GlobalState>;
+};
+
 type Actions =
   | SetLoggedInUser
   | SetState
@@ -73,7 +78,8 @@ type Actions =
   | ClearQueue
   | SetPlayerQueueIds
   | ShuffleQueue
-  | SetDraggingTrackId;
+  | SetDraggingTrackId
+  | SetValuesDirectly;
 
 const stateReducer = produce((draft: GlobalState, action: Actions) => {
   let newDraft = draft;
@@ -81,6 +87,12 @@ const stateReducer = produce((draft: GlobalState, action: Actions) => {
     case "setState":
       newDraft = {
         ...action.state,
+      };
+      break;
+    case "setValuesDirectly":
+      newDraft = {
+        ...draft,
+        ...action.values,
       };
       break;
     case "setLoggedInUser":

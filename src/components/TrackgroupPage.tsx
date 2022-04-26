@@ -14,11 +14,13 @@ export const TrackgroupPage: React.FC = () => {
   let { trackgroupId } = useParams();
   const [isLoading, setIsLoading] = React.useState(false);
   const [trackgroup, setTrackgroup] = React.useState<TrackgroupDetail>();
+  const [tracks, setTracks] = React.useState<Track[]>([]);
 
   const fetchTracks = React.useCallback(async (id: string) => {
     setIsLoading(true);
     const result = await fetchTrackGroup(id);
     setTrackgroup(result);
+    setTracks(result.items.map((item) => item.track));
     setIsLoading(false);
   }, []);
 
@@ -68,10 +70,7 @@ export const TrackgroupPage: React.FC = () => {
           </div>
           {trackgroup && (
             <>
-              <TrackTable
-                trackgroupId={trackgroup.id}
-                tracks={trackgroup.items.map((item) => item.track)}
-              />
+              <TrackTable trackgroupId={trackgroup.id} tracks={tracks} />
             </>
           )}
         </>

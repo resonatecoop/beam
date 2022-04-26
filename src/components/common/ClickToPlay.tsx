@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import SnackbarContext from "contexts/SnackbarContext";
 import React from "react";
 
-import { FaPlay } from "react-icons/fa";
+import { FaPause, FaPlay } from "react-icons/fa";
 import { MdQueue } from "react-icons/md";
 import { bp } from "../../constants";
 
@@ -85,28 +85,33 @@ const ClickToPlay: React.FC<{
   trackId?: number;
   title: string;
   image: ResonateImage;
-}> = ({ groupId, title, image, trackId }) => {
-  const { dispatch } = useGlobalStateContext();
+  className?: string;
+}> = ({ groupId, title, image, trackId, className }) => {
+  const {
+    state: { playing, playerQueueIds },
+    dispatch,
+  } = useGlobalStateContext();
   const { displayMessage } = React.useContext(SnackbarContext);
+
   const onClickPlay = React.useCallback(async () => {
+    let ids: number[] = [];
     if (groupId) {
-      await fetchTrackGroup(groupId).then((result) => {
-        dispatch({
-          type: "setPlayerQueueIds",
-          playerQueueIds: result.items.map((item) => item.track.id),
-        });
-      });
+      const result = await fetchTrackGroup(groupId);
+      ids = result.items.map((item) => item.track.id);
     } else if (trackId) {
-      dispatch({
-        type: "setPlayerQueueIds",
-        playerQueueIds: [trackId],
-      });
+      if (playerQueueIds.includes(trackId)) {
+        const indexOfTrack = playerQueueIds.indexOf(trackId);
+        const newTracks = playerQueueIds.slice(indexOfTrack);
+        ids = [...newTracks];
+      } else {
+        ids = [trackId];
+      }
     }
     dispatch({
-      type: "setPlaying",
-      playing: true,
+      type: "setValuesDirectly",
+      values: { playing: true, playerQueueIds: ids },
     });
-  }, [dispatch, groupId, trackId]);
+  }, [dispatch, groupId, trackId, playerQueueIds]);
 
   const onClickQueue = React.useCallback(async () => {
     if (groupId) {
@@ -125,12 +130,29 @@ const ClickToPlay: React.FC<{
     displayMessage("Added to queue");
   }, [dispatch, groupId, trackId, displayMessage]);
 
+  const onPause = React.useCallback(async () => {
+    dispatch({ type: "setPlaying", playing: false });
+  }, [dispatch]);
+
+  const currentlyPlaying = playing && playerQueueIds[0] === trackId;
+
   return (
-    <Wrapper width={image?.width ?? 0} height={image?.height ?? 0}>
+    <Wrapper
+      width={image?.width ?? 0}
+      height={image?.height ?? 0}
+      className={className}
+    >
       <PlayWrapper width={image?.width ?? 0} height={image?.height ?? 0}>
-        <Button onClick={onClickPlay} startIcon={<FaPlay />} compact>
-          Play
-        </Button>
+        {!currentlyPlaying && (
+          <Button onClick={onClickPlay} startIcon={<FaPlay />} compact>
+            Play
+          </Button>
+        )}
+        {currentlyPlaying && (
+          <Button onClick={onPause} startIcon={<FaPause />} compact>
+            Pause
+          </Button>
+        )}
         <Button onClick={onClickQueue} startIcon={<MdQueue />} compact>
           Queue
         </Button>

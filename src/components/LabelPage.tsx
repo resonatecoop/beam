@@ -9,9 +9,8 @@ import {
 import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
 import LinkToWeb from "./common/LinkToWeb";
 import OverflowableText from "./common/OverflowableText";
+import Release from "./common/Release";
 import { CenteredSpinner } from "./common/Spinner";
-import Tags from "./common/Tags";
-import TrackTable from "./common/TrackTable";
 
 const padding = css`
   padding: 0 1rem 1rem;
@@ -120,41 +119,7 @@ export const LabelPage: React.FC = () => {
             <>
               <h4 style={{ marginTop: "1rem" }}>Releases</h4>
               {releases.map((release) => (
-                <div key={release.id} style={{ marginBottom: "1rem" }}>
-                  <div
-                    className={css`
-                      // margin: 1rem;
-                      display: flex;
-                      margin-bottom: 1rem;
-                    `}
-                  >
-                    <ImageWithPlaceholder
-                      src={release.images.small?.url}
-                      alt={release.title}
-                      size={release.images.small?.height ?? 120}
-                      className={css`
-                        margin: 0 1rem 1rem 0;
-                      `}
-                    />
-                    <div>
-                      <h4>{release.title}</h4>
-
-                      {release.about && (
-                        <div
-                          className={css`
-                            margin-bottom: 1rem;
-                          `}
-                        >
-                          <OverflowableText text={release.about} />
-                        </div>
-                      )}
-                      <Tags tags={release.tags} />
-                    </div>
-                  </div>
-                  <TrackTable
-                    tracks={release.items.map((item) => item.track)}
-                  />
-                </div>
+                <Release release={release} />
               ))}
             </>
           )}
