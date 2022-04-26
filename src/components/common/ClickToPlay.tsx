@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import SnackbarContext from "contexts/SnackbarContext";
 import React from "react";
 
-import { FaPlay } from "react-icons/fa";
+import { FaPause, FaPlay } from "react-icons/fa";
 import { MdQueue } from "react-icons/md";
 import { bp } from "../../constants";
 
@@ -86,25 +86,22 @@ const ClickToPlay: React.FC<{
   title: string;
   image: ResonateImage;
 }> = ({ groupId, title, image, trackId }) => {
-  const { dispatch } = useGlobalStateContext();
+  const {
+    state: { playing },
+    dispatch,
+  } = useGlobalStateContext();
   const { displayMessage } = React.useContext(SnackbarContext);
   const onClickPlay = React.useCallback(async () => {
+    let ids: number[] = [];
     if (groupId) {
-      await fetchTrackGroup(groupId).then((result) => {
-        dispatch({
-          type: "setPlayerQueueIds",
-          playerQueueIds: result.items.map((item) => item.track.id),
-        });
-      });
+      const result = await fetchTrackGroup(groupId);
+      ids = result.items.map((item) => item.track.id);
     } else if (trackId) {
-      dispatch({
-        type: "setPlayerQueueIds",
-        playerQueueIds: [trackId],
-      });
+      ids = [trackId];
     }
     dispatch({
-      type: "setPlaying",
-      playing: true,
+      type: "setValuesDirectly",
+      values: { playing: true, playerQueueIds: ids },
     });
   }, [dispatch, groupId, trackId]);
 
@@ -125,12 +122,23 @@ const ClickToPlay: React.FC<{
     displayMessage("Added to queue");
   }, [dispatch, groupId, trackId, displayMessage]);
 
+  const onPause = React.useCallback(async () => {
+    dispatch({ type: "setPlaying", playing: false });
+  }, [dispatch]);
+
   return (
     <Wrapper width={image?.width ?? 0} height={image?.height ?? 0}>
       <PlayWrapper width={image?.width ?? 0} height={image?.height ?? 0}>
-        <Button onClick={onClickPlay} startIcon={<FaPlay />} compact>
-          Play
-        </Button>
+        {!playing && (
+          <Button onClick={onClickPlay} startIcon={<FaPlay />} compact>
+            Play
+          </Button>
+        )}
+        {playing && (
+          <Button onClick={onPause} startIcon={<FaPause />} compact>
+            Pause
+          </Button>
+        )}
         <Button onClick={onClickQueue} startIcon={<MdQueue />} compact>
           Queue
         </Button>

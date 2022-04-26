@@ -28,8 +28,13 @@ const Profile: React.FC = () => {
 
   const logout = (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
-    dispatch({ type: "setToken", token: "" });
-    dispatch({ type: "setLoggedInUser", user: undefined });
+    dispatch({
+      type: "setValuesDirectly",
+      values: {
+        token: "",
+        user: undefined,
+      },
+    });
   };
 
   const fetchStats = React.useCallback(async () => {

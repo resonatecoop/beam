@@ -77,6 +77,8 @@ const Player = () => {
   React.useEffect(() => {
     if (playerQueueIds && playerQueueIds[0]) {
       fetchTrackCallback(playerQueueIds[0]);
+    } else {
+      setCurrentTrack(undefined);
     }
   }, [fetchTrackCallback, playerQueueIds]);
 
