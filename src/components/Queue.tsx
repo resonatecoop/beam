@@ -9,6 +9,7 @@ import TrackList from "./common/TrackList";
 import EmptyBox from "./common/EmptyBox";
 import { FullScreenSpinner } from "./common/Spinner";
 import { determineNewTrackOrder } from "utils/tracks";
+import { FaTrashAlt } from "react-icons/fa";
 
 export const Queue: React.FC = () => {
   const {
@@ -100,12 +101,22 @@ export const Queue: React.FC = () => {
         `}
       >
         <h3>Queue</h3>
+        <div
+          className={css`
+            flex-grow: 1;
+          `}
+        />
         {!isLoading && playerQueue?.length > 0 && (
           <>
-            <Button compact onClick={shuffleQueue} startIcon={<MdShuffle />}>
+            <Button
+              compact
+              onClick={shuffleQueue}
+              startIcon={<MdShuffle />}
+              style={{ marginRight: ".5rem" }}
+            >
               Shuffle
             </Button>
-            <Button compact onClick={clearQueue}>
+            <Button compact onClick={clearQueue} startIcon={<FaTrashAlt />}>
               Clear queue
             </Button>
           </>

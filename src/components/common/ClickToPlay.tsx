@@ -10,6 +10,7 @@ import { useGlobalStateContext } from "../../contexts/globalState";
 import { fetchTrackGroup } from "../../services/Api";
 import Button from "./Button";
 import ImageWithPlaceholder from "./ImageWithPlaceholder";
+import { PlayingMusicBars } from "./PlayingMusicBars";
 
 type WrapperProps = {
   width: number;
@@ -157,6 +158,13 @@ const ClickToPlay: React.FC<{
           Queue
         </Button>
       </PlayWrapper>
+      {currentlyPlaying && (
+        <PlayingMusicBars
+          width={image?.width ?? 0}
+          height={image?.height ?? 0}
+        />
+      )}
+
       {image && (
         <ImageWithPlaceholder src={image.url} alt={title} size={image.width} />
       )}
