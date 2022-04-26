@@ -85,7 +85,8 @@ const ClickToPlay: React.FC<{
   trackId?: number;
   title: string;
   image: ResonateImage;
-}> = ({ groupId, title, image, trackId }) => {
+  className?: string;
+}> = ({ groupId, title, image, trackId, className }) => {
   const {
     state: { playing, playerQueueIds },
     dispatch,
@@ -136,7 +137,11 @@ const ClickToPlay: React.FC<{
   const currentlyPlaying = playing && playerQueueIds[0] === trackId;
 
   return (
-    <Wrapper width={image?.width ?? 0} height={image?.height ?? 0}>
+    <Wrapper
+      width={image?.width ?? 0}
+      height={image?.height ?? 0}
+      className={className}
+    >
       <PlayWrapper width={image?.width ?? 0} height={image?.height ?? 0}>
         {!currentlyPlaying && (
           <Button onClick={onClickPlay} startIcon={<FaPlay />} compact>

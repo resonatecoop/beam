@@ -23,7 +23,7 @@ declare global {
   interface ResonateImage {
     width: number;
     height: number;
-    url: string;
+    url?: string;
   }
 
   interface CoverMetadata {

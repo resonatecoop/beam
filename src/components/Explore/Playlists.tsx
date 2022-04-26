@@ -1,4 +1,5 @@
 import { css } from "@emotion/css";
+import ClickToPlay from "components/common/ClickToPlay";
 import React from "react";
 import { Link } from "react-router-dom";
 import { fetchTrackGroups } from "../../services/Api";
@@ -32,10 +33,14 @@ export const Playlists: React.FC = () => {
           {results.map((playlist) => {
             return (
               <GridListItem key={playlist.id} maxWidth={300}>
-                <ImageWithPlaceholder
-                  src={playlist.images.medium?.url}
-                  alt={playlist.title}
-                  size={300}
+                <ClickToPlay
+                  image={{
+                    ...playlist.images.medium,
+                    width: 300,
+                    height: 300,
+                  }}
+                  title={playlist.title}
+                  groupId={playlist.id}
                 />
                 <LargeTileDetail
                   title={
