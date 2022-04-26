@@ -87,7 +87,8 @@ const ClickToPlay: React.FC<{
   title: string;
   image: ResonateImage;
   className?: string;
-}> = ({ groupId, title, image, trackId, className }) => {
+  playActionIntercept?: (trackId: number) => void;
+}> = ({ groupId, title, image, trackId, className, playActionIntercept }) => {
   const {
     state: { playing, playerQueueIds },
     dispatch,
@@ -100,19 +101,24 @@ const ClickToPlay: React.FC<{
       const result = await fetchTrackGroup(groupId);
       ids = result.items.map((item) => item.track.id);
     } else if (trackId) {
-      if (playerQueueIds.includes(trackId)) {
-        const indexOfTrack = playerQueueIds.indexOf(trackId);
-        const newTracks = playerQueueIds.slice(indexOfTrack);
-        ids = [...newTracks];
+      if (playActionIntercept) {
+        playActionIntercept(trackId);
+        return;
       } else {
-        ids = [trackId];
+        if (playerQueueIds.includes(trackId)) {
+          const indexOfTrack = playerQueueIds.indexOf(trackId);
+          const newTracks = playerQueueIds.slice(indexOfTrack);
+          ids = [...newTracks];
+        } else {
+          ids = [trackId];
+        }
       }
     }
     dispatch({
       type: "setValuesDirectly",
       values: { playing: true, playerQueueIds: ids },
     });
-  }, [dispatch, groupId, trackId, playerQueueIds]);
+  }, [dispatch, groupId, trackId, playerQueueIds, playActionIntercept]);
 
   const onClickQueue = React.useCallback(async () => {
     if (groupId) {
