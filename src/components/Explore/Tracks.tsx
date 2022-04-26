@@ -8,10 +8,30 @@ import TrackList from "../common/TrackList";
 
 export const Tracks: React.FC = () => {
   const [order, setOrder] = React.useState("newest");
+  const [tracks, setTracks] = React.useState<Track[]>([]);
+
   const { LoadingButton, results, isLoading } = usePagination<Track>({
     apiCall: React.useCallback(fetchLatestTracks, []),
     options: React.useMemo(() => ({ limit: 50, order }), [order]),
   });
+
+  React.useEffect(() => {
+    setTracks(
+      results.map((r) => ({
+        ...r,
+        images: {
+          ...r.images,
+          small: {
+            // FIXME: There's a bug with the API's `images` being returned
+            // from fetchTracks. The URLs seem to not point to any existing files.
+            url: r.cover,
+            width: 120,
+            height: 120,
+          },
+        },
+      }))
+    );
+  }, [results]);
 
   const onChangeOrder: React.ChangeEventHandler<HTMLSelectElement> =
     React.useCallback((e) => {
@@ -46,22 +66,7 @@ export const Tracks: React.FC = () => {
       </div>
       {isLoading && <CenteredSpinner />}
 
-      <TrackList
-        tracks={results.map((r) => ({
-          ...r,
-          images: {
-            ...r.images,
-            small: {
-              // FIXME: There's a bug with the API's `images` being returned
-              // from fetchTracks. The URLs seem to not point to any existing files.
-              url: r.cover,
-              width: 120,
-              height: 120,
-            },
-          },
-        }))}
-        draggable
-      />
+      <TrackList tracks={tracks} draggable />
       <LoadingButton />
     </>
   );

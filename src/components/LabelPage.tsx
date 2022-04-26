@@ -11,8 +11,6 @@ import LinkToWeb from "./common/LinkToWeb";
 import OverflowableText from "./common/OverflowableText";
 import Release from "./common/Release";
 import { CenteredSpinner } from "./common/Spinner";
-import Tags from "./common/Tags";
-import TrackTable from "./common/TrackTable";
 
 const padding = css`
   padding: 0 1rem 1rem;

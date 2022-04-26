@@ -30,7 +30,7 @@ export const Artists: React.FC = () => {
               />
               <LargeTileDetail
                 title={
-                  <Link to={`/library/artist/${trackgroup.id}`}>
+                  <Link to={`/library/trackgroup/${trackgroup.id}`}>
                     {trackgroup.title}
                   </Link>
                 }

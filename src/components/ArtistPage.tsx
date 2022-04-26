@@ -6,13 +6,10 @@ import {
   fetchArtistReleases,
   fetchArtistTopTracks,
 } from "../services/Api";
-import ClickToPlay from "./common/ClickToPlay";
-import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
 import LinkToWeb from "./common/LinkToWeb";
 import OverflowableText from "./common/OverflowableText";
 import Release from "./common/Release";
 import { CenteredSpinner } from "./common/Spinner";
-import Tags from "./common/Tags";
 import TrackTable from "./common/TrackTable";
 
 const padding = css`
