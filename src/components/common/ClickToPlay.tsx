@@ -37,7 +37,7 @@ const PlayWrapper = styled.div<WrapperProps>`
     background-color: transparent;
     font-size: 1rem;
 
-    &:nth-child(1) {
+    &:nth-of-type(1) {
       margin-bottom: 0.5rem;
     }
 
