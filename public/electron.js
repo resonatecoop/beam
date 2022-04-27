@@ -1,5 +1,12 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, nativeTheme, ipcMain, protocol, shell } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  nativeTheme,
+  ipcMain,
+  protocol,
+  shell,
+} = require("electron");
 const path = require("path");
 
 // Create the native browser window.
@@ -16,12 +23,16 @@ function createWindow() {
     icon: path.join(__dirname, "icons/256x256.png"),
   });
 
+  const fileUrl = require("url").format({
+    protocol: "file",
+    slashes: true,
+    pathname: require("path").join(__dirname, "index.html"),
+  });
+
   // In production, set the initial browser path to the local bundle generated
   // by the Create React App build process.
   // In development, set it to localhost to allow live/hot-reloading.
-  const appURL = app.isPackaged
-    ? `file://${__dirname}/index.html`
-    : "http://localhost:8080";
+  const appURL = app.isPackaged ? fileUrl : "http://localhost:8080";
   mainWindow.loadURL(appURL);
 
   // Automatically open Chrome's DevTools in development mode.
@@ -30,18 +41,18 @@ function createWindow() {
   }
 
   // Dark mode
-  ipcMain.handle('dark-mode:toggle', () => {
+  ipcMain.handle("dark-mode:toggle", () => {
     if (nativeTheme.shouldUseDarkColors) {
-      nativeTheme.themeSource = 'light'
+      nativeTheme.themeSource = "light";
     } else {
-      nativeTheme.themeSource = 'dark'
+      nativeTheme.themeSource = "dark";
     }
-    return nativeTheme.shouldUseDarkColors
-  })
+    return nativeTheme.shouldUseDarkColors;
+  });
 
-  ipcMain.handle('dark-mode:system', () => {
-    nativeTheme.themeSource = 'system'
-  })
+  ipcMain.handle("dark-mode:system", () => {
+    nativeTheme.themeSource = "system";
+  });
 }
 
 // Setup a local proxy to adjust the paths of requested files when loading

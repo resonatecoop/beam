@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
+import { BrowserRouter, MemoryRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -8,18 +8,34 @@ import { GlobalStateProvider } from "./contexts/globalState";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { SnackBarContextProvider } from "contexts/SnackbarContext";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <SnackBarContextProvider>
-        <GlobalStateProvider>
-          <App />
-        </GlobalStateProvider>
-      </SnackBarContextProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+var userAgent = navigator.userAgent.toLowerCase();
+if (userAgent.indexOf(" electron/") > -1) {
+  ReactDOM.render(
+    <React.StrictMode>
+      <MemoryRouter>
+        <SnackBarContextProvider>
+          <GlobalStateProvider>
+            <App />
+          </GlobalStateProvider>
+        </SnackBarContextProvider>
+      </MemoryRouter>
+    </React.StrictMode>,
+    document.getElementById("root")
+  );
+} else {
+  ReactDOM.render(
+    <React.StrictMode>
+      <BrowserRouter>
+        <SnackBarContextProvider>
+          <GlobalStateProvider>
+            <App />
+          </GlobalStateProvider>
+        </SnackBarContextProvider>
+      </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById("root")
+  );
+}
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
