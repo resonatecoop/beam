@@ -122,6 +122,10 @@ const stateReducer = produce((draft: GlobalState, action: Actions) => {
       break;
     }
     case "clearQueue":
+      if (newDraft.playing) {
+        newDraft.playerQueueIds = [newDraft.playerQueueIds[0]];
+        break;
+      }
       newDraft.playerQueueIds = [];
       break;
     case "setToken":

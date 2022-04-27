@@ -77,6 +77,8 @@ export const ArtistPage: React.FC = () => {
           <div className={padding}>
             <OverflowableText text={artist.bio} />
           </div>
+          <p className={padding}>{artist.country}</p>
+
           <p className={padding}>
             {artist.links.map((link) => (
               <LinkToWeb key={link.href} link={link} />

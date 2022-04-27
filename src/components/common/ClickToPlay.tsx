@@ -10,6 +10,7 @@ import { useGlobalStateContext } from "../../contexts/globalState";
 import { fetchTrackGroup } from "../../services/Api";
 import Button from "./Button";
 import ImageWithPlaceholder from "./ImageWithPlaceholder";
+import { PlayingMusicBars } from "./PlayingMusicBars";
 
 type WrapperProps = {
   width: number;
@@ -36,7 +37,7 @@ const PlayWrapper = styled.div<WrapperProps>`
     background-color: transparent;
     font-size: 1rem;
 
-    &:nth-child(1) {
+    &:nth-of-type(1) {
       margin-bottom: 0.5rem;
     }
 
@@ -86,7 +87,8 @@ const ClickToPlay: React.FC<{
   title: string;
   image: ResonateImage;
   className?: string;
-}> = ({ groupId, title, image, trackId, className }) => {
+  playActionIntercept?: (trackId: number) => void;
+}> = ({ groupId, title, image, trackId, className, playActionIntercept }) => {
   const {
     state: { playing, playerQueueIds },
     dispatch,
@@ -99,19 +101,24 @@ const ClickToPlay: React.FC<{
       const result = await fetchTrackGroup(groupId);
       ids = result.items.map((item) => item.track.id);
     } else if (trackId) {
-      if (playerQueueIds.includes(trackId)) {
-        const indexOfTrack = playerQueueIds.indexOf(trackId);
-        const newTracks = playerQueueIds.slice(indexOfTrack);
-        ids = [...newTracks];
+      if (playActionIntercept) {
+        playActionIntercept(trackId);
+        return;
       } else {
-        ids = [trackId];
+        if (playerQueueIds.includes(trackId)) {
+          const indexOfTrack = playerQueueIds.indexOf(trackId);
+          const newTracks = playerQueueIds.slice(indexOfTrack);
+          ids = [...newTracks];
+        } else {
+          ids = [trackId];
+        }
       }
     }
     dispatch({
       type: "setValuesDirectly",
       values: { playing: true, playerQueueIds: ids },
     });
-  }, [dispatch, groupId, trackId, playerQueueIds]);
+  }, [dispatch, groupId, trackId, playerQueueIds, playActionIntercept]);
 
   const onClickQueue = React.useCallback(async () => {
     if (groupId) {
@@ -157,6 +164,13 @@ const ClickToPlay: React.FC<{
           Queue
         </Button>
       </PlayWrapper>
+      {currentlyPlaying && (
+        <PlayingMusicBars
+          width={image?.width ?? 0}
+          height={image?.height ?? 0}
+        />
+      )}
+
       {image && (
         <ImageWithPlaceholder src={image.url} alt={title} size={image.width} />
       )}

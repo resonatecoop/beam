@@ -98,6 +98,7 @@ declare global {
     }[];
     images?: ArtistImage;
     bio: string;
+    country: string;
   }
 
   interface Track {

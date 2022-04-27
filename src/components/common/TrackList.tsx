@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import TrackPopup from "./TrackPopup";
 import ResultListItem from "./ResultListItem";
 import useDraggableTrack from "utils/useDraggableTrack";
+import { useGlobalStateContext } from "contexts/globalState";
 
 const staffPickUl = css``;
 
@@ -23,6 +24,20 @@ const TrackList: React.FC<{
     ...track,
     key: `${track.id} + ${index}`,
   }));
+  const { dispatch } = useGlobalStateContext();
+
+  const addTracksToQueue = React.useCallback(
+    (id: number) => {
+      const idx = tracks.findIndex((track) => track.id === id);
+      dispatch({
+        type: "setPlayerQueueIds",
+        playerQueueIds: tracks
+          .slice(idx, tracks.length)
+          .map((track) => track.id),
+      });
+    },
+    [dispatch, tracks]
+  );
 
   return (
     <>
@@ -34,6 +49,7 @@ const TrackList: React.FC<{
             handleDrop={handleDrop}
             draggable={draggable}
             fullWidth={fullWidth}
+            addTracksToQueue={addTracksToQueue}
           />
         ))}
       </ul>
@@ -46,7 +62,8 @@ const TrackLIWrapper: React.FC<{
   handleDrop?: (ev: React.DragEvent<HTMLLIElement>) => void;
   draggable?: boolean;
   fullWidth?: boolean;
-}> = ({ track, draggable, fullWidth, handleDrop }) => {
+  addTracksToQueue?: (id: number) => void;
+}> = ({ track, draggable, fullWidth, handleDrop, addTracksToQueue }) => {
   const { onDragStart, onDragEnd } = useDraggableTrack();
 
   const [isHoveringOver, setIsHoveringOver] = React.useState(false);
@@ -85,6 +102,7 @@ const TrackLIWrapper: React.FC<{
           trackId={track.id}
           title={track.title}
           image={track.images.small}
+          playActionIntercept={addTracksToQueue}
         />
       )}
       <SmallTileDetails
