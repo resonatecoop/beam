@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { colorShade } from "utils/theme";
 
 export const Table = styled.table`
   width: 100%;
@@ -8,10 +9,12 @@ export const Table = styled.table`
   & tbody tr {
     transition: 0.25s background-color;
     &:nth-of-type(odd) {
-      background-color: #dfdfdf;
+      background-color: ${(props) =>
+        colorShade(props.theme.colors.background, -10)};
     }
     &:hover {
-      background-color: #bfbfbf !important;
+      background-color: ${(props) =>
+        colorShade(props.theme.colors.background, -40)} !important;
     }
   }
 

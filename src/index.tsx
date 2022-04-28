@@ -7,17 +7,25 @@ import reportWebVitals from "./reportWebVitals";
 import { GlobalStateProvider } from "./contexts/globalState";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { SnackBarContextProvider } from "contexts/SnackbarContext";
+import { ThemeProvider } from "@emotion/react";
+import { theme } from "utils/theme";
+
+const InsideRouter = () => (
+  <ThemeProvider theme={theme}>
+    <SnackBarContextProvider>
+      <GlobalStateProvider>
+        <App />
+      </GlobalStateProvider>
+    </SnackBarContextProvider>
+  </ThemeProvider>
+);
 
 var userAgent = navigator.userAgent.toLowerCase();
 if (userAgent.indexOf(" electron/") > -1) {
   ReactDOM.render(
     <React.StrictMode>
       <MemoryRouter>
-        <SnackBarContextProvider>
-          <GlobalStateProvider>
-            <App />
-          </GlobalStateProvider>
-        </SnackBarContextProvider>
+        <InsideRouter />
       </MemoryRouter>
     </React.StrictMode>,
     document.getElementById("root")
@@ -26,11 +34,7 @@ if (userAgent.indexOf(" electron/") > -1) {
   ReactDOM.render(
     <React.StrictMode>
       <BrowserRouter>
-        <SnackBarContextProvider>
-          <GlobalStateProvider>
-            <App />
-          </GlobalStateProvider>
-        </SnackBarContextProvider>
+        <InsideRouter />
       </BrowserRouter>
     </React.StrictMode>,
     document.getElementById("root")

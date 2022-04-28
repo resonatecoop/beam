@@ -3,7 +3,7 @@ import { css } from "@emotion/css";
 import { FaCode, FaEllipsisV, FaFont, FaMinus, FaPlus } from "react-icons/fa";
 import IconButton from "./IconButton";
 import Modal from "./Modal";
-import ListButton, { listButtonClass } from "./ListButton";
+import ListButton, { NavLinkAsButton } from "./ListButton";
 import { AddToPlaylist } from "../AddToPlaylist";
 import {
   addTrackToUserFavorites,
@@ -15,7 +15,6 @@ import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
 import { SpinningStar } from "./FavoriteTrack";
 import { CenteredSpinner } from "./Spinner";
 import TrackPopupDetails from "./TrackPopupDetails";
-import { NavLink } from "react-router-dom";
 import SharePopUp from "./SharePopUp";
 import { useGlobalStateContext } from "../../contexts/globalState";
 
@@ -219,13 +218,10 @@ const TrackPopup: React.FC<{
             )}
             {artistId && (
               <li>
-                <NavLink
-                  className={listButtonClass}
-                  to={`/library/artist/${artistId}`}
-                >
+                <NavLinkAsButton to={`/library/artist/${artistId}`}>
                   <FaFont />
                   Artist page
-                </NavLink>
+                </NavLinkAsButton>
               </li>
             )}
           </ul>

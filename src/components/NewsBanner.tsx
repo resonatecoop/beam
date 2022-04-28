@@ -6,7 +6,7 @@ import IconButton from "./common/IconButton";
 
 const News = styled.div`
   width: 100%;
-  background-color: var(--magenta);
+  background-color: ${(props) => props.theme.colors.primary};
   color: white;
   text-align: center;
   font-size: 1rem;

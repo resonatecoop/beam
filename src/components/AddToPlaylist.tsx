@@ -4,7 +4,7 @@ import { css } from "@emotion/css";
 import { bp } from "../constants";
 import { addTracksToTrackGroup, fetchUserTrackGroups } from "../services/Api";
 import AddPlaylist from "./AddPlaylist";
-import ListButton, { listButtonClass } from "./common/ListButton";
+import ListButton from "./common/ListButton";
 import { FaCheck } from "react-icons/fa";
 
 export const AddToPlaylist: React.FC<{
@@ -69,7 +69,6 @@ export const AddToPlaylist: React.FC<{
               `}
             >
               <ListButton
-                className={listButtonClass}
                 onClick={(e) => onClick(e, playlist.id)}
                 style={{ display: "flex", justifyContent: "space-between" }}
               >
