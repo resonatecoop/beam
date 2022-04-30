@@ -121,7 +121,7 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss}": [
+    "src/**/*.{js,jsx,ts,tsx,json}": [
       "prettier",
       "eslint --rule 'no-console: [\"error\", { \"allow\": [\"warn\", \"error\"] }]'"
     ]

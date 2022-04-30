@@ -11,10 +11,11 @@ import { bp } from "../constants";
 import Search from "./Search";
 import styled from "@emotion/styled";
 import { NewsBanner } from "./NewsBanner";
+import { colorShade } from "utils/theme";
 
 const Wrapper = styled.header`
   min-height: 48px;
-  border-bottom: 1px solid grey;
+  border-bottom: 1px solid ${(props) => colorShade(props.theme.colors.text, 20)};
   display: flex;
   flex-direction: column;
   position: sticky;
@@ -23,7 +24,7 @@ const Wrapper = styled.header`
   top: 0;
 `;
 
-const headerClass = css`
+const Content = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -32,12 +33,12 @@ const headerClass = css`
 
   > a {
     text-decoration: none;
-    color: black;
+    color: ${(props) => props.theme.colors.text};
     margin-right: 1rem;
     max-height: 42px;
     transition: 0.25s color;
     &:hover {
-      color: grey;
+      color: ${(props) => colorShade(props.theme.colors.text, 40)};
     }
 
     svg {
@@ -67,7 +68,7 @@ const Header: React.FC = () => {
   return (
     <Wrapper>
       <NewsBanner />
-      <div className={headerClass}>
+      <Content>
         <Link to="/">
           <Logo className="full-logo" style={{ height: "46px" }} />
           <Icon className="icon" style={{ height: "46px" }} />
@@ -82,7 +83,7 @@ const Header: React.FC = () => {
           <Link to="/library/explore/playlists">Library</Link>
         )}
         <Login />
-      </div>
+      </Content>
     </Wrapper>
   );
 };

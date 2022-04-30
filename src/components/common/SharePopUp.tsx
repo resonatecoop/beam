@@ -4,9 +4,9 @@ import Modal from "./Modal";
 
 const Code = styled.code`
   font-size: 0.8rem;
-  background-color: black;
+  background-color: ${(props) => props.theme.colors.text};
   display: block;
-  color: white;
+  color: ${(props) => props.theme.colors.background};
   padding: 1rem;
   position: relative;
   cursor: pointer;
@@ -17,8 +17,8 @@ const Code = styled.code`
     position: absolute;
     bottom: 0;
     right: 0;
-    background: white;
-    color: black;
+    background: ${(props) => props.theme.colors.background};
+    color: ${(props) => props.theme.colors.text};
     margin: 0.5rem;
     padding: 0.5rem;
     transition: 0.25s background;

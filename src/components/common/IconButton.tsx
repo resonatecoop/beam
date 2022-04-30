@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { colorShade } from "utils/theme";
 import { Compactable } from "./Button";
 
 const IconButton = styled.button<Compactable>`
@@ -12,8 +13,9 @@ const IconButton = styled.button<Compactable>`
   line-height: 0.9;
   border-radius: 2px;
 
-  &:hover {
-    color: #888;
+  &:hover,
+  &:focus {
+    color: ${(props) => colorShade(props.theme.colors.text, 80)};
   }
 `;
 

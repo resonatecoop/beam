@@ -17,22 +17,22 @@ const CustomButton = styled.button<Compactable>`
     switch (props.variant) {
       case "link":
         return `
-          color: var(--magenta);
+          color: ${props.theme.colors.primary};
 
           &:hover:not(:disabled) {
-            color: var(--dark-magenta);
+            color: ${props.theme.colors.primaryHighlight};
           }
         `;
       case "outlined":
         return `
-          color: var(--magenta);
+          color:  ${props.theme.colors.primary};
           background-color: transparent;
-          border: 2px solid var(--magenta);
+          border: 2px solid  ${props.theme.colors.primary};
           padding: ${props.compact ? ".3rem .5rem" : "1rem"};
 
           &:hover:not(:disabled) {
-            color: var(--dark-magenta);
-            border: 2px solid var(--dark-magenta);
+            color: ${props.theme.colors.primaryHighlight};
+            border: 2px solid ${props.theme.colors.primaryHighlight};
           }
 
           &[disabled] {
@@ -43,11 +43,11 @@ const CustomButton = styled.button<Compactable>`
       default:
         return `
           padding: ${props.compact ? ".3rem .5rem" : "1rem"};
-          background-color: var(--magenta);
+          background-color:  ${props.theme.colors.primary};
           color: white;
 
           &:hover:not(:disabled) {
-            background-color: var(--dark-magenta);
+            background-color: ${props.theme.colors.primaryHighlight};
           }
         `;
     }

@@ -92,7 +92,6 @@ describe("home page", () => {
   describe.only("authenticated", () => {
     beforeEach(() => {
       window.localStorage.setItem("state", JSON.stringify({ token: "1234" }));
-      console.log("window.localStorage", window.localStorage.getItem("state"));
       cy.intercept("GET", API_V2 + "user/profile/", {
         fixture: "user.json",
       }).as("getProfile");

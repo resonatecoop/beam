@@ -29,6 +29,7 @@ import Releases from "./components/Explore/Releases";
 import Tracks from "./components/Explore/Tracks";
 import SnackbarContext from "contexts/SnackbarContext";
 import Snackbar from "components/common/Snackbar";
+import styled from "@emotion/styled";
 
 injectGlobal`
   * {
@@ -49,10 +50,9 @@ injectGlobal`
       U+A720-A7FF;
   }
 
-  :root {
-    --magenta: #c1006d;
-    --dark-magenta: #770043;
-  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #333; color: white; }
+  }  
 
   html {
     font-size: 18px;
@@ -76,17 +76,6 @@ injectGlobal`
     padding-bottom: .75rem;
   }
 
-  a {
-    color: var(--magenta);
-    transition: 0.25s color;
-    &:hover {
-      color: var(--dark-magenta);
-    }
-  }
-
-  img {
-    background: #dfdfdf;
-  }
 
   @keyframes slide-up {
     from {
@@ -100,15 +89,26 @@ injectGlobal`
   }
 `;
 
-const appWrapper = css`
+const Wrapper = styled.div`
   position: relative;
   width: 100%;
+
+  a {
+    color: ${(props) => props.theme.colors.primary};
+    transition: 0.25s color;
+    &:hover {
+      color: ${(props) => props.theme.colors.primaryHighlight};
+    }
+  }
+
+  img {
+    background: #dfdfdf;
+  }
 `;
 
 const contentWrapper = css`
   padding: 2rem 1rem calc(48px + 5rem);
   min-height: 100vh;
-  background-color: #efefef;
 
   @media (max-width: ${bp.small}px) {
     padding-bottom: calc(150px + 3rem);
@@ -136,7 +136,7 @@ function App() {
   return (
     <>
       {isDisplayed && <Snackbar />}
-      <div className={appWrapper}>
+      <Wrapper>
         <Header />
         <div className={contentWrapper}>
           <Routes>
@@ -169,7 +169,7 @@ function App() {
           </Routes>
         </div>
         <Player />
-      </div>
+      </Wrapper>
     </>
   );
 }

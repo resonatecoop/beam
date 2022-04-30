@@ -9,6 +9,17 @@ import useDraggableTrack from "utils/useDraggableTrack";
 import { FavoriteTrack } from "./FavoriteTrack";
 import IconButton from "./IconButton";
 import TrackPopup from "./TrackPopup";
+import styled from "@emotion/styled";
+import { colorShade } from "utils/theme";
+
+const PlaysTracker = styled.div<{ width: number; played?: boolean }>`
+  width: ${(props) => props.width}px;
+  height: 1rem;
+  background-color: ${(props) =>
+    props.played
+      ? props.theme.colors.primary
+      : colorShade(props.theme.colors.background, -30)};
+`;
 
 const TrackRow: React.FC<{
   track: TrackWithUserCounts | Track;
@@ -116,26 +127,14 @@ const TrackRow: React.FC<{
               display: flex;
             `}
           >
-            <div
-              className={css`
-                width: ${track.plays * 3}px;
-                height: 1rem;
-                background-color: var(--magenta);
-              `}
-            />
-            <div
-              className={css`
-                width: ${(9 - track.plays) * 3}px;
-                height: 1rem;
-                background-color: #cfcfcf;
-              `}
-            />
+            <PlaysTracker width={track.plays * 3} played />
+            <PlaysTracker width={(9 - track.plays) * 3} />
           </div>
         )}
       </td>
       <td>
         <TrackPopup
-          trackId={(editable && track.id) || undefined}
+          trackId={track.id}
           compact
           groupId={trackgroupId}
           reload={reload}

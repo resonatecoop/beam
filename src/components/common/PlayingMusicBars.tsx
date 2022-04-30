@@ -49,7 +49,7 @@ const Wrapper = styled.div<WrapperProps>`
   span {
     width: 5px;
     height: 100%;
-    background-color: var(--magenta);
+    background-color: ${(props) => props.theme.colors.primary};
     border-radius: 3px;
     transform-origin: bottom;
     animation: bounce 2.2s ease infinite alternate;

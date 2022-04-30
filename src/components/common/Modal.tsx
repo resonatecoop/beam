@@ -59,7 +59,6 @@ const close = css`
 
   &:hover,
   &:focus {
-    color: black;
     text-decoration: none;
     cursor: pointer;
   }

@@ -1,11 +1,12 @@
 import { css } from "@emotion/css";
+import styled from "@emotion/styled";
 import React from "react";
-import { NavLink, useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { bp } from "../constants";
 import { useGlobalStateContext } from "../contexts/globalState";
 import { addTracksToTrackGroup, fetchUserTrackGroups } from "../services/Api";
 import AddPlaylist from "./AddPlaylist";
-import { listButtonClass } from "./common/ListButton";
+import { NavLinkAsButton } from "./common/ListButton";
 
 const divider = css`
   margin: 0 0 1rem;
@@ -67,27 +68,21 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
         `}
       >
         <li>
-          <NavLink className={listButtonClass} to="/library/explore/playlists">
+          <NavLinkAsButton to="/library/explore/playlists">
             Explore
-          </NavLink>
+          </NavLinkAsButton>
         </li>
         <hr className={divider} />
 
         <li>
-          <NavLink className={listButtonClass} to="/library/history">
-            History
-          </NavLink>
+          <NavLinkAsButton to="/library/history">History</NavLinkAsButton>
         </li>
         <hr className={divider} />
         <li>
-          <NavLink className={listButtonClass} to="/library/collection">
-            Collection
-          </NavLink>
+          <NavLinkAsButton to="/library/collection">Collection</NavLinkAsButton>
         </li>
         <li>
-          <NavLink className={listButtonClass} to="/library/favorites">
-            Favorites
-          </NavLink>
+          <NavLinkAsButton to="/library/favorites">Favorites</NavLinkAsButton>
         </li>
         <hr className={divider} />
         {playlists?.map((playlist) => (
@@ -97,6 +92,18 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
     </div>
   );
 };
+
+const LI = styled.li<{ isHoveringOver: boolean }>`
+  ${(props) =>
+    props.isHoveringOver &&
+    `
+      background-color: ${props.theme.colors.primary} !important;
+
+      > a {
+        color: white;
+      }
+    `}
+`;
 
 const PlaylistLI: React.FC<{ playlist: Trackgroup }> = ({ playlist }) => {
   const {
@@ -125,30 +132,17 @@ const PlaylistLI: React.FC<{ playlist: Trackgroup }> = ({ playlist }) => {
   );
 
   return (
-    <li
+    <LI
       key={playlist.id}
-      className={
-        isHoveringOver
-          ? css`
-              background-color: var(--magenta) !important;
-
-              > a {
-                color: white;
-              }
-            `
-          : ""
-      }
       onDrop={() => onDrop(playlist.id)}
       onDragOver={(ev) => ev.preventDefault()}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
+      isHoveringOver={isHoveringOver}
     >
-      <NavLink
-        className={listButtonClass}
-        to={`/library/playlist/${playlist.id}`}
-      >
+      <NavLinkAsButton to={`/library/playlist/${playlist.id}`}>
         {playlist.title}
-      </NavLink>
-    </li>
+      </NavLinkAsButton>
+    </LI>
   );
 };
