@@ -9,6 +9,9 @@ const {
 } = require("electron");
 const path = require("path");
 
+const TOGGLE_DARK_MODE = "dark-mode:toggle";
+const USE_SYSTEM_DARK_MODE = "dark-mode:system";
+
 // Create the native browser window.
 function createWindow() {
   const mainWindow = new BrowserWindow({
@@ -41,7 +44,8 @@ function createWindow() {
   }
 
   // Dark mode
-  ipcMain.handle("dark-mode:toggle", () => {
+  ipcMain.removeHandler(TOGGLE_DARK_MODE);
+  ipcMain.handle(TOGGLE_DARK_MODE, () => {
     if (nativeTheme.shouldUseDarkColors) {
       nativeTheme.themeSource = "light";
     } else {
@@ -50,7 +54,8 @@ function createWindow() {
     return nativeTheme.shouldUseDarkColors;
   });
 
-  ipcMain.handle("dark-mode:system", () => {
+  ipcMain.removeHandler(USE_SYSTEM_DARK_MODE);
+  ipcMain.handle(USE_SYSTEM_DARK_MODE, () => {
     nativeTheme.themeSource = "system";
   });
 }
