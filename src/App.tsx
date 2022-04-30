@@ -50,10 +50,9 @@ injectGlobal`
       U+A720-A7FF;
   }
 
-  :root {
-    --magenta: #c1006d;
-    --dark-magenta: #770043;
-  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #333; color: white; }
+  }  
 
   html {
     font-size: 18px;
@@ -98,7 +97,7 @@ const Wrapper = styled.div`
     color: ${(props) => props.theme.colors.primary};
     transition: 0.25s color;
     &:hover {
-      color: var(--dark-magenta);
+      color: ${(props) => props.theme.colors.primaryHighlight};
     }
   }
 

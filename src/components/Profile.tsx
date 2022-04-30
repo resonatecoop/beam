@@ -59,6 +59,7 @@ const Profile: React.FC = () => {
   React.useEffect(() => {
     fetchStats();
   }, [fetchStats]);
+
   const toggleDarkMode = async () => {
     if (window.darkMode) {
       const isDarkMode = window.darkMode.toggle();
