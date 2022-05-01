@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { useSnackbar } from "contexts/SnackbarContext";
 import React from "react";
 import Modal from "./Modal";
 
@@ -45,11 +46,13 @@ export const SharePopUp: React.FC<{
   track?: Track;
   trackgroup?: Trackgroup;
 }> = ({ open, track, trackgroup, onClose }) => {
+  const displayMessage = useSnackbar();
   const url = trackgroup
     ? `${embedRoot}artist/${trackgroup.creator_id}/release/${trackgroup.slug}`
     : `${embedRoot}track/${track?.id}`;
   const copyToClipboard = () => {
     navigator.clipboard.writeText(embed(url));
+    displayMessage("Copied");
   };
 
   return (

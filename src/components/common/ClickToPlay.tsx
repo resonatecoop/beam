@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import SnackbarContext from "contexts/SnackbarContext";
+import { useSnackbar } from "contexts/SnackbarContext";
 import React from "react";
 
 import { FaPause, FaPlay } from "react-icons/fa";
@@ -93,7 +93,7 @@ const ClickToPlay: React.FC<{
     state: { playing, playerQueueIds },
     dispatch,
   } = useGlobalStateContext();
-  const { displayMessage } = React.useContext(SnackbarContext);
+  const displayMessage = useSnackbar();
 
   const onClickPlay = React.useCallback(async () => {
     let ids: number[] = [];

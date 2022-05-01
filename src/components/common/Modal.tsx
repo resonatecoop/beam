@@ -60,7 +60,6 @@ const close = css`
   &:hover,
   &:focus {
     text-decoration: none;
-    cursor: pointer;
   }
 `;
 

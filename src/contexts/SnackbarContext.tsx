@@ -42,3 +42,8 @@ export const SnackBarContextProvider: React.FC = (props) => {
     </SnackbarContext.Provider>
   );
 };
+
+export const useSnackbar = () => {
+  const { displayMessage } = React.useContext(SnackbarContext);
+  return displayMessage;
+};
