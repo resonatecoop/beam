@@ -1,10 +1,8 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { FaShare } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { fetchTrackGroup } from "../services/Api";
-import Button from "./common/Button";
-import SharePopUp from "./common/SharePopUp";
+import ShareTrackgroupButton from "./common/ShareTrackgroupButton";
 import { CenteredSpinner } from "./common/Spinner";
 import Tags from "./common/Tags";
 import TrackTable from "./common/TrackTable";
@@ -18,7 +16,6 @@ export const TrackgroupPage: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [trackgroup, setTrackgroup] = React.useState<TrackgroupDetail>();
   const [tracks, setTracks] = React.useState<Track[]>([]);
-  const [isShareOpen, setIsShareOpen] = React.useState(false);
 
   const fetchTracks = React.useCallback(async (id: string) => {
     setIsLoading(true);
@@ -33,13 +30,6 @@ export const TrackgroupPage: React.FC = () => {
       fetchTracks(trackgroupId);
     }
   }, [fetchTracks, trackgroupId]);
-
-  const openMenu = React.useCallback(
-    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-      setIsShareOpen(true);
-    },
-    []
-  );
 
   return (
     <div
@@ -80,21 +70,13 @@ export const TrackgroupPage: React.FC = () => {
             className={css`
               display: flex;
               align-items: center;
+              margin-left: 1rem;
+              margin-bottom: 1rem;
             `}
           >
-            <Button
-              onClick={(e) => openMenu(e)}
-              compact
-              startIcon={<FaShare />}
-            >
-              Share
-            </Button>
+            <ShareTrackgroupButton trackgroup={trackgroup} />
           </div>
-          <SharePopUp
-            trackgroup={trackgroup}
-            open={isShareOpen}
-            onClose={() => setIsShareOpen(false)}
-          />
+
           <div className={padding}>
             <Tags tags={trackgroup.tags} />
           </div>

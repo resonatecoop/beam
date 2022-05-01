@@ -2,12 +2,22 @@ import { css } from "@emotion/css";
 import React from "react";
 import ClickToPlay from "./ClickToPlay";
 import OverflowableText from "./OverflowableText";
+import ShareTrackgroupButton from "./ShareTrackgroupButton";
 import Tags from "./Tags";
 import TrackTable from "./TrackTable";
 
-const Release: React.FC<{ release: Partial<TrackgroupDetail> }> = ({
-  release,
-}) => {
+interface ReleaseDetails {
+  items?: TrackgroupItem[];
+  id: string;
+  images?: ImageSizes;
+  title?: string;
+  about: string | null;
+  tags?: string[];
+  creator_id: number;
+  slug: string;
+}
+
+const Release: React.FC<{ release: ReleaseDetails }> = ({ release }) => {
   const [items] = React.useState(
     release.items?.map((item) => item.track) ?? []
   );
@@ -44,6 +54,7 @@ const Release: React.FC<{ release: Partial<TrackgroupDetail> }> = ({
             </div>
           )}
           <Tags tags={release.tags ?? []} />
+          <ShareTrackgroupButton trackgroup={release} />
         </div>
       </div>
       <TrackTable tracks={items} />
