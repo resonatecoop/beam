@@ -41,7 +41,7 @@ const PlaylistTitleEditing: React.FC<{
 
   const onDelete = React.useCallback(async () => {
     await deleteUserTrackGroup(playlist.id);
-    navigate("/library/playlist");
+    navigate("/library");
   }, [playlist.id, navigate]);
 
   const togglePrivate = () => {
@@ -93,12 +93,7 @@ const PlaylistTitleEditing: React.FC<{
           justify-content: flex-end;
         `}
       >
-        <Button
-          onClick={onDelete}
-          startIcon={<FaTrash />}
-          variant="outlined"
-          disabled
-        >
+        <Button onClick={onDelete} startIcon={<FaTrash />} variant="outlined">
           Delete
         </Button>
 
