@@ -3,8 +3,9 @@ import { css } from "@emotion/css";
 import { useGlobalStateContext } from "../contexts/globalState";
 import Button from "./common/Button";
 import Disclaimer from "./common/Disclaimer";
-import { fetchUserStats } from "../services/Api";
+import { fetchUserStats } from "services/Api";
 import { format, subDays, differenceInDays, addDays } from "date-fns";
+import beamPackage from "../../package.json";
 
 const pClass = css`
   display: flex;
@@ -117,7 +118,6 @@ const Profile: React.FC = () => {
         </div>
       )}
       {cachedToken && <Button onClick={logout}>Log out</Button>}
-
       <div
         className={css`
           margin-top: 2rem;
@@ -131,8 +131,8 @@ const Profile: React.FC = () => {
           </div>
         ))}
       </div>
-
       <Disclaimer />
+      Beam version: {beamPackage.version}
     </div>
   );
 };
