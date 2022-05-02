@@ -40,11 +40,16 @@ const embed = (url: string) => `<iframe
   style="margin:0;border:none;width:400px;height:600px;border: 1px solid #000;"
   ></iframe>`;
 
+export interface ShareableTrackgroup {
+  creator_id: number;
+  slug: string;
+}
+
 export const SharePopUp: React.FC<{
   open: boolean;
   onClose: () => void;
   track?: Track;
-  trackgroup?: Trackgroup;
+  trackgroup?: ShareableTrackgroup;
 }> = ({ open, track, trackgroup, onClose }) => {
   const displayMessage = useSnackbar();
   const url = trackgroup
