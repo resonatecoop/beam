@@ -36,7 +36,7 @@ export const TagList: React.FC = () => {
                 <ClickToPlay
                   image={group.images.small}
                   title={group.title}
-                  groupId={group._id}
+                  groupId={group.track_group_id}
                 />
               )}
               <SmallTileDetails

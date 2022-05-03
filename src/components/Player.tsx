@@ -204,6 +204,7 @@ const Player = () => {
         <Button
           onClick={onClickQueue}
           compact
+          data-cy="queue"
           variant="outlined"
           className={css`
             margin-left: 2rem;

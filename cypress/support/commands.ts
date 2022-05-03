@@ -1,3 +1,5 @@
+/// <reference types="cypress" />
+
 // ***********************************************
 // This example commands.js shows you how to
 // create various custom commands and overwrite
@@ -23,3 +25,18 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("isPlayingAudio", () => {
+  cy.get("audio,video").should((els) => {
+    let audible = false;
+    els.each((i, el) => {
+      // @ts-ignore
+      if (el.duration > 0 && !el.paused && !el.muted) {
+        audible = true;
+      }
+
+      // expect(el.duration > 0 && !el.paused && !el.muted).to.eq(false)
+    });
+    expect(audible).eq(true);
+  });
+});
