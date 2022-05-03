@@ -2,21 +2,6 @@
 
 const API_V2 = "https://stream.resonate.coop/api/v2/";
 
-const expectPlayingAudio = () => {
-  cy.get("audio,video").should((els) => {
-    let audible = false;
-    els.each((i, el) => {
-      // @ts-ignore
-      if (el.duration > 0 && !el.paused && !el.muted) {
-        audible = true;
-      }
-
-      // expect(el.duration > 0 && !el.paused && !el.muted).to.eq(false)
-    });
-    expect(audible).eq(true);
-  });
-};
-
 describe("home page", () => {
   describe("unauthenticated", () => {
     beforeEach(() => {
@@ -37,7 +22,7 @@ describe("home page", () => {
 
       cy.get("h4").next("button").click();
       cy.wait(["@getTrackAudio"]).then(() => {
-        expectPlayingAudio();
+        cy.isPlayingAudio();
       });
     });
 
@@ -49,9 +34,7 @@ describe("home page", () => {
           cy.get("a").first().click();
         });
       cy.get("h2").contains("Library");
-      cy.location().should((loc) => {
-        expect(loc.href).contain("library/trackgroup");
-      });
+
       cy.get("table").contains("Title");
     });
 
@@ -63,9 +46,7 @@ describe("home page", () => {
           cy.get("li a").last().click();
         });
       cy.get("h2").contains("Library");
-      cy.location().should((loc) => {
-        expect(loc.href).contain("library/artist");
-      });
+
       cy.get("h4").contains("Releases");
 
       cy.get("table").contains("Title");
@@ -79,17 +60,31 @@ describe("home page", () => {
       cy.get("h3").contains('Results for "hello"');
     });
 
-    it("can clear a queue", () => {
+    it.only("can clear a queue", () => {
+      cy.intercept(API_V2 + "tracks/*").as("trackDetails");
       cy.get("h4").next("button").click();
-      cy.get("button").contains("Queue").click();
+      cy.get("[data-cy=queue]").contains("Queue").click();
       cy.get("h3").contains("Queue");
-      cy.get("[data-cy='queue'] img").should("not.have.length", 0);
-      cy.get("button").contains("Clear queue").click();
-      cy.get("div").contains("Your queue is empty");
+      // eslint-disable-next-line jest/valid-expect-in-promise
+      cy.get("[data-cy='queue'] ul li").then((els) => {
+        const l = els.length;
+        expect(l).greaterThan(1);
+        // els.should("have.length.at.least", 1);
+        let array = [];
+        for (let i = 0; i < l; i++) {
+          array.push("@trackDetails");
+        }
+        return cy.wait(array).then(() => {
+          cy.isPlayingAudio();
+          cy.get("[aria-label=Pause]").click();
+          cy.get("button").contains("Clear queue").scrollIntoView().click();
+          cy.get("div").contains("Your queue is empty");
+        });
+      });
     });
   });
 
-  describe.only("authenticated", () => {
+  describe("authenticated", () => {
     beforeEach(() => {
       window.localStorage.setItem("state", JSON.stringify({ token: "1234" }));
       cy.intercept("GET", API_V2 + "user/profile/", {

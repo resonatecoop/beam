@@ -10,6 +10,7 @@ export const Tags: React.FC<{ tags: string[]; onClick?: () => void }> = ({
       className={css`
         margin-bottom: 1rem;
       `}
+      data-cy="tag-list"
     >
       {tags.map((tag) => (
         <li

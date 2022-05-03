@@ -20,11 +20,16 @@ const TrackList: React.FC<{
   fullWidth?: boolean;
   handleDrop?: (ev: React.DragEvent<HTMLLIElement>) => void;
 }> = ({ tracks, draggable, fullWidth, handleDrop }) => {
-  const localTracks = tracks.map((track, index) => ({
-    ...track,
-    key: `${track.id} + ${index}`,
-  }));
+  const [localTracks, setLocalTracks] = React.useState<TrackWithKey[]>([]);
   const { dispatch } = useGlobalStateContext();
+
+  React.useEffect(() => {
+    const newTracks = tracks.map((track, index) => ({
+      ...track,
+      key: `${track.id} + ${index}`,
+    }));
+    setLocalTracks(newTracks);
+  }, [tracks]);
 
   const addTracksToQueue = React.useCallback(
     (id: number) => {
@@ -41,7 +46,7 @@ const TrackList: React.FC<{
 
   return (
     <>
-      <ul className={staffPickUl}>
+      <ul className={staffPickUl} data-cy="track-list">
         {localTracks.map((track) => (
           <TrackLIWrapper
             track={track}
