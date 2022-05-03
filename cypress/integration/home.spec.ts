@@ -60,15 +60,27 @@ describe("home page", () => {
       cy.get("h3").contains('Results for "hello"');
     });
 
-    it("can clear a queue", () => {
+    it.only("can clear a queue", () => {
+      cy.intercept(API_V2 + "tracks/*").as("trackDetails");
       cy.get("h4").next("button").click();
       cy.get("[data-cy=queue]").contains("Queue").click();
       cy.get("h3").contains("Queue");
-      cy.get("[data-cy='queue'] ul li").should("have.length.at.least", 1);
-      cy.isPlayingAudio();
-      cy.get("[aria-label=Pause]").click();
-      cy.get("button").contains("Clear queue").scrollIntoView().click();
-      cy.get("div").contains("Your queue is empty");
+      // eslint-disable-next-line jest/valid-expect-in-promise
+      cy.get("[data-cy='queue'] ul li").then((els) => {
+        const l = els.length;
+        expect(l).greaterThan(1);
+        // els.should("have.length.at.least", 1);
+        let array = [];
+        for (let i = 0; i < l; i++) {
+          array.push("@trackDetails");
+        }
+        return cy.wait(array).then(() => {
+          cy.isPlayingAudio();
+          cy.get("[aria-label=Pause]").click();
+          cy.get("button").contains("Clear queue").scrollIntoView().click();
+          cy.get("div").contains("Your queue is empty");
+        });
+      });
     });
   });
 

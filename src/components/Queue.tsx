@@ -16,8 +16,7 @@ export const Queue: React.FC = () => {
     state: { playerQueueIds, draggingTrackId },
     dispatch,
   } = useGlobalStateContext();
-  const [hasLoaded, setHasLoaded] = React.useState(false);
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
   const [playerQueue, setPlayerQueue] = React.useState<Track[]>([]);
 
   const clearQueue = React.useCallback(() => {
@@ -30,44 +29,38 @@ export const Queue: React.FC = () => {
     });
   }, [dispatch]);
 
-  const fetchQueueDetails = React.useCallback(
-    async (ids: number[], loadingFirstTime: boolean) => {
-      if (ids && ids.length > 0) {
-        if (loadingFirstTime) {
-          setIsLoading(true);
-        }
-        const results = await Promise.all(
-          ids.map((id) => {
-            return fetchTrack(id);
-          })
-        );
-        setPlayerQueue(
-          results.map((result) => {
-            // FIXME currentTrack.images doesn't contain small image URL
-            return {
-              ...result,
-              images: {
-                ...result.images,
-                small: {
-                  ...(result.images.small ?? { width: 60, height: 60 }),
-                  url: result.images.small?.url ?? result.cover,
-                },
+  const fetchQueueDetails = React.useCallback(async (ids: number[]) => {
+    if (ids && ids.length > 0) {
+      const results = await Promise.all(
+        ids.map((id) => {
+          return fetchTrack(id);
+        })
+      );
+      setPlayerQueue(
+        results.map((result) => {
+          // FIXME currentTrack.images doesn't contain small image URL
+          return {
+            ...result,
+            images: {
+              ...result.images,
+              small: {
+                ...(result.images.small ?? { width: 60, height: 60 }),
+                url: result.images.small?.url ?? result.cover,
               },
-            };
-          })
-        );
-        setIsLoading(false);
-        setHasLoaded(true);
-      } else {
-        setPlayerQueue([]);
-      }
-    },
-    []
-  );
+            },
+          };
+        })
+      );
+      setIsLoading(false);
+    } else {
+      setPlayerQueue([]);
+      setIsLoading(false);
+    }
+  }, []);
 
   React.useEffect(() => {
-    fetchQueueDetails(playerQueueIds, !hasLoaded);
-  }, [playerQueueIds, fetchQueueDetails, hasLoaded]);
+    fetchQueueDetails(playerQueueIds);
+  }, [playerQueueIds, fetchQueueDetails]);
 
   const handleDrop = React.useCallback(
     async (ev: React.DragEvent<HTMLLIElement>) => {
