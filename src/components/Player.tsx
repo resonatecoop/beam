@@ -63,6 +63,10 @@ const trackInfo = css`
   }
 `;
 
+function isEqualDurations(n1: number, n2: number) {
+  return Math.abs(n1 - n2) < 0.00001;
+}
+
 const Player = () => {
   const {
     state: {
@@ -149,7 +153,7 @@ const Player = () => {
   const determineIfShouldPlay = React.useCallback(() => {
     if (
       currentTrack &&
-      currentlyPlayingIndex &&
+      currentlyPlayingIndex !== undefined &&
       currentTrack.id === playerQueueIds[currentlyPlayingIndex] &&
       playerRef?.current &&
       playing &&
@@ -158,7 +162,7 @@ const Player = () => {
       playerRef.current.audio.current.play();
     } else if (
       playerRef?.current &&
-      !playing &&
+      playing === false &&
       playerRef.current.isPlaying()
     ) {
       playerRef.current.audio.current.pause();
@@ -177,9 +181,16 @@ const Player = () => {
     dispatch({ type: "decrementCurrentlyPlayingIndex" });
   }, [dispatch]);
 
-  const onPause = React.useCallback(() => {
-    dispatch({ type: "setPlaying", playing: false });
-  }, [dispatch]);
+  const onPause = React.useCallback(
+    (e) => {
+      // onPause gets triggered both onEnded and onPause, so we need
+      // a way to differntiate those.
+      if (!isEqualDurations(e.target.currentTime, e.target.duration)) {
+        dispatch({ type: "setPlaying", playing: false });
+      }
+    },
+    [dispatch]
+  );
 
   const onPlay = React.useCallback(() => {
     dispatch({ type: "setPlaying", playing: true });
