@@ -52,7 +52,7 @@ injectGlobal`
 
   @media (prefers-color-scheme: dark) {
     body { background: #333; color: white; }
-  }  
+  }
 
   html {
     font-size: 18px;
