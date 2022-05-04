@@ -3,9 +3,10 @@ import { css } from "@emotion/css";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
-import { useGlobalStateContext } from "../contexts/globalState";
+import { GlobalState, useGlobalStateContext } from "../contexts/globalState";
 import { fetchTrack, registerPlay } from "../services/Api";
 import { MdQueueMusic } from "react-icons/md";
+import { ImLoop, ImShuffle } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
 import { bp } from "../constants";
 import { FavoriteTrack } from "./common/FavoriteTrack";
@@ -13,6 +14,19 @@ import { buildStreamURL, mapFavoriteAndPlaysToTracks } from "../utils/tracks";
 import Button from "./common/Button";
 import { isTrackWithUserCounts } from "../typeguards";
 import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
+import IconButton from "./common/IconButton";
+import styled from "@emotion/styled";
+
+const LoopingIndicator = styled.span`
+  position: absolute;
+  font-size: 0.5rem;
+  padding: 0.15rem 0.2rem;
+  background-color: ${(props) => props.theme.colors.primary};
+  border-radius: 100%;
+  color: white;
+  top: -0.25rem;
+  right: -0.25rem;
+`;
 
 const playerClass = css`
   min-height: 48px;
@@ -49,9 +63,20 @@ const trackInfo = css`
   }
 `;
 
+function isEqualDurations(n1: number, n2: number) {
+  return Math.abs(n1 - n2) < 0.00001;
+}
+
 const Player = () => {
   const {
-    state: { playerQueueIds, user, playing },
+    state: {
+      playerQueueIds,
+      currentlyPlayingIndex,
+      user,
+      playing,
+      shuffle,
+      looping,
+    },
     dispatch,
   } = useGlobalStateContext();
   let navigate = useNavigate();
@@ -75,12 +100,16 @@ const Player = () => {
   );
 
   React.useEffect(() => {
-    if (playerQueueIds && playerQueueIds[0]) {
-      fetchTrackCallback(playerQueueIds[0]);
+    if (
+      playerQueueIds &&
+      currentlyPlayingIndex !== undefined &&
+      playerQueueIds[currentlyPlayingIndex]
+    ) {
+      fetchTrackCallback(playerQueueIds[currentlyPlayingIndex]);
     } else {
       setCurrentTrack(undefined);
     }
-  }, [fetchTrackCallback, playerQueueIds]);
+  }, [fetchTrackCallback, playerQueueIds, currentlyPlayingIndex]);
 
   const onEnded = React.useCallback(async () => {
     if (!mostlyListened && currentTrack && user) {
@@ -90,9 +119,12 @@ const Player = () => {
         console.error(e);
       }
     }
-    dispatch({ type: "popFromFrontOfQueue" });
+    if (looping === "loopTrack") {
+    } else {
+      dispatch({ type: "incrementCurrentlyPlayingIndex" });
+    }
     setMostlyListened(false);
-  }, [currentTrack, dispatch, mostlyListened, user]);
+  }, [currentTrack, dispatch, looping, mostlyListened, user]);
 
   const onClickQueue = React.useCallback(() => {
     navigate("/library/queue");
@@ -118,25 +150,67 @@ const Player = () => {
     [currentTrack, mostlyListened, user]
   );
 
-  React.useEffect(() => {
-    if (playerRef?.current && playing && !playerRef.current.isPlaying()) {
+  const determineIfShouldPlay = React.useCallback(() => {
+    if (
+      currentTrack &&
+      currentlyPlayingIndex !== undefined &&
+      currentTrack.id === playerQueueIds[currentlyPlayingIndex] &&
+      playerRef?.current &&
+      playing &&
+      !playerRef.current.isPlaying()
+    ) {
       playerRef.current.audio.current.play();
     } else if (
       playerRef?.current &&
-      !playing &&
+      playing === false &&
       playerRef.current.isPlaying()
     ) {
       playerRef.current.audio.current.pause();
     }
-  }, [playing]);
+  }, [currentTrack, currentlyPlayingIndex, playerQueueIds, playing]);
 
-  const onPause = React.useCallback(() => {
-    dispatch({ type: "setPlaying", playing: false });
+  React.useEffect(() => {
+    determineIfShouldPlay();
+  }, [determineIfShouldPlay]);
+
+  const onClickNext = React.useCallback(() => {
+    dispatch({ type: "incrementCurrentlyPlayingIndex" });
   }, [dispatch]);
+
+  const onClickPrevious = React.useCallback(() => {
+    dispatch({ type: "decrementCurrentlyPlayingIndex" });
+  }, [dispatch]);
+
+  const onPause = React.useCallback(
+    (e) => {
+      // onPause gets triggered both onEnded and onPause, so we need
+      // a way to differntiate those.
+      if (!isEqualDurations(e.target.currentTime, e.target.duration)) {
+        dispatch({ type: "setPlaying", playing: false });
+      }
+    },
+    [dispatch]
+  );
 
   const onPlay = React.useCallback(() => {
     dispatch({ type: "setPlaying", playing: true });
   }, [dispatch]);
+
+  const onShuffle = React.useCallback(() => {
+    dispatch({ type: "setShuffle", shuffle: !shuffle });
+  }, [dispatch, shuffle]);
+
+  const onLoop = React.useCallback(() => {
+    playerRef.current.audio.current.loop = false;
+    let nextLooping: GlobalState["looping"] = undefined;
+    if (looping === undefined) {
+      nextLooping = "loopTrack";
+      playerRef.current.audio.current.loop = true;
+    } else if (looping === "loopTrack") {
+      nextLooping = "loopQueue";
+    }
+    dispatch({ type: "setLooping", looping: nextLooping });
+  }, [dispatch, looping]);
 
   return (
     <div className={playerClass}>
@@ -184,23 +258,48 @@ const Player = () => {
           }
         `}
       >
-        {playerQueueIds.length > 0 && (
+        {currentTrack && (
           <AudioPlayer
-            src={buildStreamURL(playerQueueIds[0], user?.clientId)}
+            src={buildStreamURL(currentTrack.id, user?.clientId)}
             ref={playerRef}
             onEnded={onEnded}
             onPause={onPause}
             onPlay={onPlay}
+            onClickNext={onClickNext}
+            onClickPrevious={onClickPrevious}
+            showSkipControls
             onListen={onListen}
+            onLoadedData={determineIfShouldPlay}
+            showJumpControls={false}
             layout="horizontal"
             className={css`
               &.rhap_container {
                 box-shadow: none;
                 padding: 0;
+                margin-right: 1rem;
               }
             `}
           />
         )}
+        <IconButton
+          color={shuffle ? "primary" : undefined}
+          compact
+          onClick={onShuffle}
+        >
+          <ImShuffle />
+        </IconButton>
+        <IconButton
+          color={looping ? "primary" : undefined}
+          compact
+          onClick={onLoop}
+          className={css`
+            margin-left: 1rem;
+            position: relative;
+          `}
+        >
+          <ImLoop />
+          {looping === "loopTrack" && <LoopingIndicator>1</LoopingIndicator>}
+        </IconButton>
         <Button
           onClick={onClickQueue}
           compact

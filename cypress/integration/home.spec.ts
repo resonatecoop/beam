@@ -60,7 +60,7 @@ describe("home page", () => {
       cy.get("h3").contains('Results for "hello"');
     });
 
-    it.only("can clear a queue", () => {
+    it("can clear a queue", () => {
       cy.intercept(API_V2 + "tracks/*").as("trackDetails");
       cy.get("h4").next("button").click();
       cy.get("[data-cy=queue]").contains("Queue").click();

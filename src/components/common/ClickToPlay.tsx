@@ -90,7 +90,7 @@ const ClickToPlay: React.FC<{
   playActionIntercept?: (trackId: number) => void;
 }> = ({ groupId, title, image, trackId, className, playActionIntercept }) => {
   const {
-    state: { playing, playerQueueIds },
+    state: { playing, playerQueueIds, currentlyPlayingIndex },
     dispatch,
   } = useGlobalStateContext();
   const displayMessage = useSnackbar();
@@ -115,8 +115,8 @@ const ClickToPlay: React.FC<{
       }
     }
     dispatch({
-      type: "setValuesDirectly",
-      values: { playing: true, playerQueueIds: ids },
+      type: "startPlayingIds",
+      playerQueueIds: ids,
     });
   }, [dispatch, groupId, trackId, playerQueueIds, playActionIntercept]);
 
@@ -141,7 +141,10 @@ const ClickToPlay: React.FC<{
     dispatch({ type: "setPlaying", playing: false });
   }, [dispatch]);
 
-  const currentlyPlaying = playing && playerQueueIds[0] === trackId;
+  const currentlyPlaying =
+    playing &&
+    currentlyPlayingIndex !== undefined &&
+    playerQueueIds[currentlyPlayingIndex] === trackId;
 
   return (
     <Wrapper
