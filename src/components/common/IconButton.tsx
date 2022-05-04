@@ -4,7 +4,10 @@ import { Compactable } from "./Button";
 
 const IconButton = styled.button<Compactable>`
   border: none;
-  color: rgba(0, 0, 0);
+  color: ${(props) =>
+    props.color === "primary"
+      ? props.theme.colors.primary
+      : props.theme.colors.text};
   background-color: transparent;
   padding: ${(props) => (props.compact ? "0" : "0.4rem 0.5rem")};
   cursor: pointer;
@@ -13,9 +16,14 @@ const IconButton = styled.button<Compactable>`
   line-height: 0.9;
   border-radius: 2px;
 
-  &:hover,
-  &:focus {
-    color: ${(props) => colorShade(props.theme.colors.text, 80)};
+  &:hover {
+    color: ${(props) =>
+      colorShade(
+        props.color === "primary"
+          ? props.theme.colors.primary
+          : props.theme.colors.text,
+        80
+      )};
   }
 `;
 

@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { MdShuffle } from "react-icons/md";
+import { ImShuffle } from "react-icons/im";
 import { BiSad } from "react-icons/bi";
 import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchTrack } from "../services/Api";
@@ -13,7 +13,7 @@ import { FaTrashAlt } from "react-icons/fa";
 
 export const Queue: React.FC = () => {
   const {
-    state: { playerQueueIds, draggingTrackId },
+    state: { playerQueueIds, draggingTrackId, currentlyPlayingIndex },
     dispatch,
   } = useGlobalStateContext();
   const [isLoading, setIsLoading] = React.useState(true);
@@ -59,8 +59,8 @@ export const Queue: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    fetchQueueDetails(playerQueueIds);
-  }, [playerQueueIds, fetchQueueDetails]);
+    fetchQueueDetails(playerQueueIds.slice(currentlyPlayingIndex));
+  }, [playerQueueIds, fetchQueueDetails, currentlyPlayingIndex]);
 
   const handleDrop = React.useCallback(
     async (ev: React.DragEvent<HTMLLIElement>) => {
@@ -104,7 +104,7 @@ export const Queue: React.FC = () => {
             <Button
               compact
               onClick={shuffleQueue}
-              startIcon={<MdShuffle />}
+              startIcon={<ImShuffle />}
               style={{ marginRight: ".5rem" }}
             >
               Shuffle

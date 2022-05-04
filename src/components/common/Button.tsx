@@ -4,6 +4,7 @@ import styled from "@emotion/styled";
 
 export interface Compactable {
   compact?: boolean;
+  color?: "primary";
   variant?: "link" | "outlined";
 }
 

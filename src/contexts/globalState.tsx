@@ -1,13 +1,16 @@
 import React, { createContext } from "react";
 import produce from "immer";
-import { shuffle } from "lodash";
+import { clone, pullAt, shuffle } from "lodash";
 
 export interface GlobalState {
   user?: LoggedInUser;
   playerQueueIds: number[];
   token?: string;
   playing?: boolean;
+  looping?: "loopTrack" | "loopQueue";
+  shuffle?: boolean;
   draggingTrackId?: number;
+  currentlyPlayingIndex?: number;
 }
 
 type SetLoggedInUser = {
@@ -22,15 +25,6 @@ type ClearQueue = {
 type AddToBackQueue = {
   type: "addTrackIdsToBackOfQueue";
   idsToAdd: number[];
-};
-
-type AddToFrontQueue = {
-  type: "addTrackIdsToFrontOfQueue";
-  idsToAdd: number[];
-};
-
-type PopFromFrontOfQueue = {
-  type: "popFromFrontOfQueue";
 };
 
 type ShuffleQueue = {
@@ -67,84 +61,149 @@ type SetValuesDirectly = {
   values: Partial<GlobalState>;
 };
 
+type SetLooping = {
+  type: "setLooping";
+  looping: GlobalState["looping"];
+};
+
+type SetShuffle = {
+  type: "setShuffle";
+  shuffle: GlobalState["shuffle"];
+};
+
+type StartPlayingIds = {
+  type: "startPlayingIds";
+  playerQueueIds: number[];
+};
+
+type IncrementCurrentlyPlayingIndex = {
+  type: "incrementCurrentlyPlayingIndex";
+};
+
+type DecrementCurrentlyPlayingIndex = {
+  type: "decrementCurrentlyPlayingIndex";
+};
+
 type Actions =
   | SetLoggedInUser
   | SetState
   | AddToBackQueue
-  | AddToFrontQueue
   | SetToken
-  | PopFromFrontOfQueue
   | SetPlaying
   | ClearQueue
   | SetPlayerQueueIds
   | ShuffleQueue
   | SetDraggingTrackId
-  | SetValuesDirectly;
+  | SetValuesDirectly
+  | SetLooping
+  | SetShuffle
+  | StartPlayingIds
+  | IncrementCurrentlyPlayingIndex
+  | DecrementCurrentlyPlayingIndex;
 
-const stateReducer = produce((draft: GlobalState, action: Actions) => {
-  let newDraft = draft;
+export const stateReducer = produce((draft: GlobalState, action: Actions) => {
   switch (action.type) {
     case "setState":
-      newDraft = {
+      draft = {
         ...action.state,
       };
       break;
     case "setValuesDirectly":
-      newDraft = {
+      draft = {
         ...draft,
         ...action.values,
       };
       break;
+    case "startPlayingIds":
+      draft.playing = true;
+      draft.playerQueueIds = clone(action.playerQueueIds);
+      if (draft.shuffle) {
+        const firstId = pullAt(draft.playerQueueIds, 0);
+        draft.playerQueueIds = [...firstId, ...shuffle(draft.playerQueueIds)];
+      }
+      draft.currentlyPlayingIndex = 0;
+      break;
     case "setLoggedInUser":
-      newDraft.user = action.user;
+      draft.user = action.user;
+      break;
+    case "setLooping":
+      draft.looping = action.looping;
+      break;
+    case "setShuffle":
+      draft.shuffle = action.shuffle;
+      break;
+    case "incrementCurrentlyPlayingIndex":
+      let newIndex = undefined;
+      const atEndOfQueue =
+        draft.currentlyPlayingIndex === draft.playerQueueIds.length - 1;
+      if (atEndOfQueue && draft.looping === "loopQueue") {
+        newIndex = 0;
+      } else if (atEndOfQueue) {
+        newIndex = undefined;
+      } else {
+        newIndex = (draft.currentlyPlayingIndex ?? 0) + 1;
+      }
+      draft.currentlyPlayingIndex = newIndex;
+      break;
+    case "decrementCurrentlyPlayingIndex":
+      draft.currentlyPlayingIndex = (draft.currentlyPlayingIndex ?? 0) - 1;
       break;
     case "addTrackIdsToBackOfQueue":
-      newDraft.playerQueueIds = [...draft.playerQueueIds, ...action.idsToAdd];
-      break;
-    case "addTrackIdsToFrontOfQueue":
-      newDraft.playerQueueIds = [...action.idsToAdd, ...draft.playerQueueIds];
-      break;
-    case "popFromFrontOfQueue":
-      newDraft.playerQueueIds.shift();
+      const newTracks = draft.shuffle
+        ? shuffle(action.idsToAdd)
+        : action.idsToAdd;
+      draft.playerQueueIds = [...draft.playerQueueIds, ...newTracks];
       break;
     case "setPlayerQueueIds":
-      newDraft.playerQueueIds = action.playerQueueIds;
+      if (draft.shuffle) {
+        draft.playerQueueIds = shuffle(action.playerQueueIds);
+      } else {
+        draft.playerQueueIds = action.playerQueueIds;
+      }
+      draft.currentlyPlayingIndex = 0;
       break;
     case "shuffleQueue": {
       let shuffled: number[] = [];
-      if (draft.playing) {
-        const first = draft.playerQueueIds[0];
-        shuffled = [first, ...shuffle(draft.playerQueueIds.slice(1))];
+      if (draft.playing && draft.currentlyPlayingIndex !== undefined) {
+        const currentlyPlayingID = pullAt(
+          draft.playerQueueIds,
+          draft.currentlyPlayingIndex
+        );
+        shuffled = [...currentlyPlayingID, ...shuffle(draft.playerQueueIds)];
       } else {
         shuffled = shuffle(draft.playerQueueIds);
       }
-      newDraft.playerQueueIds = shuffled;
+      draft.playerQueueIds = shuffled;
+      draft.shuffle = true;
       break;
     }
     case "clearQueue":
-      if (newDraft.playing) {
-        newDraft.playerQueueIds = [newDraft.playerQueueIds[0]];
+      if (draft.playing && draft.currentlyPlayingIndex !== undefined) {
+        draft.playerQueueIds = [
+          draft.playerQueueIds[draft.currentlyPlayingIndex],
+        ];
         break;
       }
-      newDraft.playerQueueIds = [];
+      draft.playerQueueIds = [];
+      draft.currentlyPlayingIndex = undefined;
       break;
     case "setToken":
-      newDraft.token = action.token;
+      draft.token = action.token;
       break;
     case "setPlaying":
-      newDraft.playing = action.playing;
+      draft.playing = action.playing;
       break;
     case "setDraggingTrackId":
-      newDraft.draggingTrackId = action.draggingTrackId;
+      draft.draggingTrackId = action.draggingTrackId;
       break;
     default:
       break;
   }
   localStorage.setItem(
     "state",
-    JSON.stringify({ ...newDraft, playing: undefined }) // We don't want playing to be persisted
+    JSON.stringify({ ...draft, playing: undefined }) // We don't want playing to be persisted
   );
-  return newDraft;
+  return draft;
 });
 
 const GlobalContext = createContext(
