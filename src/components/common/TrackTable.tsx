@@ -117,7 +117,6 @@ export const TrackTable: React.FC<{
               addTracksToQueue={addTracksToQueue}
               trackgroupId={trackgroupId}
               reload={reload}
-              editable={editable}
               handleDrop={handleDrop}
             />
           ))}

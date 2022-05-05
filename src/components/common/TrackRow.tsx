@@ -27,21 +27,15 @@ const TrackRow: React.FC<{
   addTracksToQueue: (id: number) => void;
   reload: () => Promise<void>;
   handleDrop: (val: React.DragEvent<HTMLTableRowElement>) => void;
-  editable?: boolean;
-}> = ({
-  track,
-  addTracksToQueue,
-  trackgroupId,
-  reload,
-  handleDrop,
-  editable,
-}) => {
+}> = ({ track, addTracksToQueue, trackgroupId, reload, handleDrop }) => {
   const {
-    state: { playerQueueIds, playing },
+    state: { playerQueueIds, playing, currentlyPlayingIndex },
     dispatch,
   } = useGlobalStateContext();
   const { onDragStart, onDragEnd } = useDraggableTrack();
-  const currentTrackId = playerQueueIds[0];
+  const currentTrackId = currentlyPlayingIndex
+    ? playerQueueIds[currentlyPlayingIndex]
+    : undefined;
 
   const onTrackPlay = React.useCallback(() => {
     addTracksToQueue(track.id);
