@@ -11,12 +11,16 @@
 
 // This function is called when a project is opened or re-opened (e.g. due to
 // the project's config changing)
+require("dotenv-load")();
 
 /**
  * @type {Cypress.PluginConfig}
  */
 // eslint-disable-next-line no-unused-vars
 module.exports = (on, config) => {
+  config.env.client_id = process.env.REACT_APP_CLIENT_ID;
+
   // `on` is used to hook into various events Cypress emits
   // `config` is the resolved Cypress config
+  return config;
 };

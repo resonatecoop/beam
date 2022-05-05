@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 
-const API_V2 = "https://stream.resonate.coop/api/v2/";
-
 describe("home page", () => {
   describe("unauthenticated", () => {
     beforeEach(() => {
@@ -18,7 +16,7 @@ describe("home page", () => {
     });
 
     it("should be able to play a staff pick playlist", () => {
-      cy.intercept("https://api.resonate.coop/v1/stream/*").as("getTrackAudio");
+      cy.intercept(Cypress.env("API") + "stream/*").as("getTrackAudio");
 
       cy.get("h4").next("button").click();
       cy.wait(["@getTrackAudio"]).then(() => {
@@ -61,7 +59,7 @@ describe("home page", () => {
     });
 
     it("can clear a queue", () => {
-      cy.intercept(API_V2 + "tracks/*").as("trackDetails");
+      cy.intercept(Cypress.env("API") + "tracks/*").as("trackDetails");
       cy.get("h4").next("button").click();
       cy.get("[data-cy=queue]").contains("Queue").click();
       cy.get("h3").contains("Queue");
@@ -86,8 +84,11 @@ describe("home page", () => {
 
   describe("authenticated", () => {
     beforeEach(() => {
-      window.localStorage.setItem("state", JSON.stringify({ token: "1234" }));
-      cy.intercept("GET", API_V2 + "user/profile/", {
+      window.localStorage.setItem(
+        `oidc.user:https://id.resonate.coop:${Cypress.env("client_id")}`,
+        JSON.stringify({ access_token: "1234" })
+      );
+      cy.intercept("GET", Cypress.env("API") + "user/profile/", {
         fixture: "user.json",
       }).as("getProfile");
       cy.visit("/");
@@ -98,10 +99,12 @@ describe("home page", () => {
     });
 
     it("should be able to navigate to the user's library", () => {
-      cy.intercept("GET", API_V2 + "artists?limit=50&page=1").as("getArtists");
+      cy.intercept("GET", Cypress.env("API") + "artists?limit=50&page=1").as(
+        "getArtists"
+      );
       cy.intercept(
         "GET",
-        API_V2 + "tracks/latest?limit=50&order=plays&page=1"
+        Cypress.env("API") + "tracks/latest?limit=50&order=plays&page=1"
       ).as("getPlays");
       cy.get("a").contains("Library").click();
       cy.get("h2").contains("Library");

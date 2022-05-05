@@ -1,6 +1,7 @@
 import { resonateUrl } from "../constants";
 
 const API = `${resonateUrl}api/`;
+export const oidcStorage = `oidc.user:https://id.resonate.coop:${process.env.REACT_APP_CLIENT_ID}`;
 
 export const getToken = (apiVersion?: string | number) => {
   let token: string | undefined = undefined;
@@ -13,9 +14,7 @@ export const getToken = (apiVersion?: string | number) => {
   let version = apiVersion ?? "v3";
 
   try {
-    const oauthStateString = localStorage.getItem(
-      `oidc.user:https://id.resonate.coop:${process.env.REACT_APP_CLIENT_ID}`
-    );
+    const oauthStateString = localStorage.getItem(oidcStorage);
     const oauthState = JSON.parse(oauthStateString ?? "");
     token = oauthState.access_token;
     version = apiVersion ?? "v3";
@@ -56,33 +55,6 @@ const fetchWrapper = async (
       return result.data;
     });
 };
-
-// export const logInUserWithPassword = async ({
-//   username,
-//   password,
-// }: {
-//   username: string;
-//   password: string;
-// }): Promise<{
-//   access_token: string;
-//   access_token_expires: string;
-//   client_id: string;
-// }> => {
-//   return fetchWrapper(
-//     "oauth2/password",
-//     {
-//       method: "POST",
-//       body: JSON.stringify({ username, password }),
-//     },
-//     {
-//       apiVersion: "v1",
-//     }
-//   );
-// };
-
-/**
- * User endpoints
- */
 
 export const fetchUserProfile = async (): Promise<LoggedInUser> => {
   return fetchWrapper("user/profile/", {
