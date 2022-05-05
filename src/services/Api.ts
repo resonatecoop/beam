@@ -13,7 +13,9 @@ export const getToken = (apiVersion?: string | number) => {
   let version = apiVersion ?? "v3";
 
   try {
-    const oauthStateString = localStorage.getItem("oauth");
+    const oauthStateString = localStorage.getItem(
+      `oidc.user:https://id.resonate.coop:${process.env.REACT_APP_CLIENT_ID}`
+    );
     const oauthState = JSON.parse(oauthStateString ?? "");
     token = oauthState.access_token;
     version = apiVersion ?? "v3";
@@ -36,6 +38,7 @@ const fetchWrapper = async (
     });
     fullUrl += `?${params}`;
   }
+
   return fetch(fullUrl, {
     headers: {
       "Content-Type": "application/json",

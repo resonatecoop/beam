@@ -30,8 +30,7 @@ import Tracks from "./components/Explore/Tracks";
 import SnackbarContext from "contexts/SnackbarContext";
 import Snackbar from "components/common/Snackbar";
 import styled from "@emotion/styled";
-import { AuthProvider } from "./auth";
-import { oidcConfig } from "auth/config";
+import { useAuth } from "./auth";
 
 // export default History;
 
@@ -91,6 +90,15 @@ injectGlobal`
       transform: translateY(0);
     }
   }
+
+  @keyframes spinning {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 const Wrapper = styled.div`
@@ -120,10 +128,8 @@ const contentWrapper = css`
 `;
 
 function App() {
-  const {
-    state: { token },
-    dispatch,
-  } = useGlobalStateContext();
+  const { dispatch } = useGlobalStateContext();
+  const { userData } = useAuth();
   const { isDisplayed } = useContext(SnackbarContext);
 
   const fetchUserProfileCallback = React.useCallback(async () => {
@@ -132,13 +138,13 @@ function App() {
   }, [dispatch]);
 
   React.useEffect(() => {
-    if (token && token !== "") {
+    if (userData?.access_token && userData?.access_token !== "") {
       fetchUserProfileCallback();
     }
-  }, [fetchUserProfileCallback, token]);
+  }, [fetchUserProfileCallback, userData?.access_token]);
 
   return (
-    <AuthProvider {...oidcConfig} autoSignIn={false}>
+    <>
       {isDisplayed && <Snackbar />}
       <Wrapper>
         <Header />
@@ -174,7 +180,7 @@ function App() {
         </div>
         <Player />
       </Wrapper>
-    </AuthProvider>
+    </>
   );
 }
 

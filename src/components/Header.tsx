@@ -62,7 +62,7 @@ const Content = styled.div`
 
 const Header: React.FC = () => {
   const {
-    state: { user, token },
+    state: { user },
   } = useGlobalStateContext();
 
   return (
@@ -79,9 +79,7 @@ const Header: React.FC = () => {
           `}
         />
         <Search />
-        {user && token && token !== "" && (
-          <Link to="/library/explore/playlists">Library</Link>
-        )}
+        {user && <Link to="/library/explore/playlists">Library</Link>}
         <Login />
       </Content>
     </Wrapper>

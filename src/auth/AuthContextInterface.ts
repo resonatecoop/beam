@@ -1,4 +1,9 @@
-import { UserManager, User, OidcMetadata } from "oidc-client-ts";
+import {
+  UserManager,
+  User,
+  OidcMetadata,
+  WebStorageStateStore,
+} from "oidc-client-ts";
 export interface Location {
   search: string;
   hash: string;
@@ -36,6 +41,10 @@ export interface AuthProviderProps {
    * Manually set metadata if CORS is not configured on the OIDC/OAuth2 provider.
    */
   metadata?: Partial<OidcMetadata>;
+  /**
+   * Define where the user store gets stored
+   */
+  userStore?: WebStorageStateStore;
   /**
    * Define whether the client sends post or a basic authentication
    */

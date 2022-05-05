@@ -50,7 +50,7 @@ export const initUserManager = (props: AuthProviderProps): UserManager => {
     scope,
     automaticSilentRenew,
     loadUserInfo,
-    // popupWindowFeatures,
+    userStore,
     popupRedirectUri,
     popupWindowTarget,
     metadata,
@@ -67,11 +67,11 @@ export const initUserManager = (props: AuthProviderProps): UserManager => {
     response_type: responseType || "code",
     scope: scope || "openid",
     loadUserInfo: loadUserInfo !== undefined ? loadUserInfo : true,
-    // popupWindowFeatures: popupWindowFeatures,
     popup_redirect_uri: popupRedirectUri,
-    popupWindowTarget: popupWindowTarget,
+    popupWindowTarget,
     automaticSilentRenew,
     client_authentication,
+    userStore,
   });
 };
 
@@ -95,7 +95,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({
 
   const signOutHooks = async (): Promise<void> => {
     setUserData(null);
-    localStorage.set("oauth", null);
     onSignOut && onSignOut();
   };
 
@@ -120,28 +119,26 @@ export const AuthProvider: FC<AuthProviderProps> = ({
           const constructingUrl = isLocalFile()
             ? `${oidcConfig.redirectUri}${locationFromRouteMemory.pathname}${locationFromRouteMemory.search}` // We're just building something that passes as a URL
             : undefined;
+
           const user = await userManager.signinCallback(constructingUrl);
           if (user) {
-            localStorage.setItem("oauth", JSON.stringify(user));
             setUserData(user);
-            setIsLoading(false);
             onSignIn && onSignIn(user);
           }
         } catch (e) {
           console.error("e", e);
         }
+        setIsLoading(false);
         return;
       }
 
       const user = await userManager!.getUser();
-      if ((!user || user.expired) && autoSignIn) {
-        onBeforeSignIn && onBeforeSignIn();
-        userManager.signinRedirect();
+      if (!user || user.expired) {
+        await userManager.signinSilent();
       } else if (isMountedRef.current) {
-        localStorage.setItem("oauth", JSON.stringify(user));
         setUserData(user);
-        setIsLoading(false);
       }
+      setIsLoading(false);
       return;
     };
     getUser();

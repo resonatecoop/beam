@@ -11,6 +11,8 @@ import { ThemeProvider } from "@emotion/react";
 import { theme } from "utils/theme";
 
 import { useNavigate } from "react-router-dom";
+import { AuthProvider } from "auth";
+import { oidcConfig } from "auth/config";
 
 const AppHistory: {
   navigate: null | ((v: any) => void);
@@ -33,7 +35,9 @@ const InsideRouter = () => (
     <SnackBarContextProvider>
       <GlobalStateProvider>
         <NavigateSetter />
-        <App />
+        <AuthProvider {...oidcConfig} autoSignIn={false}>
+          <App />
+        </AuthProvider>
       </GlobalStateProvider>
     </SnackBarContextProvider>
   </ThemeProvider>

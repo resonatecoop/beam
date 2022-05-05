@@ -5,6 +5,9 @@ import Button from "./common/Button";
 import Disclaimer from "./common/Disclaimer";
 import { fetchUserStats } from "services/Api";
 import { format, subDays, differenceInDays, addDays } from "date-fns";
+import { useAuth } from "auth";
+import { useNavigate } from "react-router-dom";
+
 import beamPackage from "../../package.json";
 
 const pClass = css`
@@ -19,9 +22,11 @@ const formatStr = "yyyy-MM-dd";
 
 const Profile: React.FC = () => {
   const {
-    state: { user, token: cachedToken },
+    state: { user },
     dispatch,
   } = useGlobalStateContext();
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
   const [stats, setStats] = React.useState<{ date: string; plays: Number }[]>(
     []
   );
@@ -29,10 +34,10 @@ const Profile: React.FC = () => {
 
   const logout = (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
+    signOut();
     dispatch({
       type: "setValuesDirectly",
       values: {
-        token: "",
         user: undefined,
       },
     });
@@ -79,6 +84,12 @@ const Profile: React.FC = () => {
     }
   };
 
+  React.useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
+
   return (
     <div
       className={css`
@@ -117,7 +128,7 @@ const Profile: React.FC = () => {
           </p>
         </div>
       )}
-      {cachedToken && <Button onClick={logout}>Log out</Button>}
+      <Button onClick={logout}>Log out</Button>
       <div
         className={css`
           margin-top: 2rem;
