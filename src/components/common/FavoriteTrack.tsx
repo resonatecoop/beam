@@ -5,14 +5,6 @@ import { addTrackToUserFavorites } from "../../services/Api";
 import IconButton from "./IconButton";
 
 export const spinner = css`
-  @keyframes spinning {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
   > svg {
     position: relative;
     animation-name: spinning;

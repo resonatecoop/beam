@@ -11,6 +11,19 @@ const path = require("path");
 
 const TOGGLE_DARK_MODE = "dark-mode:toggle";
 const USE_SYSTEM_DARK_MODE = "dark-mode:system";
+// const logger = (contents, log) => {
+//   contents.executeJavaScript(`
+//     console.warn('${JSON.stringify(log)}');
+//   `);
+// };
+
+const fileUrl = require("url").format({
+  protocol: "file",
+  slashes: true,
+  pathname: require("path").join(__dirname, "index.html"),
+});
+
+const appURL = app.isPackaged ? fileUrl : "http://localhost:8080";
 
 // Create the native browser window.
 function createWindow() {
@@ -26,16 +39,9 @@ function createWindow() {
     icon: path.join(__dirname, "icons/256x256.png"),
   });
 
-  const fileUrl = require("url").format({
-    protocol: "file",
-    slashes: true,
-    pathname: require("path").join(__dirname, "index.html"),
-  });
-
   // In production, set the initial browser path to the local bundle generated
   // by the Create React App build process.
   // In development, set it to localhost to allow live/hot-reloading.
-  const appURL = app.isPackaged ? fileUrl : "http://localhost:8080";
   mainWindow.loadURL(appURL);
 
   // Automatically open Chrome's DevTools in development mode.
@@ -81,6 +87,7 @@ function setupLocalFilesNormalizerProxy() {
 app.whenReady().then(() => {
   createWindow();
   setupLocalFilesNormalizerProxy();
+  app.setAppLogsPath();
 
   app.on("activate", function () {
     // On macOS it's common to re-create a window in the app when the
@@ -100,17 +107,33 @@ app.on("window-all-closed", function () {
   }
 });
 
-// If your app has no need to navigate or only needs to navigate to known pages,
-// it is a good idea to limit navigation outright to that known scope,
-// disallowing any other kinds of navigation.
 app.on("web-contents-created", (event, contents) => {
+  // doing this because electron breaks when reloading a page
+  // https://github.com/electron/electron/issues/14978
+  contents.on(
+    "did-fail-load",
+    async (event, errorCode, errorDescription, validatedUrl) => {
+      const parsedUrl = new URL(validatedUrl);
+      const search = parsedUrl.search;
+      await contents.loadURL(appURL);
+      contents.executeJavaScript(`
+        AppHistory.navigate("${search}");
+      `);
+    }
+  );
+
+  // If your app has no need to navigate or only needs to navigate to known pages,
+  // it is a good idea to limit navigation outright to that known scope,
+  // disallowing any other kinds of navigation.
   contents.on("will-navigate", (event, navigationUrl) => {
     const parsedUrl = new URL(navigationUrl);
 
-    event.preventDefault();
-
     if (["https:", "http:", "mailto:"].includes(parsedUrl.protocol)) {
-      shell.openExternal(navigationUrl);
+      if (parsedUrl.hostname !== "id.resonate.coop") {
+        event.preventDefault();
+
+        shell.openExternal(navigationUrl);
+      }
     }
   });
 });

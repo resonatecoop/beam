@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 
-const API_V2 = "https://stream.resonate.coop/api/v2/";
-
 describe("tag page", () => {
   describe("unauthenticated", () => {
     beforeEach(() => {
@@ -16,11 +14,11 @@ describe("tag page", () => {
     });
 
     it("should be able to play a staff pick playlist", () => {
-      cy.intercept("GET", API_V2 + "tag/*").as("getTag");
-      cy.intercept("https://api.resonate.coop/v1/stream/*").as("getTrackAudio");
+      cy.intercept("GET", Cypress.env("API") + "tag/*").as("getTag");
+      cy.intercept(Cypress.env("API") + "stream/*").as("getTrackAudio");
 
       cy.get("[data-cy=tag-list] li").first().click();
-      cy.wait("@getTag");
+      cy.wait("@getTag").then(() => {});
       cy.get("ul li img")
         .first()
         .scrollIntoView()
