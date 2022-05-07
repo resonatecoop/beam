@@ -131,8 +131,8 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json}": [
-      "prettier",
+    "{src,cypress}/**/*.{js,jsx,ts,tsx,json}": [
+      "prettier -c",
       "eslint --rule 'no-console: [\"error\", { \"allow\": [\"warn\", \"error\"] }]'"
     ]
   }

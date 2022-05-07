@@ -95,7 +95,7 @@ describe("home page", () => {
       cy.wait("@getProfile").then(() => {});
     });
 
-    it.only("should show the user's username in the header", () => {
+    it("should show the user's username in the header", () => {
       cy.get("header").contains("schmee");
     });
 
