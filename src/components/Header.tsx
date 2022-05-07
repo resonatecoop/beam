@@ -42,7 +42,9 @@ const Content = styled.div`
     }
 
     svg {
-      scale: 0.8;
+      scale: 0.7;
+      margin-left: -2rem;
+      height: 46px;
     }
   }
 
@@ -50,12 +52,14 @@ const Content = styled.div`
     display: none;
   }
 
-  @media (max-width: ${bp.small}px) {
+  @media (max-width: ${bp.medium}px) {
     .full-logo {
-      display: none;
-    }
-    .icon {
-      display: block;
+      path {
+        display: none;
+        &:last-child {
+          display: block;
+        }
+      }
     }
   }
 `;
@@ -71,7 +75,6 @@ const Header: React.FC = () => {
       <Content>
         <Link to="/">
           <Logo className="full-logo" style={{ height: "46px" }} />
-          <Icon className="icon" style={{ height: "46px" }} />
         </Link>
         <div
           className={css`
