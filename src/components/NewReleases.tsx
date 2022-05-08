@@ -46,7 +46,10 @@ const ReleaseItem: React.FC<{ group: Trackgroup }> = ({ group }) => {
         subtitle={
           <>
             {artistExists && (
-              <Link to={`/library/artist/${group.creator_id}`}>
+              <Link
+                to={`/library/artist/${group.creator_id}`}
+                data-cy="artist-link"
+              >
                 {group.display_artist}
               </Link>
             )}
@@ -80,7 +83,7 @@ export const NewReleases: React.FC = () => {
       <h3>New releases</h3>
       <ul className={newReleasesUl}>
         {trackgroups.map((group) => (
-          <ReleaseItem group={group} />
+          <ReleaseItem group={group} key={group.id} />
         ))}
       </ul>
     </div>

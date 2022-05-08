@@ -37,14 +37,22 @@ describe("home page", () => {
     });
 
     it("should navigate to a new releases artist", () => {
+      const regexString = Cypress.env("API") + "artists/\\d*";
+      const regex = new RegExp(regexString);
+      cy.intercept(regex).as("getArtist");
+      cy.intercept(Cypress.env("API") + "artists/*/releases", {
+        fixture: "artistRelease.json",
+      }).as("getRelease");
+      cy.wait("@getArtist").then(() => {});
       cy.get("h3")
         .contains("New releases")
         .next("ul")
         .within(() => {
-          cy.get("li a").last().click();
+          cy.get("li a[data-cy='artist-link']").first().click();
         });
       cy.get("h2").contains("Library");
-
+      cy.wait("@getArtist").then(() => {});
+      cy.wait("@getRelease").then(() => {});
       cy.get("h4").contains("Releases");
 
       cy.get("table").contains("Title");

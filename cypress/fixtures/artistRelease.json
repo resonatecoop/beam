@@ -1,0 +1,367 @@
+{
+  "data": [
+    {
+      "about": null,
+      "cover": "https://static.resonate.is/track-artwork/600x600/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+      "creator_id": 5314,
+      "display_artist": "__Captain Zorx",
+      "id": "acfdc44d-3cd4-47bf-a836-86d05f13ad6c",
+      "slug": "stimmungsattacke",
+      "tags": ["disco metal"],
+      "title": "Stimmungsattacke",
+      "type": null,
+      "cover_metadata": null,
+      "user": { "id": 5314, "nicename": "zorx" },
+      "items": [
+        {
+          "index": 1,
+          "track": {
+            "id": 8089,
+            "title": "14 Hour Man",
+            "status": "free+paid",
+            "album": "Stimmungsattacke",
+            "duration": 229.76,
+            "creator_id": 5314,
+            "artist": "__Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8089"
+          }
+        },
+        {
+          "index": 2,
+          "track": {
+            "id": 8090,
+            "title": "John Sinclair",
+            "status": "paid",
+            "album": "Stimmungsattacke",
+            "duration": 294.92,
+            "creator_id": 5314,
+            "artist": "__Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8090"
+          }
+        },
+        {
+          "index": 3,
+          "track": {
+            "id": 8091,
+            "title": "Housemaster's Heaven",
+            "status": "paid",
+            "album": "Stimmungsattacke",
+            "duration": 225.77,
+            "creator_id": 5314,
+            "artist": "__Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8091"
+          }
+        },
+        {
+          "index": 4,
+          "track": {
+            "id": 8092,
+            "title": "Housemaster's Hell",
+            "status": "paid",
+            "album": "Stimmungsattacke",
+            "duration": 189.01,
+            "creator_id": 5314,
+            "artist": "__Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8092"
+          }
+        },
+        {
+          "index": 5,
+          "track": {
+            "id": 8093,
+            "title": "Housemaster's Himmelfahrt",
+            "status": "paid",
+            "album": "Stimmungsattacke",
+            "duration": 109.76,
+            "creator_id": 5314,
+            "artist": "__Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8093"
+          }
+        },
+        {
+          "index": 6,
+          "track": {
+            "id": 8094,
+            "title": "C.I.D.",
+            "status": "paid",
+            "album": "Stimmungsattacke",
+            "duration": 115.11,
+            "creator_id": 5314,
+            "artist": "__Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8094"
+          }
+        },
+        {
+          "index": 7,
+          "track": {
+            "id": 8095,
+            "title": "La Playa",
+            "status": "free+paid",
+            "album": "Stimmungsattacke",
+            "duration": 313.88,
+            "creator_id": 5314,
+            "artist": "__Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8095"
+          }
+        },
+        {
+          "index": 8,
+          "track": {
+            "id": 8096,
+            "title": "Cowboys Die Lonesome",
+            "status": "paid",
+            "album": "Stimmungsattacke",
+            "duration": 339.31,
+            "creator_id": 5314,
+            "artist": "__Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8096"
+          }
+        },
+        {
+          "index": 9,
+          "track": {
+            "id": 8097,
+            "title": "Schüleraustausch",
+            "status": "paid",
+            "album": "Stimmungsattacke",
+            "duration": 224.69,
+            "creator_id": 5314,
+            "artist": "__Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8097"
+          }
+        },
+        {
+          "index": 10,
+          "track": {
+            "id": 8098,
+            "title": "Rummelplatz",
+            "status": "free+paid",
+            "album": "Stimmungsattacke",
+            "duration": 263.23,
+            "creator_id": 5314,
+            "artist": "__Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8098"
+          }
+        }
+      ],
+      "uri": "https://api.resonate.coop/v3/trackgroups/acfdc44d-3cd4-47bf-a836-86d05f13ad6c",
+      "images": {
+        "small": {
+          "width": 120,
+          "height": 120,
+          "url": "https://static.resonate.is/track-artwork/120x120/8eba9d63-bcdc-4840-9b23-70b817ff75bc"
+        },
+        "medium": {
+          "width": 600,
+          "height": 600,
+          "url": "https://static.resonate.is/track-artwork/600x600/8eba9d63-bcdc-4840-9b23-70b817ff75bc"
+        },
+        "large": {
+          "width": 1500,
+          "height": 1500,
+          "url": "https://static.resonate.is/track-artwork/1500x1500/8eba9d63-bcdc-4840-9b23-70b817ff75bc"
+        }
+      }
+    },
+    {
+      "about": null,
+      "cover": "https://static.resonate.is/track-artwork/600x600/40011e5d-a0f1-4933-88ee-65483346f3cc",
+      "creator_id": 5314,
+      "display_artist": "__Captain Zorx",
+      "id": "77df74ca-10b7-47d7-b329-e8650a2d9634",
+      "slug": "the-maps-of-ancient-sea-kings",
+      "tags": ["alternative musik"],
+      "title": "The Maps Of Ancient Sea Kings",
+      "type": null,
+      "cover_metadata": null,
+      "user": { "id": 5314, "nicename": "zorx" },
+      "items": [
+        {
+          "index": 1,
+          "track": {
+            "id": 8071,
+            "title": "Roter Alarm",
+            "status": "paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 299.93,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8071"
+          }
+        },
+        {
+          "index": 2,
+          "track": {
+            "id": 8072,
+            "title": "Zelda",
+            "status": "free+paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 404.12,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8072"
+          }
+        },
+        {
+          "index": 3,
+          "track": {
+            "id": 8073,
+            "title": "Melek Metatron",
+            "status": "paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 248.45,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8073"
+          }
+        },
+        {
+          "index": 4,
+          "track": {
+            "id": 8074,
+            "title": "Maps Of The Ancient Sea Kings",
+            "status": "free+paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 394.21,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8074"
+          }
+        },
+        {
+          "index": 5,
+          "track": {
+            "id": 8075,
+            "title": "Don't Date A Robot",
+            "status": "paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 157.12,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8075"
+          }
+        },
+        {
+          "index": 6,
+          "track": {
+            "id": 8076,
+            "title": "Greg The Robot",
+            "status": "paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 353.13,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8076"
+          }
+        },
+        {
+          "index": 7,
+          "track": {
+            "id": 8077,
+            "title": "Mops Of The Ancient Sea Kings",
+            "status": "paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 366.75,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8077"
+          }
+        },
+        {
+          "index": 8,
+          "track": {
+            "id": 8078,
+            "title": "Die Bösen",
+            "status": "free+paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 234.6,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8078"
+          }
+        },
+        {
+          "index": 9,
+          "track": {
+            "id": 8079,
+            "title": "Flowershop",
+            "status": "paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 315.61,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8079"
+          }
+        },
+        {
+          "index": 10,
+          "track": {
+            "id": 8080,
+            "title": "Battle Of Zorxmore",
+            "status": "paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 354.21,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8080"
+          }
+        },
+        {
+          "index": 11,
+          "track": {
+            "id": 8081,
+            "title": "Call It A Day",
+            "status": "paid",
+            "album": "The Maps Of Ancient Sea Kings",
+            "duration": 263.37,
+            "creator_id": 5314,
+            "artist": "Captain Zorx",
+            "cover": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc",
+            "url": "https://stream.resonate.coop/api/v3/user/stream/8081"
+          }
+        }
+      ],
+      "uri": "https://api.resonate.coop/v3/trackgroups/77df74ca-10b7-47d7-b329-e8650a2d9634",
+      "images": {
+        "small": {
+          "width": 120,
+          "height": 120,
+          "url": "https://static.resonate.is/track-artwork/120x120/40011e5d-a0f1-4933-88ee-65483346f3cc"
+        },
+        "medium": {
+          "width": 600,
+          "height": 600,
+          "url": "https://static.resonate.is/track-artwork/600x600/40011e5d-a0f1-4933-88ee-65483346f3cc"
+        },
+        "large": {
+          "width": 1500,
+          "height": 1500,
+          "url": "https://static.resonate.is/track-artwork/1500x1500/40011e5d-a0f1-4933-88ee-65483346f3cc"
+        }
+      }
+    }
+  ],
+  "count": 2,
+  "numberOfPages": 1,
+  "status": "ok"
+}
