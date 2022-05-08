@@ -2,7 +2,6 @@ import React from "react";
 import { css } from "@emotion/css";
 
 import { ReactComponent as Logo } from "../assets/logo.svg";
-import { ReactComponent as Icon } from "../assets/icon.svg";
 
 import Login from "./Login";
 import { Link } from "react-router-dom";
