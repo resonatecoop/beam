@@ -11,6 +11,7 @@ import Search from "./Search";
 import styled from "@emotion/styled";
 import { NewsBanner } from "./NewsBanner";
 import { colorShade } from "utils/theme";
+import SetupError from "./SetupError";
 
 const Wrapper = styled.header`
   min-height: 48px;
@@ -70,6 +71,7 @@ const Header: React.FC = () => {
 
   return (
     <Wrapper>
+      <SetupError />
       <NewsBanner />
       <Content>
         <Link to="/">

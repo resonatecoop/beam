@@ -11,7 +11,7 @@ const Container = styled.div<{ variant: Variant }>`
   align-items: center;
   justify-content: center;
   background: ${(props) =>
-    props.variant === "success" ? "#4cdb5f" : "#323232"};
+    props.variant === "success" ? props.theme.colors.success : "#323232"};
   color: #fff;
   z-index: 1000;
   margin: 16px;
