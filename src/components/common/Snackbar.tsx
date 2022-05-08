@@ -1,16 +1,17 @@
 import styled from "@emotion/styled";
-import SnackbarContext from "contexts/SnackbarContext";
+import SnackbarContext, { Variant } from "contexts/SnackbarContext";
 import React from "react";
 import { bp } from "../../constants";
 
-const Container = styled.div`
+const Container = styled.div<{ variant: Variant }>`
   position: fixed;
   bottom: 1rem;
   right: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #323232;
+  background: ${(props) =>
+    props.variant === "success" ? props.theme.colors.success : "#323232"};
   color: #fff;
   z-index: 1000;
   margin: 16px;
@@ -41,7 +42,6 @@ const Label = styled.div`
 `;
 
 const Dismiss = styled.div`
-  color: #ae7ee9;
   font-size: 120%;
   font-weight: bold;
   margin-left: 8px;
@@ -53,7 +53,7 @@ const Dismiss = styled.div`
 const Snackbar: React.FC = () => {
   const snackbarCtx = React.useContext(SnackbarContext);
   return (
-    <Container>
+    <Container variant={snackbarCtx.variant}>
       <Label>{snackbarCtx.msg}</Label>
       <Dismiss onClick={snackbarCtx.onClose}>&times;</Dismiss>
     </Container>

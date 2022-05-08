@@ -57,7 +57,7 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
         }
       `}
     >
-      <AddPlaylist />
+      <AddPlaylist refresh={() => fetchPlaylistsCallback(userId)} />
       <ul
         className={css`
           list-style: none;

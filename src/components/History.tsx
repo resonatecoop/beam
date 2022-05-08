@@ -9,14 +9,14 @@ export const History: React.FC = () => {
   const {
     state: { playerQueueIds },
   } = useGlobalStateContext();
-  const { LoadingButton, results, refresh } = usePagination<Track>({
+  const { LoadingButton, results, refresh, isLoading } = usePagination<Track>({
     apiCall: React.useCallback(fetchUserHistory, []),
     options: React.useMemo(() => ({ limit: 50 }), []),
   });
 
   React.useEffect(() => {
     refresh();
-  }, [playerQueueIds, refresh]);
+  }, [isLoading, playerQueueIds, refresh]);
 
   return (
     <div

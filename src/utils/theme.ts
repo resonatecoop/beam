@@ -4,6 +4,8 @@ export const theme = {
     primaryHighlight: "#770043",
     text: "#333",
     background: "#efefef",
+    warning: "#f04e37",
+    success: "#4cdb5f",
   },
 };
 

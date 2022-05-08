@@ -2,7 +2,6 @@ import React from "react";
 import { css } from "@emotion/css";
 
 import { ReactComponent as Logo } from "../assets/logo.svg";
-import { ReactComponent as Icon } from "../assets/icon.svg";
 
 import Login from "./Login";
 import { Link } from "react-router-dom";
@@ -12,6 +11,7 @@ import Search from "./Search";
 import styled from "@emotion/styled";
 import { NewsBanner } from "./NewsBanner";
 import { colorShade } from "utils/theme";
+import SetupError from "./SetupError";
 
 const Wrapper = styled.header`
   min-height: 48px;
@@ -30,6 +30,7 @@ const Content = styled.div`
   justify-content: space-between;
   padding: 1rem;
   background-color: #fff;
+  position: relative;
 
   > a {
     text-decoration: none;
@@ -42,7 +43,9 @@ const Content = styled.div`
     }
 
     svg {
-      scale: 0.8;
+      scale: 0.7;
+      margin-left: -0.5rem;
+      height: 46px;
     }
   }
 
@@ -50,12 +53,15 @@ const Content = styled.div`
     display: none;
   }
 
-  @media (max-width: ${bp.small}px) {
+  @media (max-width: ${bp.medium}px) {
     .full-logo {
-      display: none;
-    }
-    .icon {
-      display: block;
+      width: 64px;
+      path {
+        display: none;
+        &:last-child {
+          display: block;
+        }
+      }
     }
   }
 `;
@@ -67,11 +73,11 @@ const Header: React.FC = () => {
 
   return (
     <Wrapper>
+      <SetupError />
       <NewsBanner />
       <Content>
         <Link to="/">
           <Logo className="full-logo" style={{ height: "46px" }} />
-          <Icon className="icon" style={{ height: "46px" }} />
         </Link>
         <div
           className={css`

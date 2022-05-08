@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { tags } from "../constants";
+import { bp, tags } from "../constants";
 import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchUserArtistHistory } from "../services/Api";
 import Background from "./common/Background";
@@ -18,6 +18,7 @@ export const Search: React.FC = () => {
   const navigate = useNavigate();
   const [search, setSearch] = React.useState("");
   const [isSearching, setIsSearching] = React.useState(false);
+  const [expandSearch, setExpandSearch] = React.useState(false);
   const [artists, setArtists] = React.useState<
     { uid: number; meta_value: string }[]
   >([]);
@@ -32,6 +33,7 @@ export const Search: React.FC = () => {
       navigate(`/library/search/?q=${encodedURI}`);
       setSearch("");
       setIsSearching(false);
+      setExpandSearch(false);
     },
     [navigate]
   );
@@ -58,37 +60,79 @@ export const Search: React.FC = () => {
     }
   }, [user]);
 
+  const onSmallScreenSearchButtonClick = () => {
+    setExpandSearch(true);
+  };
+
   React.useEffect(() => {
     if (isSearching) {
       loadSuggestions();
     }
   }, [loadSuggestions, isSearching]);
 
+  const className = !expandSearch
+    ? css`
+        margin-right: 1rem;
+        position: relative;
+      `
+    : css`
+        position: absolute;
+        background: white;
+        padding: 0.5rem;
+        left: 0;
+        right: 0;
+        > input {
+          display: block !important;
+          + button {
+            display: block !important;
+            background: white;
+          }
+        }
+      `;
+
   return (
     <>
       {isSearching && (
         <Background transparent onClick={() => setIsSearching(false)} />
       )}
-      <InlineForm
-        compact
+      <IconButton
+        onClick={onSmallScreenSearchButtonClick}
+        type="button"
         className={css`
-          margin-right: 1rem;
-          position: relative;
+          @media (min-width: ${bp.small}px) {
+            display: none;
+          }
         `}
-        onSubmit={onFormSubmit}
       >
+        <FaSearch />
+      </IconButton>
+      {expandSearch && "yes"}
+      <InlineForm compact className={className} onSubmit={onFormSubmit}>
         <Input
           placeholder="Search"
           name="search"
-          style={{ width: "auto" }}
           value={search}
           onFocus={() => {
             setIsSearching(true);
           }}
           onChange={onChange}
           autoComplete="off"
+          className={css`
+            width: auto;
+            @media (max-width: ${bp.small}px) {
+              display: none;
+            }
+          `}
         />
-        <IconButton onClick={onSearchButtonClick}>
+        <IconButton
+          onClick={onSearchButtonClick}
+          type="submit"
+          className={css`
+            @media (max-width: ${bp.small}px) {
+              display: none;
+            }
+          `}
+        >
           <FaSearch />
         </IconButton>
         {isSearching && (
@@ -101,9 +145,15 @@ export const Search: React.FC = () => {
               width: auto;
               padding: 1rem;
               box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+              animation: 100ms ease-out forwards slide-down;
 
               li > a {
                 font-size: 0.9rem;
+              }
+
+              @media (max-width: ${bp.small}px) {
+                width: 100%;
+                left: 0;
               }
             `}
           >
@@ -116,7 +166,13 @@ export const Search: React.FC = () => {
                 margin-top: 1rem;
               `}
             >
-              <Tags onClick={() => setIsSearching(false)} tags={tags} />
+              <Tags
+                onClick={() => {
+                  setIsSearching(false);
+                  setExpandSearch(false);
+                }}
+                tags={tags}
+              />
 
               {artists.length > 0 && (
                 <>

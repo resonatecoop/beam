@@ -1,10 +1,19 @@
 import React from "react";
 
-const SnackbarContext = React.createContext({
+export type Variant = "success" | undefined;
+
+const SnackbarContext = React.createContext<{
+  msg: string;
+  isDisplayed: boolean;
+  displayMessage: (msg: string, options?: { type: Variant }) => void;
+  onClose?: () => void;
+  variant: Variant;
+}>({
   msg: "",
   isDisplayed: false,
-  displayMessage: (msg: string) => {},
-  onClose: () => {},
+  displayMessage: (msg: string, options?: { type: Variant }) => {},
+  onClose: undefined,
+  variant: undefined,
 });
 
 export default SnackbarContext;
@@ -12,11 +21,13 @@ export default SnackbarContext;
 export const SnackBarContextProvider: React.FC = (props) => {
   const [msg, setMsg] = React.useState("");
   const [isDisplayed, setIsDisplayed] = React.useState(false);
+  const [variant, setVariant] = React.useState<Variant>();
   const timer = React.useRef<NodeJS.Timeout>();
 
-  const displayHandler = (msg: string) => {
+  const displayHandler = (msg: string, options?: { type: Variant }) => {
     setMsg(msg);
     setIsDisplayed(true);
+    setVariant(options?.type);
     timer.current = setTimeout(() => {
       closeHandler();
     }, 3000); // close snackbar after 3 seconds
@@ -27,6 +38,7 @@ export const SnackBarContextProvider: React.FC = (props) => {
       clearTimeout(timer.current);
     }
     setIsDisplayed(false);
+    setVariant(undefined);
   };
 
   return (
@@ -36,6 +48,7 @@ export const SnackBarContextProvider: React.FC = (props) => {
         isDisplayed,
         displayMessage: displayHandler,
         onClose: closeHandler,
+        variant,
       }}
     >
       {props.children}

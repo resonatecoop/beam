@@ -9,7 +9,7 @@ import TextArea from "./common/TextArea";
 
 const PlaylistTitleEditing: React.FC<{
   playlist: Trackgroup;
-  onDone: () => void;
+  onDone: (update?: boolean) => void;
 }> = ({ playlist, onDone }) => {
   const navigate = useNavigate();
   const [playlistTitle, setPlaylistTitle] = React.useState(playlist.title);
@@ -34,7 +34,7 @@ const PlaylistTitleEditing: React.FC<{
         title: playlistTitle,
         about,
       });
-      onDone();
+      onDone(true);
     },
     [playlist, playlistTitle, onDone, isPrivate, about]
   );
@@ -93,6 +93,9 @@ const PlaylistTitleEditing: React.FC<{
           justify-content: flex-end;
         `}
       >
+        <Button onClick={() => onDone()} variant="outlined">
+          Cancel Changes
+        </Button>
         <Button onClick={onDelete} startIcon={<FaTrash />} variant="outlined">
           Delete
         </Button>

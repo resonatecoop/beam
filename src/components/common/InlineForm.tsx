@@ -9,7 +9,7 @@ export const InlineForm = styled.form<{ compact?: boolean }>`
     width: 100%;
   }
 
-  > button {
+  > input + button {
     border: 1px solid #bfbfbf;
     border-left: none;
   }

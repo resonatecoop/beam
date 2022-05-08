@@ -13,7 +13,7 @@ describe("tag page", () => {
       cy.get("[data-cy=tag-list] li").first().click();
     });
 
-    it("should be able to play a staff pick playlist", () => {
+    it("should be play a song from a track list", () => {
       cy.intercept("GET", Cypress.env("API") + "tag/*").as("getTag");
       cy.intercept(Cypress.env("API") + "stream/*").as("getTrackAudio");
 

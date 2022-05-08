@@ -133,7 +133,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
       }
 
       const user = await userManager!.getUser();
-      if (!user || user.expired) {
+      if (user?.expired) {
         await userManager.signinSilent();
       } else if (isMountedRef.current) {
         setUserData(user);

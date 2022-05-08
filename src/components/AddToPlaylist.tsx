@@ -49,10 +49,12 @@ export const AddToPlaylist: React.FC<{
         }
       `}
     >
-      <AddPlaylist />
+      <AddPlaylist refresh={fetchPlaylistsCallback} />
       <ul
         className={css`
           list-style: none;
+          overflow-x: scroll;
+          max-height: 40vh;
         `}
       >
         {playlists?.map((playlist) => {

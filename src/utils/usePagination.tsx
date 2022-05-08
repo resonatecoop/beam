@@ -33,6 +33,7 @@ export function usePagination<T>({
   const [pages, setPages] = React.useState(0);
   const [results, setResults] = React.useState<T[]>([]);
   const [isLoading, setLoading] = React.useState(false);
+  const firstLoad = React.useRef(false);
 
   React.useEffect(() => {
     setResults([]);
@@ -48,6 +49,7 @@ export function usePagination<T>({
         setResults((existing) => [...(reset ? [] : existing), ...r.data]);
       }
       setLoading(false);
+      firstLoad.current = true;
     },
     [apiCall, options]
   );
@@ -66,7 +68,9 @@ export function usePagination<T>({
     results,
     page,
     refresh: React.useCallback(() => {
-      loadMore(1, true);
+      if (!firstLoad) {
+        loadMore(1, true);
+      }
     }, [loadMore]),
     loadMore,
     isLoading,
