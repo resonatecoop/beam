@@ -49,7 +49,7 @@ export const AddToPlaylist: React.FC<{
         }
       `}
     >
-      <AddPlaylist />
+      <AddPlaylist refresh={fetchPlaylistsCallback} />
       <ul
         className={css`
           list-style: none;

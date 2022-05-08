@@ -1,3 +1,4 @@
+import { useSnackbar } from "contexts/SnackbarContext";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
 import { createTrackGroup } from "../services/Api";
@@ -5,7 +6,8 @@ import IconButton from "./common/IconButton";
 import InlineForm from "./common/InlineForm";
 import Input from "./common/Input";
 
-export const AddPlaylist: React.FC = () => {
+export const AddPlaylist: React.FC<{ refresh: () => void }> = ({ refresh }) => {
+  const snackbar = useSnackbar();
   const [newPlaylistName, setNewPlaylistName] = React.useState<string>("");
 
   const onChange = React.useCallback((e) => {
@@ -22,8 +24,13 @@ export const AddPlaylist: React.FC = () => {
         title: newPlaylistName,
         type: "playlist",
       });
+      setNewPlaylistName("");
+      snackbar("Successfully created a playlist", { type: "success" });
+      if (refresh) {
+        refresh();
+      }
     },
-    [newPlaylistName]
+    [newPlaylistName, refresh, snackbar]
   );
 
   return (
