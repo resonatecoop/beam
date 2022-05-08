@@ -11,7 +11,6 @@ export interface Compactable {
 const CustomButton = styled.button<Compactable>`
   background: none;
   border: none;
-
   transition: 0.25s background-color, 0.25s color;
 
   ${(props) => {

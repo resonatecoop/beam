@@ -30,6 +30,7 @@ const Content = styled.div`
   justify-content: space-between;
   padding: 1rem;
   background-color: #fff;
+  position: relative;
 
   > a {
     text-decoration: none;
@@ -43,7 +44,7 @@ const Content = styled.div`
 
     svg {
       scale: 0.7;
-      margin-left: -2rem;
+      margin-left: -0.5rem;
       height: 46px;
     }
   }
@@ -54,6 +55,7 @@ const Content = styled.div`
 
   @media (max-width: ${bp.medium}px) {
     .full-logo {
+      width: 64px;
       path {
         display: none;
         &:last-child {
