@@ -34,12 +34,15 @@ export const PlaylistTracks: React.FC = () => {
     }
   }, [fetchTracks, playlistId]);
 
-  const onDone = React.useCallback(() => {
-    setIsEditing(false);
-    if (playlistId) {
-      fetchTracks(playlistId);
-    }
-  }, [playlistId, fetchTracks]);
+  const onDone = React.useCallback(
+    (update?: boolean) => {
+      setIsEditing(false);
+      if (update && playlistId) {
+        fetchTracks(playlistId);
+      }
+    },
+    [playlistId, fetchTracks]
+  );
 
   return (
     <div
