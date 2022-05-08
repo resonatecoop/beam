@@ -53,6 +53,8 @@ export const AddToPlaylist: React.FC<{
       <ul
         className={css`
           list-style: none;
+          overflow-x: scroll;
+          max-height: 40vh;
         `}
       >
         {playlists?.map((playlist) => {
