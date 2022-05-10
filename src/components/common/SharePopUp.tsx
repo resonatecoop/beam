@@ -3,6 +3,21 @@ import { useSnackbar } from "contexts/SnackbarContext";
 import React from "react";
 import Modal from "./Modal";
 
+const ShareButton = styled.button`
+  border: none;
+  border-radius: 6px;
+  width: 4rem;
+  margin-bottom: 0.75rem;
+  height: 2rem;
+  color: black;
+  background-color: #efefef;
+  cursor: pointer;
+
+  &:hover {
+    background: #c8c8c8;
+  }
+`;
+
 const Code = styled.code`
   font-size: 0.8rem;
   background-color: ${(props) => props.theme.colors.text};
@@ -11,19 +26,6 @@ const Code = styled.code`
   padding: 1rem;
   position: relative;
   cursor: pointer;
-
-  &:after {
-    content: "copy";
-    display: block;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    background: ${(props) => props.theme.colors.background};
-    color: ${(props) => props.theme.colors.text};
-    margin: 0.5rem;
-    padding: 0.5rem;
-    transition: 0.25s background;
-  }
 
   &:hover:after {
     background: #ccc;
@@ -63,8 +65,15 @@ export const SharePopUp: React.FC<{
   return (
     <Modal open={open} onClose={onClose} size="small">
       <div>
-        <h4>Embed code</h4>
-        <Code onClick={copyToClipboard}>{embed(url)}</Code>
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <h4>Embed code</h4>
+          <ShareButton onClick={copyToClipboard}>Copy</ShareButton>
+        </div>
+        <Code>
+          <div style={{ overflowX: "scroll" }}>
+            {embed(url)}
+          </div>
+        </Code>
       </div>
     </Modal>
   );
