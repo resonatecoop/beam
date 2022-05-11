@@ -84,6 +84,11 @@ type DecrementCurrentlyPlayingIndex = {
   type: "decrementCurrentlyPlayingIndex";
 };
 
+type SetUserCredits = {
+  type: "setUserCredits";
+  credits: string;
+};
+
 type Actions =
   | SetLoggedInUser
   | SetState
@@ -99,7 +104,8 @@ type Actions =
   | SetShuffle
   | StartPlayingIds
   | IncrementCurrentlyPlayingIndex
-  | DecrementCurrentlyPlayingIndex;
+  | DecrementCurrentlyPlayingIndex
+  | SetUserCredits;
 
 export const stateReducer = produce((draft: GlobalState, action: Actions) => {
   switch (action.type) {
@@ -195,6 +201,11 @@ export const stateReducer = produce((draft: GlobalState, action: Actions) => {
       break;
     case "setDraggingTrackId":
       draft.draggingTrackId = action.draggingTrackId;
+      break;
+    case "setUserCredits":
+      if (draft.user) {
+        draft.user.credits = action.credits;
+      }
       break;
     default:
       break;

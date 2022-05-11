@@ -60,14 +60,14 @@ export const AudioWrapper: React.FC<{
       ) {
         setMostlyListened(true);
         try {
-          // FIXME: the v1 API doesn't allow play registration from localhost:8080
-          await registerPlay(user?.id, currentTrack.id);
+          const result = await registerPlay(user?.id, currentTrack.id);
+          dispatch({ type: "setUserCredits", credits: result.total });
         } catch (e) {
           console.error(e);
         }
       }
     },
-    [currentTrack, mostlyListened, user]
+    [currentTrack, mostlyListened, user, dispatch]
   );
 
   const onClickNext = React.useCallback(() => {
