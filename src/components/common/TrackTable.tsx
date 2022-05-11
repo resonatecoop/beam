@@ -22,7 +22,7 @@ export const TrackTable: React.FC<{
       state: { user, draggingTrackId },
       dispatch,
     } = useGlobalStateContext();
-
+    const userId = user?.id;
     const [displayTracks, setDisplayTracks] = React.useState<
       (TrackWithUserCounts | Track)[]
     >([]);
@@ -56,7 +56,7 @@ export const TrackTable: React.FC<{
       async (checkTracks: Track[]) => {
         const cloned = cloneDeep(checkTracks);
 
-        if (user) {
+        if (userId) {
           const newTracks = await mapFavoriteAndPlaysToTracks(cloned);
           setDisplayTracks(newTracks);
         } else {
@@ -64,7 +64,7 @@ export const TrackTable: React.FC<{
         }
         setIsLoading(false);
       },
-      [user]
+      [userId]
     );
 
     React.useEffect(() => {

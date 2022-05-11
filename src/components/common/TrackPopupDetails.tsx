@@ -16,14 +16,14 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
   const {
     state: { user },
   } = useGlobalStateContext();
-
+  const userId = user?.id;
   const [purchaseSuccess, setPurchaseSuccess] = React.useState(false);
   const onBuyClick = React.useCallback(async () => {
-    if (user) {
-      await buyTrack(user.id, track.id);
+    if (userId) {
+      await buyTrack(userId, track.id);
       setPurchaseSuccess(true);
     }
-  }, [user, track.id]);
+  }, [userId, track.id]);
 
   const remainingCost = calculateRemainingCost(track.plays);
 

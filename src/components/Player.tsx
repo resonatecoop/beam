@@ -15,6 +15,7 @@ import { isTrackWithUserCounts } from "../typeguards";
 import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
 import IconButton from "./common/IconButton";
 import { AudioWrapper } from "./AudioWrapper";
+import Spinner from "./common/Spinner";
 
 const playerClass = css`
   min-height: 48px;
@@ -60,18 +61,21 @@ const Player = () => {
   const [currentTrack, setCurrentTrack] = React.useState<
     TrackWithUserCounts | Track
   >();
-
+  const [isLoading, setIsLoading] = React.useState(false);
+  const userId = user?.id;
   const fetchTrackCallback = React.useCallback(
     async (id: number) => {
+      setIsLoading(true);
       const track = await fetchTrack(id);
-      if (user) {
+      if (userId) {
         const mappedTrack = (await mapFavoriteAndPlaysToTracks([track]))[0];
         setCurrentTrack(mappedTrack);
       } else {
         setCurrentTrack(track);
       }
+      setIsLoading(false);
     },
-    [user]
+    [userId]
   );
 
   React.useEffect(() => {
@@ -80,6 +84,7 @@ const Player = () => {
       currentlyPlayingIndex !== undefined &&
       playerQueueIds[currentlyPlayingIndex]
     ) {
+      setCurrentTrack(undefined);
       fetchTrackCallback(playerQueueIds[currentlyPlayingIndex]);
     } else {
       setCurrentTrack(undefined);
@@ -124,7 +129,8 @@ const Player = () => {
           )}
         </div>
       )}
-      {!currentTrack && (
+      {!currentTrack && isLoading && <Spinner size="small" />}
+      {!currentTrack && !isLoading && (
         <div className={trackInfo}>
           Current queue is empty, click on something to play!
         </div>

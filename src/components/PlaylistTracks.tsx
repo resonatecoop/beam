@@ -18,7 +18,7 @@ export const PlaylistTracks: React.FC = () => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [playlist, setPlaylist] = React.useState<TrackgroupDetail>();
   const [tracks, setTracks] = React.useState<Track[]>([]);
-
+  const userId = user?.id;
   const fetchTracks = React.useCallback(async (playlistId: string) => {
     setIsLoading(true);
 
@@ -96,7 +96,7 @@ export const PlaylistTracks: React.FC = () => {
         <TrackTable
           tracks={tracks}
           trackgroupId={playlist.id}
-          editable={playlist.creator_id === user?.id}
+          editable={playlist.creator_id === userId}
         />
       )}
     </div>
