@@ -31,6 +31,7 @@ export const PlaylistTracks: React.FC = () => {
   React.useEffect(() => {
     if (playlistId) {
       fetchTracks(playlistId);
+      setIsEditing(false);
     }
   }, [fetchTracks, playlistId]);
 
