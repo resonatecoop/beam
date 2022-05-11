@@ -164,6 +164,7 @@ export const AudioWrapper: React.FC<{
         onPlay={onPlay}
         onClickNext={onClickNext}
         onClickPrevious={onClickPrevious}
+        customAdditionalControls={[]}
         showSkipControls
         onListen={onListen}
         onLoadedData={determineIfShouldPlay}
