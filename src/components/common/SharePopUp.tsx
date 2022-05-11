@@ -70,9 +70,7 @@ export const SharePopUp: React.FC<{
           <ShareButton onClick={copyToClipboard}>Copy</ShareButton>
         </div>
         <Code>
-          <div style={{ overflowX: "scroll" }}>
-            {embed(url)}
-          </div>
+          <div style={{ overflowX: "scroll" }}>{embed(url)}</div>
         </Code>
       </div>
     </Modal>
