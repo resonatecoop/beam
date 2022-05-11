@@ -24,7 +24,7 @@ type ContentProps = {
 const Content = styled.div<ContentProps>`
   pointer-events: auto;
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 10% auto; /* 15% from the top and centered */
   padding: 20px;
   z-index: 999;
   border: 1px solid #888;
@@ -36,7 +36,6 @@ const Content = styled.div<ContentProps>`
   @media (max-width: ${bp.medium}px) {
     width: 90%;
     position: absolute;
-    bottom: 10rem;
     z-index: 9999;
     right: 0;
     left: 0;

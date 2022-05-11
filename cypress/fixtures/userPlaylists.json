@@ -1,0 +1,284 @@
+{
+  "data": [
+    {
+      "id": "6805504b-57c1-45ae-a4e1-d19c45574308",
+      "cover": "https://dash.resonate.coop/images/2bb79d8c-89d6-45c2-87a3-f7b49e66b660-x600.webp",
+      "title": "A Playlist Change",
+      "type": "playlist",
+      "creator_id": 2359,
+      "about": "Testasdf",
+      "private": true,
+      "display_artist": null,
+      "composers": [],
+      "performers": [],
+      "release_date": "2022-04-08",
+      "cover_metadata": {
+        "id": "2bb79d8c-89d6-45c2-87a3-f7b49e66b660",
+        "owner_id": 2359
+      },
+      "items": [
+        {
+          "id": "0af27ff2-263f-4341-ac89-ae304843e0f8",
+          "index": 1,
+          "track": {
+            "duration": 230.13,
+            "id": 24716,
+            "title": "TRIPLET MOON"
+          }
+        },
+        {
+          "id": "3aff167b-fc90-4fed-a814-3cb2797d04c8",
+          "index": 3,
+          "track": {
+            "duration": 456.04,
+            "id": 22659,
+            "title": "Stellar Sense"
+          }
+        },
+        {
+          "id": "5775c097-9c50-4b85-a4d5-c8d594e5c23b",
+          "index": 5,
+          "track": {
+            "duration": 234.39,
+            "id": 22075,
+            "title": "Faded To Black"
+          }
+        },
+        {
+          "id": "8732276d-e841-4d46-99b5-458434666d57",
+          "index": 4,
+          "track": {
+            "duration": 262.19,
+            "id": 22032,
+            "title": "Reclaim These Streets"
+          }
+        },
+        {
+          "id": "f0fef583-0fd9-420b-8f95-3830e0139c68",
+          "index": 2,
+          "track": {
+            "duration": 126.75,
+            "id": 6134,
+            "title": "Traición"
+          }
+        }
+      ],
+      "slug": "a-playlist-change",
+      "uri": "https://api.resonate.coop/v3/trackgroups/6805504b-57c1-45ae-a4e1-d19c45574308",
+      "tags": [],
+      "images": {
+        "small": {
+          "width": 120,
+          "height": 120,
+          "url": "https://dash.resonate.coop/images/2bb79d8c-89d6-45c2-87a3-f7b49e66b660-x120.webp"
+        },
+        "medium": {
+          "width": 600,
+          "height": 600,
+          "url": "https://dash.resonate.coop/images/2bb79d8c-89d6-45c2-87a3-f7b49e66b660-x600.webp"
+        }
+      }
+    },
+    {
+      "id": "434c8440-68bf-41aa-83a5-bdad1dde5663",
+      "cover": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp",
+      "title": "Booo",
+      "type": "playlist",
+      "creator_id": 2359,
+      "about": null,
+      "private": true,
+      "display_artist": null,
+      "composers": [],
+      "performers": [],
+      "release_date": "2022-05-08",
+      "cover_metadata": {
+        "id": "4903e433-f429-4ad1-9ab2-5ba962acbbd1",
+        "owner_id": 19724
+      },
+      "items": [],
+      "slug": "booo",
+      "uri": "https://api.resonate.coop/v3/trackgroups/434c8440-68bf-41aa-83a5-bdad1dde5663",
+      "tags": [],
+      "images": {
+        "small": {
+          "width": 120,
+          "height": 120,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x120.webp"
+        },
+        "medium": {
+          "width": 600,
+          "height": 600,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp"
+        }
+      }
+    },
+    {
+      "id": "43ecfd77-6817-4086-97d2-fe67f0e65f23",
+      "cover": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp",
+      "title": "a new playlsit",
+      "type": "playlist",
+      "creator_id": 2359,
+      "about": null,
+      "private": true,
+      "display_artist": null,
+      "composers": [],
+      "performers": [],
+      "release_date": "2022-05-08",
+      "cover_metadata": {
+        "id": "4903e433-f429-4ad1-9ab2-5ba962acbbd1",
+        "owner_id": 19724
+      },
+      "items": [],
+      "slug": "a-new-playlsit",
+      "uri": "https://api.resonate.coop/v3/trackgroups/43ecfd77-6817-4086-97d2-fe67f0e65f23",
+      "tags": [],
+      "images": {
+        "small": {
+          "width": 120,
+          "height": 120,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x120.webp"
+        },
+        "medium": {
+          "width": 600,
+          "height": 600,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp"
+        }
+      }
+    },
+    {
+      "id": "a9b68b74-0630-47ab-9bc7-2c41a2e6dd61",
+      "cover": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp",
+      "title": "Tada",
+      "type": "playlist",
+      "creator_id": 2359,
+      "about": null,
+      "private": true,
+      "display_artist": null,
+      "composers": [],
+      "performers": [],
+      "release_date": "2022-05-08",
+      "cover_metadata": {
+        "id": "4903e433-f429-4ad1-9ab2-5ba962acbbd1",
+        "owner_id": 19724
+      },
+      "items": [],
+      "slug": "tada",
+      "uri": "https://api.resonate.coop/v3/trackgroups/a9b68b74-0630-47ab-9bc7-2c41a2e6dd61",
+      "tags": [],
+      "images": {
+        "small": {
+          "width": 120,
+          "height": 120,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x120.webp"
+        },
+        "medium": {
+          "width": 600,
+          "height": 600,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp"
+        }
+      }
+    },
+    {
+      "id": "da6df037-0ce9-4998-a4e2-e55e56eb086b",
+      "cover": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp",
+      "title": "tets",
+      "type": "playlist",
+      "creator_id": 2359,
+      "about": null,
+      "private": true,
+      "display_artist": null,
+      "composers": [],
+      "performers": [],
+      "release_date": "2022-05-08",
+      "cover_metadata": {
+        "id": "4903e433-f429-4ad1-9ab2-5ba962acbbd1",
+        "owner_id": 19724
+      },
+      "items": [],
+      "slug": "tets",
+      "uri": "https://api.resonate.coop/v3/trackgroups/da6df037-0ce9-4998-a4e2-e55e56eb086b",
+      "tags": [],
+      "images": {
+        "small": {
+          "width": 120,
+          "height": 120,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x120.webp"
+        },
+        "medium": {
+          "width": 600,
+          "height": 600,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp"
+        }
+      }
+    },
+    {
+      "id": "ea14437e-c2d4-41f2-9511-456699f3585a",
+      "cover": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp",
+      "title": "Hi",
+      "type": "playlist",
+      "creator_id": 2359,
+      "about": null,
+      "private": true,
+      "display_artist": null,
+      "composers": [],
+      "performers": [],
+      "release_date": "2022-05-08",
+      "cover_metadata": {
+        "id": "4903e433-f429-4ad1-9ab2-5ba962acbbd1",
+        "owner_id": 19724
+      },
+      "items": [],
+      "slug": "hi",
+      "uri": "https://api.resonate.coop/v3/trackgroups/ea14437e-c2d4-41f2-9511-456699f3585a",
+      "tags": [],
+      "images": {
+        "small": {
+          "width": 120,
+          "height": 120,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x120.webp"
+        },
+        "medium": {
+          "width": 600,
+          "height": 600,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp"
+        }
+      }
+    },
+    {
+      "id": "eb12a19d-72e6-4baa-acee-34034eb2120a",
+      "cover": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp",
+      "title": "Tracks",
+      "type": "playlist",
+      "creator_id": 2359,
+      "about": null,
+      "private": true,
+      "display_artist": null,
+      "composers": [],
+      "performers": [],
+      "release_date": "2022-05-08",
+      "cover_metadata": {
+        "id": "4903e433-f429-4ad1-9ab2-5ba962acbbd1",
+        "owner_id": 19724
+      },
+      "items": [],
+      "slug": "tracks",
+      "uri": "https://api.resonate.coop/v3/trackgroups/eb12a19d-72e6-4baa-acee-34034eb2120a",
+      "tags": [],
+      "images": {
+        "small": {
+          "width": 120,
+          "height": 120,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x120.webp"
+        },
+        "medium": {
+          "width": 600,
+          "height": 600,
+          "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp"
+        }
+      }
+    }
+  ],
+  "count": 11,
+  "numberOfPages": 1,
+  "status": "ok"
+}

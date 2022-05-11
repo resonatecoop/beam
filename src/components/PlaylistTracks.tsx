@@ -70,7 +70,10 @@ export const PlaylistTracks: React.FC = () => {
           >
             {playlist?.private ? <FaLock /> : <FaEye />}
             {playlist?.title ?? "Tracks"}{" "}
-            <IconButton onClick={() => setIsEditing(true)}>
+            <IconButton
+              onClick={() => setIsEditing(true)}
+              aria-label="edit playlist"
+            >
               <FaEdit />
             </IconButton>
           </h3>
