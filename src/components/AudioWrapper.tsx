@@ -184,6 +184,7 @@ export const AudioWrapper: React.FC<{
         onClick={onLoop}
         className={css`
           margin-left: 1rem;
+          margin-right: 1rem;
           position: relative;
         `}
       >
