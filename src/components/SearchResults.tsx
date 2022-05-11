@@ -55,7 +55,11 @@ export const SearchResults: React.FC = () => {
                   />
                   <SmallTileDetails
                     title={
-                      <Link to={`/library/artist/${result.user_id}`}>
+                      <Link
+                        to={`/library/${
+                          result.kind === "label" ? "label" : "artist"
+                        }/${result.user_id}`}
+                      >
                         {result.kind}: {result.name}
                       </Link>
                     }

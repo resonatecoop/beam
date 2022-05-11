@@ -129,7 +129,7 @@ const Wrapper = styled.div`
 `;
 
 const contentWrapper = css`
-  padding: 2rem 1rem;
+  padding: 2rem 1rem 6rem;
   // display: flex;
   min-height: calc(100vh - (180px));
 
