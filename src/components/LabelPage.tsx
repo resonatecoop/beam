@@ -6,6 +6,8 @@ import {
   fetchLabelArtists,
   fetchLabelReleases,
 } from "../services/Api";
+import EmptyBox from "./common/EmptyBox";
+import GridListItem from "./common/GridListItem";
 import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
 import LinkToWeb from "./common/LinkToWeb";
 import OverflowableText from "./common/OverflowableText";
@@ -78,48 +80,39 @@ export const LabelPage: React.FC = () => {
             <OverflowableText text={label.bio} />
           </div>
           <p className={padding}>
-            {label.links.map((link) => (
+            {label.links?.map((link) => (
               <LinkToWeb key={link.href} link={link} />
             ))}
           </p>
 
-          {artists && (
+          {(!artists || artists.length === 0) && !releases && (
+            <EmptyBox>This label has no artists</EmptyBox>
+          )}
+
+          {artists && artists.length > 0 && (
             <>
-              <h4 style={{ marginTop: "1rem" }}>artists</h4>
+              <h4 style={{ marginTop: "1rem" }}>Artists</h4>
               {artists.map((artist) => (
-                <div key={artist.id} style={{ marginBottom: "1rem" }}>
-                  <div
+                <GridListItem key={artist.id} maxWidth={120}>
+                  <ImageWithPlaceholder
+                    src={artist.images?.["profile_photo-sm"]}
+                    alt={artist.name}
+                    size={120}
                     className={css`
-                      // margin: 1rem;
-                      display: flex;
-                      margin-bottom: 1rem;
-                      flex-direction: column;
+                      margin: 0 1rem 0.25rem 0;
                     `}
-                  >
-                    <ImageWithPlaceholder
-                      src={artist.images?.["profile_photo-sm"]}
-                      alt={artist.name}
-                      size={120}
-                      className={css`
-                        margin: 0 1rem 0.25rem 0;
-                      `}
-                    />
-                    <div>
-                      <Link to={`/library/artist/${artist.id}`}>
-                        {artist.name}
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                  />
+                  <Link to={`/library/artist/${artist.id}`}>{artist.name}</Link>
+                </GridListItem>
               ))}
             </>
           )}
 
-          {releases && (
+          {releases && releases.length > 0 && (
             <>
               <h4 style={{ marginTop: "1rem" }}>Releases</h4>
               {releases.map((release) => (
-                <Release release={release} />
+                <Release release={release} key={release.id} />
               ))}
             </>
           )}

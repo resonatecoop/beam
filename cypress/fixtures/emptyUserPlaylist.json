@@ -1,0 +1,35 @@
+{
+  "data": {
+    "id": "eb12a19d-72e6-4baa-acee-34034eb2120a",
+    "cover": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp",
+    "title": "Tracks",
+    "type": "playlist",
+    "creator_id": 2359,
+    "about": null,
+    "private": true,
+    "display_artist": null,
+    "composers": [],
+    "performers": [],
+    "release_date": "2022-05-08",
+    "cover_metadata": {
+      "id": "4903e433-f429-4ad1-9ab2-5ba962acbbd1",
+      "owner_id": 19724
+    },
+    "items": [],
+    "slug": "tracks",
+    "uri": "https://api.resonate.coop/v3/trackgroups/eb12a19d-72e6-4baa-acee-34034eb2120a",
+    "tags": [],
+    "images": {
+      "small": {
+        "width": 120,
+        "height": 120,
+        "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x120.webp"
+      },
+      "medium": {
+        "width": 600,
+        "height": 600,
+        "url": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp"
+      }
+    }
+  }
+}

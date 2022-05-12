@@ -14,7 +14,7 @@ export const Library: React.FC = () => {
     <>
       <div
         className={css`
-          height: 100%;
+          height: calc(100vh - 180px);
           position: fixed;
           width: 300px;
           z-index: 1;

@@ -129,8 +129,9 @@ const Wrapper = styled.div`
 `;
 
 const contentWrapper = css`
-  padding: 2rem 1rem calc(48px + 5rem);
-  min-height: 100vh;
+  padding: 2rem 1rem 6rem;
+  // display: flex;
+  min-height: calc(100vh - (180px));
 
   @media (max-width: ${bp.small}px) {
     padding-bottom: calc(150px + 3rem);

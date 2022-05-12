@@ -52,6 +52,7 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
     <div
       className={css`
         padding: 1rem 0;
+        overflow-x: scroll;
         @media (max-width: ${bp.small}px) {
           max-width: inherit;
         }
@@ -133,12 +134,12 @@ const PlaylistLI: React.FC<{ playlist: Trackgroup }> = ({ playlist }) => {
 
   return (
     <LI
-      key={playlist.id}
       onDrop={() => onDrop(playlist.id)}
       onDragOver={(ev) => ev.preventDefault()}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
       isHoveringOver={isHoveringOver}
+      data-cy="sidebar-playlist"
     >
       <NavLinkAsButton to={`/library/playlist/${playlist.id}`}>
         {playlist.title}

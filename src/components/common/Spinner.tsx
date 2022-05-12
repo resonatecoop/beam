@@ -1,12 +1,13 @@
 import React from "react";
 
 import { css } from "@emotion/css";
+import styled from "@emotion/styled";
 
-const spinnerClass = css`
+const SpinnerWrapper = styled.div<{ size?: "small" }>`
   display: inline-block;
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: ${(props) => (props.size ? "60px" : "80px")};
+  height: ${(props) => (props.size ? "60px" : "80px")};
   div {
     position: absolute;
     border: 4px solid #555;
@@ -19,8 +20,8 @@ const spinnerClass = css`
   }
   @keyframes lds-ripple {
     0% {
-      top: 36px;
-      left: 36px;
+      top: ${(props) => (props.size ? "26px" : "36px")};
+      left: ${(props) => (props.size ? "26px" : "36px")};
       width: 0;
       height: 0;
       opacity: 1;
@@ -28,8 +29,8 @@ const spinnerClass = css`
     100% {
       top: 0px;
       left: 0px;
-      width: 72px;
-      height: 72px;
+      width: ${(props) => (props.size ? "52px" : "72px")};
+      height: ${(props) => (props.size ? "52px" : "72px")};
       opacity: 0;
     }
   }
@@ -68,12 +69,12 @@ export const FullScreenSpinner: React.FC = () => {
   );
 };
 
-export const Spinner: React.FC = () => {
+export const Spinner: React.FC<{ size?: "small" }> = (props) => {
   return (
-    <div className={spinnerClass} data-cy="spinner">
+    <SpinnerWrapper data-cy="spinner" {...props}>
       <div></div>
       <div></div>
-    </div>
+    </SpinnerWrapper>
   );
 };
 

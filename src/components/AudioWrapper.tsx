@@ -34,11 +34,11 @@ export const AudioWrapper: React.FC<{
 
   const playerRef = React.useRef<any>();
   const [mostlyListened, setMostlyListened] = React.useState(false);
-
+  const userId = user?.id;
   const onEnded = React.useCallback(async () => {
-    if (!mostlyListened && currentTrack && user) {
+    if (!mostlyListened && currentTrack && userId) {
       try {
-        await registerPlay(user?.id, currentTrack.id);
+        await registerPlay(userId, currentTrack.id);
       } catch (e) {
         console.error(e);
       }
@@ -48,26 +48,26 @@ export const AudioWrapper: React.FC<{
       dispatch({ type: "incrementCurrentlyPlayingIndex" });
     }
     setMostlyListened(false);
-  }, [currentTrack, dispatch, looping, mostlyListened, user]);
+  }, [currentTrack, dispatch, looping, mostlyListened, userId]);
 
   const onListen = React.useCallback(
     async (e) => {
       if (
         !mostlyListened &&
         currentTrack &&
-        user &&
+        userId &&
         e.target.currentTime > 45
       ) {
         setMostlyListened(true);
         try {
-          // FIXME: the v1 API doesn't allow play registration from localhost:8080
-          await registerPlay(user?.id, currentTrack.id);
+          const result = await registerPlay(userId, currentTrack.id);
+          dispatch({ type: "setUserCredits", credits: result.total });
         } catch (e) {
           console.error(e);
         }
       }
     },
-    [currentTrack, mostlyListened, user]
+    [currentTrack, mostlyListened, userId, dispatch]
   );
 
   const onClickNext = React.useCallback(() => {
@@ -117,7 +117,7 @@ export const AudioWrapper: React.FC<{
   }, [determineIfShouldPlay]);
 
   const getAudioSrc = React.useCallback(async () => {
-    const streamUrl = buildStreamURL(currentTrack.id, user?.clientId);
+    const streamUrl = buildStreamURL(currentTrack.id);
     try {
       const { token } = getToken();
       const result = await fetch(streamUrl, {
@@ -137,7 +137,7 @@ export const AudioWrapper: React.FC<{
       // so we'll just set the audio src directly.
       playerRef.current.audio.current.src = streamUrl;
     }
-  }, [currentTrack, user]);
+  }, [currentTrack]);
 
   React.useEffect(() => {
     getAudioSrc();
@@ -164,6 +164,7 @@ export const AudioWrapper: React.FC<{
         onPlay={onPlay}
         onClickNext={onClickNext}
         onClickPrevious={onClickPrevious}
+        customAdditionalControls={[]}
         showSkipControls
         onListen={onListen}
         onLoadedData={determineIfShouldPlay}
@@ -183,6 +184,7 @@ export const AudioWrapper: React.FC<{
         onClick={onLoop}
         className={css`
           margin-left: 1rem;
+          margin-right: 1rem;
           position: relative;
         `}
       >
