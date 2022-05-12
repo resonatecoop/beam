@@ -8,6 +8,11 @@ View the [project board](https://github.com/simonv3/beam/projects/1) where work 
 
 ## Development
 
+Install yarn if you don't yet have it on your machine by running:
+```bash
+npx install yarn
+```
+
 ```bash
 git clone git@github.com:simonv3/beam.git
 cd beam
