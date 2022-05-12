@@ -4,7 +4,7 @@ import React from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { bp } from "../constants";
 import { useGlobalStateContext } from "../contexts/globalState";
-import { addTracksToTrackGroup, fetchUserTrackGroups } from "../services/Api";
+import { addTracksToTrackGroup } from "../services/Api";
 import AddPlaylist from "./AddPlaylist";
 import { NavLinkAsButton } from "./common/ListButton";
 
@@ -14,32 +14,27 @@ const divider = css`
   border-top: 1px solid #aaa;
 `;
 
-export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
-  onClick,
-}) => {
+export const PlaylistListing: React.FC = () => {
   const {
-    state: { user },
+    state: { user, userPlaylists },
   } = useGlobalStateContext();
   const { playlistId } = useParams();
   const { pathname } = useLocation();
 
   const navigate = useNavigate();
   const userId = user?.id;
-  const [playlists, setPlaylists] = React.useState<TrackgroupDetail[]>();
 
   const fetchPlaylistsCallback = React.useCallback(
     async (userId) => {
-      const result = await fetchUserTrackGroups({ type: "playlist" });
-
-      setPlaylists(result);
       if (
         !playlistId &&
-        (pathname.includes("playlist/") || pathname === "/library")
+        (pathname.includes("playlist/") || pathname === "/library") &&
+        userPlaylists
       ) {
-        navigate(`/library/playlist/${result[0]?.id ?? ""}`);
+        navigate(`/library/playlist/${userPlaylists[0]?.id ?? ""}`);
       }
     },
-    [navigate, playlistId, pathname]
+    [navigate, playlistId, userPlaylists, pathname]
   );
 
   React.useEffect(() => {
@@ -86,7 +81,7 @@ export const PlaylistListing: React.FC<{ onClick: (id: string) => void }> = ({
           <NavLinkAsButton to="/library/favorites">Favorites</NavLinkAsButton>
         </li>
         <hr className={divider} />
-        {playlists?.map((playlist) => (
+        {userPlaylists?.map((playlist) => (
           <PlaylistLI key={playlist.id} playlist={playlist} />
         ))}
       </ul>
@@ -106,7 +101,9 @@ const LI = styled.li<{ isHoveringOver: boolean }>`
     `}
 `;
 
-const PlaylistLI: React.FC<{ playlist: Trackgroup }> = ({ playlist }) => {
+const PlaylistLI: React.FC<{ playlist: { id: string; title: string } }> = ({
+  playlist,
+}) => {
   const {
     state: { draggingTrackId },
   } = useGlobalStateContext();

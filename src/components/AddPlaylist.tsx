@@ -1,13 +1,16 @@
+import { useGlobalStateContext } from "contexts/globalState";
 import { useSnackbar } from "contexts/SnackbarContext";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
-import { createTrackGroup } from "../services/Api";
+import { createTrackGroup, fetchUserTrackGroups } from "../services/Api";
 import IconButton from "./common/IconButton";
 import InlineForm from "./common/InlineForm";
 import Input from "./common/Input";
 
 export const AddPlaylist: React.FC<{ refresh: () => void }> = ({ refresh }) => {
   const snackbar = useSnackbar();
+  const { dispatch } = useGlobalStateContext();
+
   const [newPlaylistName, setNewPlaylistName] = React.useState<string>("");
 
   const onChange = React.useCallback((e) => {
@@ -25,12 +28,16 @@ export const AddPlaylist: React.FC<{ refresh: () => void }> = ({ refresh }) => {
         type: "playlist",
       });
       setNewPlaylistName("");
+
       snackbar("Successfully created a playlist", { type: "success" });
       if (refresh) {
         refresh();
       }
+
+      const playlists = await fetchUserTrackGroups({ type: "playlist" });
+      dispatch({ type: "setUserPlaylists", playlists });
     },
-    [newPlaylistName, refresh, snackbar]
+    [newPlaylistName, refresh, dispatch, snackbar]
   );
 
   return (
