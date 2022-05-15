@@ -4,6 +4,7 @@ import { tags } from "../constants";
 import Tags from "./common/Tags";
 import NewReleases from "./NewReleases";
 import StaffPicks from "./StaffPicks";
+import NowPlaying from "./Explore/NowPlaying";
 
 export const Home: React.FC = () => {
   return (
@@ -20,6 +21,7 @@ export const Home: React.FC = () => {
         >
           <Tags tags={tags} />
         </ul>
+        <NowPlaying />
         <NewReleases />
         <StaffPicks />
       </div>
