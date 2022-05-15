@@ -23,7 +23,7 @@ export const Tags: React.FC<{ tags: string[]; onClick?: () => void }> = ({
             margin-bottom: 0.25rem;
           `}
         >
-          <Link to={`/library/tag/${tag}`} onClick={onClick}>
+          <Link to={`/library/tag/${tag.toLowerCase()}`} onClick={onClick}>
             #{tag}
           </Link>
         </li>
