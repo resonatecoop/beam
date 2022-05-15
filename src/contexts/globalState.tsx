@@ -11,6 +11,7 @@ export interface GlobalState {
   shuffle?: boolean;
   draggingTrackId?: number;
   currentlyPlayingIndex?: number;
+  userPlaylists?: { id: string; title: string }[];
 }
 
 type SetLoggedInUser = {
@@ -89,6 +90,11 @@ type SetUserCredits = {
   credits: string;
 };
 
+type SetUserPlaylists = {
+  type: "setUserPlaylists";
+  playlists: { id: string; title: string }[];
+};
+
 type Actions =
   | SetLoggedInUser
   | SetState
@@ -105,7 +111,8 @@ type Actions =
   | StartPlayingIds
   | IncrementCurrentlyPlayingIndex
   | DecrementCurrentlyPlayingIndex
-  | SetUserCredits;
+  | SetUserCredits
+  | SetUserPlaylists;
 
 export const stateReducer = produce((draft: GlobalState, action: Actions) => {
   switch (action.type) {
@@ -206,6 +213,9 @@ export const stateReducer = produce((draft: GlobalState, action: Actions) => {
       if (draft.user) {
         draft.user.credits = action.credits;
       }
+      break;
+    case "setUserPlaylists":
+      draft.userPlaylists = action.playlists;
       break;
     default:
       break;

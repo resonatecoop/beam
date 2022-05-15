@@ -5,7 +5,7 @@ import { injectGlobal, css } from "@emotion/css";
 import Home from "./components/Home";
 import Library from "./components/Library";
 import { useGlobalStateContext } from "./contexts/globalState";
-import { fetchUserProfile } from "./services/Api";
+import { fetchUserProfile, fetchUserTrackGroups } from "./services/Api";
 import Profile from "./components/Profile";
 import Header from "./components/Header";
 import Player from "./components/Player";
@@ -144,13 +144,17 @@ function App() {
   const { isDisplayed } = useContext(SnackbarContext);
 
   const fetchUserProfileCallback = React.useCallback(async () => {
-    const result = await fetchUserProfile();
-    dispatch({ type: "setLoggedInUser", user: result });
+    const user = await fetchUserProfile();
+    dispatch({ type: "setLoggedInUser", user });
+
+    const playlists = await fetchUserTrackGroups({ type: "playlist" });
+    dispatch({ type: "setUserPlaylists", playlists });
   }, [dispatch]);
 
   React.useEffect(() => {
     if (userData?.access_token && userData?.access_token !== "") {
       fetchUserProfileCallback();
+      // setPlaylists(result);
     }
   }, [fetchUserProfileCallback, userData?.access_token]);
 

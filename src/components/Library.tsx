@@ -1,15 +1,10 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { PlaylistListing } from "./PlaylistListing";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import BackButton from "./common/BackButton";
 
 export const Library: React.FC = () => {
-  const navigate = useNavigate();
-  const onClick = (id: string) => {
-    navigate(`/library/playlist/${id}`);
-  };
-
   return (
     <>
       <div
@@ -28,7 +23,7 @@ export const Library: React.FC = () => {
 
         <h2 className={css``}>Library</h2>
 
-        <PlaylistListing onClick={onClick} />
+        <PlaylistListing />
       </div>
       <div
         className={css`

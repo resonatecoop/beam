@@ -6,17 +6,28 @@ import { addTracksToTrackGroup, fetchUserTrackGroups } from "../services/Api";
 import AddPlaylist from "./AddPlaylist";
 import ListButton from "./common/ListButton";
 import { FaCheck } from "react-icons/fa";
+import { useSnackbar } from "contexts/SnackbarContext";
 
 export const AddToPlaylist: React.FC<{
   selectedTrackIds: number[];
   onSongAdded: () => void;
 }> = ({ selectedTrackIds, onSongAdded }) => {
   const [playlists, setPlaylists] = React.useState<TrackgroupDetail[]>();
+  const snackbar = useSnackbar();
 
-  const fetchPlaylistsCallback = React.useCallback(async () => {
-    const result = await fetchUserTrackGroups({ type: "playlist" });
-    setPlaylists(result);
-  }, []);
+  const fetchPlaylistsCallback = React.useCallback(
+    async (id?: string) => {
+      const result = await fetchUserTrackGroups({ type: "playlist" });
+      setPlaylists(result);
+      if (id) {
+        await addTracksToTrackGroup(id, {
+          tracks: selectedTrackIds.map((id) => ({ track_id: id })),
+        });
+        onSongAdded();
+      }
+    },
+    [onSongAdded, selectedTrackIds]
+  );
 
   React.useEffect(() => {
     fetchPlaylistsCallback();
@@ -25,15 +36,17 @@ export const AddToPlaylist: React.FC<{
   const onClick = React.useCallback(
     async (
       e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-      playlistId: string
+      playlistId: string,
+      playlistName: string
     ) => {
       e.stopPropagation();
       await addTracksToTrackGroup(playlistId, {
         tracks: selectedTrackIds.map((id) => ({ track_id: id })),
       });
       onSongAdded();
+      snackbar(`Added song to "${playlistName}"`, { type: "success" });
     },
-    [selectedTrackIds, onSongAdded]
+    [selectedTrackIds, onSongAdded, snackbar]
   );
 
   return (
@@ -71,7 +84,7 @@ export const AddToPlaylist: React.FC<{
               `}
             >
               <ListButton
-                onClick={(e) => onClick(e, playlist.id)}
+                onClick={(e) => onClick(e, playlist.id, playlist.title)}
                 style={{ display: "flex", justifyContent: "space-between" }}
               >
                 {playlist.title}
