@@ -18,7 +18,7 @@ export const PlaylistTracks: React.FC = () => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [playlist, setPlaylist] = React.useState<TrackgroupDetail>();
   const [tracks, setTracks] = React.useState<Track[]>([]);
-
+  const userId = user?.id;
   const fetchTracks = React.useCallback(async (playlistId: string) => {
     setIsLoading(true);
 
@@ -31,6 +31,7 @@ export const PlaylistTracks: React.FC = () => {
   React.useEffect(() => {
     if (playlistId) {
       fetchTracks(playlistId);
+      setIsEditing(false);
     }
   }, [fetchTracks, playlistId]);
 
@@ -69,7 +70,10 @@ export const PlaylistTracks: React.FC = () => {
           >
             {playlist?.private ? <FaLock /> : <FaEye />}
             {playlist?.title ?? "Tracks"}{" "}
-            <IconButton onClick={() => setIsEditing(true)}>
+            <IconButton
+              onClick={() => setIsEditing(true)}
+              aria-label="edit playlist"
+            >
               <FaEdit />
             </IconButton>
           </h3>
@@ -92,7 +96,7 @@ export const PlaylistTracks: React.FC = () => {
         <TrackTable
           tracks={tracks}
           trackgroupId={playlist.id}
-          editable={playlist.creator_id === user?.id}
+          editable={playlist.creator_id === userId}
         />
       )}
     </div>

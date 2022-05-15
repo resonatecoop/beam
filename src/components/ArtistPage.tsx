@@ -1,11 +1,12 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import {
   fetchArtist,
   fetchArtistReleases,
   fetchArtistTopTracks,
 } from "../services/Api";
+import EmptyBox from "./common/EmptyBox";
 import LinkToWeb from "./common/LinkToWeb";
 import OverflowableText from "./common/OverflowableText";
 import Release from "./common/Release";
@@ -78,7 +79,13 @@ export const ArtistPage: React.FC = () => {
             <OverflowableText text={artist.bio} />
           </div>
           <p className={padding}>{artist.country}</p>
-
+          {artist.label && (
+            <p className={padding}>
+              <Link to={`/library/label/${artist.label.id}`}>
+                {artist.label.name}
+              </Link>
+            </p>
+          )}
           <p className={padding}>
             {artist.links.map((link) => (
               <LinkToWeb key={link.href} link={link} />
@@ -98,6 +105,7 @@ export const ArtistPage: React.FC = () => {
               ))}
             </>
           )}
+          {!tracks && !releases && <EmptyBox>No tracks to display</EmptyBox>}
         </>
       )}
     </div>

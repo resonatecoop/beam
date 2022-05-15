@@ -94,7 +94,7 @@ const PlaylistTitleEditing: React.FC<{
         `}
       >
         <Button onClick={() => onDone()} variant="outlined">
-          Cancel Changes
+          Cancel changes
         </Button>
         <Button onClick={onDelete} startIcon={<FaTrash />} variant="outlined">
           Delete

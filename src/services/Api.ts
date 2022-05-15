@@ -377,7 +377,7 @@ export const fetchTrack = (trackId: number): Promise<Track> => {
 export const registerPlay = (
   userId: number,
   trackId: number
-): Promise<void> => {
+): Promise<{ count: number; cost: number; total: string }> => {
   return fetchWrapper(`user/plays`, {
     method: "POST",
     body: JSON.stringify({ track_id: trackId }),

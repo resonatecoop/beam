@@ -2,6 +2,7 @@ import produce from "immer";
 import {
   checkPlayCountOfTrackIds,
   checkTrackIdsForFavorite,
+  getToken,
 } from "../services/Api";
 
 const STREAM_API = "https://stream.resonate.coop/api/v3/user/stream/";
@@ -70,3 +71,26 @@ export const determineNewTrackOrder = produce(
     return oldTracks;
   }
 );
+
+export const getCORSSong = async (remoteFilePath: string): Promise<Blob> => {
+  const { token } = getToken();
+  const result = await fetch(remoteFilePath, {
+    credentials: "include",
+    mode: "cors",
+    headers: {
+      "Content-Type": "audio/x-m4a; charset=utf-8",
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+  return await result.blob();
+};
+
+export const downloadFile = async (remoteFilePath: string, name: string) => {
+  const a = document.createElement("a");
+  const blob = await getCORSSong(remoteFilePath);
+  a.href = URL.createObjectURL(blob);
+  a.setAttribute("download", name + ".m4a");
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+};

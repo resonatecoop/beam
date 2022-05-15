@@ -7,8 +7,10 @@ import {
   formatCredit,
   calculateCost,
   buildStreamURL,
+  downloadFile,
 } from "../../utils/tracks";
 import Button from "./Button";
+import LoadingSpinner from "./LoadingSpinner";
 
 export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
   track,
@@ -16,19 +18,29 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
   const {
     state: { user },
   } = useGlobalStateContext();
-
+  const userId = user?.id;
+  const [isDownloading, setIsDownloading] = React.useState(false);
   const [purchaseSuccess, setPurchaseSuccess] = React.useState(false);
   const onBuyClick = React.useCallback(async () => {
-    if (user) {
-      await buyTrack(user.id, track.id);
+    if (userId) {
+      await buyTrack(userId, track.id);
       setPurchaseSuccess(true);
     }
-  }, [user, track.id]);
+  }, [userId, track.id]);
 
   const remainingCost = calculateRemainingCost(track.plays);
 
   const enoughCredit =
     0 < +(user?.credits ?? "0") - +formatCredit(remainingCost);
+
+  const download = React.useCallback(async () => {
+    setIsDownloading(true);
+    await downloadFile(
+      buildStreamURL(track.id),
+      `${track.artist} - ${track.title}.m4a`
+    );
+    setIsDownloading(false);
+  }, [track.id, track.artist, track.title]);
 
   return (
     <div
@@ -103,12 +115,13 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
         {(purchaseSuccess || track.plays === 9) && (
           <>
             <p>You own this song!</p>
-            <a
-              href={buildStreamURL(track.id, user?.clientId)}
-              download={`${track.artist} - ${track.title}`}
+            <Button
+              onClick={download}
+              compact
+              startIcon={isDownloading ? <LoadingSpinner /> : undefined}
             >
               Download
-            </a>
+            </Button>
           </>
         )}
       </div>
