@@ -202,7 +202,7 @@ export const fetchUserStats = async (
   from: string,
   to: string
 ): Promise<Stat[]> => {
-  return fetchWrapper(`user/plays/stats?from=${from}&to=2022-04-15`, {
+  return fetchWrapper(`user/plays/stats?from=${from}&to=${to}`, {
     method: "GET",
   });
 };
