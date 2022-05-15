@@ -4,7 +4,7 @@ import { GlobalState, useGlobalStateContext } from "contexts/globalState";
 import React from "react";
 import AudioPlayer from "react-h5-audio-player";
 import { ImLoop } from "react-icons/im";
-import { getToken, registerPlay } from "../services/Api";
+import { registerPlay } from "../services/Api";
 
 import { buildStreamURL, getCORSSong } from "../utils/tracks";
 import IconButton from "./common/IconButton";
