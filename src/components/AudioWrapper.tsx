@@ -6,7 +6,7 @@ import AudioPlayer from "react-h5-audio-player";
 import { ImLoop } from "react-icons/im";
 import { getToken, registerPlay } from "../services/Api";
 
-import { buildStreamURL } from "../utils/tracks";
+import { buildStreamURL, getCORSSong } from "../utils/tracks";
 import IconButton from "./common/IconButton";
 
 const LoopingIndicator = styled.span`
@@ -119,16 +119,7 @@ export const AudioWrapper: React.FC<{
   const getAudioSrc = React.useCallback(async () => {
     const streamUrl = buildStreamURL(currentTrack.id);
     try {
-      const { token } = getToken();
-      const result = await fetch(streamUrl, {
-        credentials: "include",
-        mode: "cors",
-        headers: {
-          "Content-Type": "audio/x-m4a; charset=utf-8",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-      });
-      const blob = await result.blob();
+      const blob = await getCORSSong(streamUrl);
       if (blob) {
         playerRef.current.audio.current.src = URL.createObjectURL(blob);
       }
