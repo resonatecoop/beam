@@ -13,10 +13,19 @@ export const AddToPlaylist: React.FC<{
 }> = ({ selectedTrackIds, onSongAdded }) => {
   const [playlists, setPlaylists] = React.useState<TrackgroupDetail[]>();
 
-  const fetchPlaylistsCallback = React.useCallback(async () => {
-    const result = await fetchUserTrackGroups({ type: "playlist" });
-    setPlaylists(result);
-  }, []);
+  const fetchPlaylistsCallback = React.useCallback(
+    async (id?: string) => {
+      const result = await fetchUserTrackGroups({ type: "playlist" });
+      setPlaylists(result);
+      if (id) {
+        await addTracksToTrackGroup(id, {
+          tracks: selectedTrackIds.map((id) => ({ track_id: id })),
+        });
+        onSongAdded();
+      }
+    },
+    [onSongAdded, selectedTrackIds]
+  );
 
   React.useEffect(() => {
     fetchPlaylistsCallback();

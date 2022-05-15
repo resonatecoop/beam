@@ -7,7 +7,9 @@ import IconButton from "./common/IconButton";
 import InlineForm from "./common/InlineForm";
 import Input from "./common/Input";
 
-export const AddPlaylist: React.FC<{ refresh: () => void }> = ({ refresh }) => {
+export const AddPlaylist: React.FC<{ refresh: (id: string) => void }> = ({
+  refresh,
+}) => {
   const snackbar = useSnackbar();
   const { dispatch } = useGlobalStateContext();
 
@@ -20,7 +22,7 @@ export const AddPlaylist: React.FC<{ refresh: () => void }> = ({ refresh }) => {
   const onAddPlaylist = React.useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
-      await createTrackGroup({
+      const trackgroup = await createTrackGroup({
         // FIXME: the POST trackgroup API endpoint requires a cover id,
         // which doesn't really make sense in this flow.
         cover: "4903e433-f429-4ad1-9ab2-5ba962acbbd1",
@@ -31,7 +33,7 @@ export const AddPlaylist: React.FC<{ refresh: () => void }> = ({ refresh }) => {
 
       snackbar("Successfully created a playlist", { type: "success" });
       if (refresh) {
-        refresh();
+        refresh(trackgroup.id);
       }
 
       const playlists = await fetchUserTrackGroups({ type: "playlist" });
