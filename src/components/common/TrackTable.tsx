@@ -10,6 +10,7 @@ import {
 import { CenteredSpinner } from "./Spinner";
 import Table from "./Table";
 import TrackRow from "./TrackRow";
+import { isIndexedTrack } from "typeguards";
 
 export const TrackTable: React.FC<{
   tracks: Track[];
@@ -24,7 +25,7 @@ export const TrackTable: React.FC<{
     } = useGlobalStateContext();
     const userId = user?.id;
     const [displayTracks, setDisplayTracks] = React.useState<
-      (TrackWithUserCounts | Track)[]
+      (TrackWithUserCounts | IndexedTrack | Track)[]
     >([]);
 
     const handleDrop = React.useCallback(
@@ -112,7 +113,9 @@ export const TrackTable: React.FC<{
         <tbody>
           {displayTracks?.map((track) => (
             <TrackRow
-              key={track.id}
+              key={
+                isIndexedTrack(track) ? `${track.index}+${track.id}` : track.id
+              }
               track={track}
               addTracksToQueue={addTracksToQueue}
               trackgroupId={trackgroupId}
