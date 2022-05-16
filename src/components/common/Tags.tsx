@@ -21,6 +21,10 @@ export const Tags: React.FC<{ tags: string[]; onClick?: () => void }> = ({
             padding: 0.25rem 0.4rem 0.25rem;
             margin-right: 0.25rem;
             margin-bottom: 0.25rem;
+
+            @media (prefers-color-scheme: dark) {
+              background-color: #222;
+            }
           `}
         >
           <Link to={`/library/tag/${tag.toLowerCase()}`} onClick={onClick}>

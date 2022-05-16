@@ -12,7 +12,7 @@ const UL = styled.ul`
     display: inline-block;
     margin-right: 1rem;
     a {
-      color: #000;
+      color: ${(props) => props.theme.colors.text};
       text-decoration: none;
       padding: 0.25rem 0.5rem 0.25rem 0.25rem;
       display: block;
@@ -27,6 +27,10 @@ const UL = styled.ul`
       &:hover {
         border-bottom: 3px solid ${(props) => props.theme.colors.primary};
         margin-bottom: -3px;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        color: ${(props) => props.theme.colors.textDark};
       }
     }
   }

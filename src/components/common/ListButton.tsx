@@ -15,7 +15,7 @@ export const ListButton = styled.button<Compactable>`
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: #333;
+  color: ${(props) => props.theme.colors.text};
   transition: 0.5s background-color;
 
   &:hover {

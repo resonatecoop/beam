@@ -29,7 +29,7 @@ const Content = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 1rem;
-  background-color: #fff;
+  background-color: ${(props) => props.theme.colors.background};
   position: relative;
 
   > a {
@@ -47,6 +47,10 @@ const Content = styled.div`
       margin-left: -0.5rem;
       height: 46px;
     }
+
+    @media (prefers-color-scheme: dark) {
+      color: ${(props) => props.theme.colors.textDark};
+    }
   }
 
   .icon {
@@ -63,6 +67,10 @@ const Content = styled.div`
         }
       }
     }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: ${(props) => props.theme.colors.backgroundDark};
   }
 `;
 
