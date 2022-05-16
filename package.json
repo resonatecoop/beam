@@ -25,7 +25,7 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "PORT=8080 react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "serve": "sirv build --port 8080 --cors --single",
     "test": "react-scripts test",
