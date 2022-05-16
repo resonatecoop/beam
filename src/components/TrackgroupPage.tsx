@@ -76,7 +76,9 @@ export const TrackgroupPage: React.FC = () => {
             `}
           >
             <ShareTrackgroupButton trackgroup={trackgroup} />
-            <BuyAlbumButton trackgroup={trackgroup} />
+            {trackgroup.type !== "playlist" && (
+              <BuyAlbumButton trackgroup={trackgroup} />
+            )}
           </div>
 
           <div className={padding}>
