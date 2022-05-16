@@ -10,8 +10,12 @@ import { CenteredSpinner } from "../common/Spinner";
 export const Artists: React.FC = () => {
   const { LoadingButton, results, isLoading } = usePagination<Artist>({
     apiCall: React.useCallback(fetchArtists, []),
-    options: React.useMemo(() => ({ limit: 50 }), []),
+    options: React.useMemo(
+      () => ({ limit: 50, order: "desc", orderBy: "id" }),
+      []
+    ),
   });
+
   return (
     <>
       {isLoading && <CenteredSpinner />}
