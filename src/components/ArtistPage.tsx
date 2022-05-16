@@ -26,12 +26,25 @@ export const ArtistPage: React.FC = () => {
 
   const fetchTracks = React.useCallback(async (id: number) => {
     setIsLoading(true);
-    const result = await fetchArtist(id);
-    const topTracks = await fetchArtistTopTracks(id);
-    const artistReleases = await fetchArtistReleases(id);
-    setArtist(result);
-    setTracks(topTracks);
-    setReleases(artistReleases);
+    try {
+      const result = await fetchArtist(id);
+      setArtist(result);
+    } catch (e) {
+      console.error(e);
+    } finally {
+    }
+    try {
+      const topTracks = await fetchArtistTopTracks(id);
+      setTracks(topTracks);
+    } catch (e) {
+      console.error(e);
+    }
+    try {
+      const artistReleases = await fetchArtistReleases(id);
+      setReleases(artistReleases);
+    } catch (e) {
+      console.error(e);
+    }
     setIsLoading(false);
   }, []);
 
@@ -87,7 +100,7 @@ export const ArtistPage: React.FC = () => {
             </p>
           )}
           <p className={padding}>
-            {artist.links.map((link) => (
+            {artist.links?.map((link) => (
               <LinkToWeb key={link.href} link={link} />
             ))}
           </p>
@@ -101,7 +114,7 @@ export const ArtistPage: React.FC = () => {
             <>
               <h4 style={{ marginTop: "1rem" }}>Releases</h4>
               {releases.map((release) => (
-                <Release release={release} />
+                <Release release={release} key={release.id} />
               ))}
             </>
           )}

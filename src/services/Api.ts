@@ -5,7 +5,7 @@ export const oidcStorage = `oidc.user:https://id.resonate.coop:${process.env.REA
 
 class NotFoundError extends Error {
   constructor(params: any) {
-    super(...params);
+    super(params);
     Object.setPrototypeOf(this, NotFoundError.prototype);
     // Maintains proper stack trace for where our error was thrown (only available on V8)
     if (Error.captureStackTrace) {
