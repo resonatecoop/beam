@@ -1,5 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
+import BuyAlbumButton from "./BuyAlbumButton";
 import ClickToPlay from "./ClickToPlay";
 import OverflowableText from "./OverflowableText";
 import ShareTrackgroupButton from "./ShareTrackgroupButton";
@@ -54,7 +55,15 @@ const Release: React.FC<{ release: ReleaseDetails }> = ({ release }) => {
             </div>
           )}
           <Tags tags={release.tags ?? []} />
-          <ShareTrackgroupButton trackgroup={release} />
+          <div
+            className={css`
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <ShareTrackgroupButton trackgroup={release} />
+            <BuyAlbumButton trackgroup={release} />
+          </div>
         </div>
       </div>
       <TrackTable tracks={items} />

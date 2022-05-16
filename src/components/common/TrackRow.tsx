@@ -11,6 +11,7 @@ import IconButton from "./IconButton";
 import TrackPopup from "./TrackPopup";
 import styled from "@emotion/styled";
 import { colorShade } from "utils/theme";
+import { checkPlayCountOfTrackIds } from "services/Api";
 
 const PlaysTracker = styled.div<{ width: number; played?: boolean }>`
   width: ${(props) => props.width}px;
@@ -28,8 +29,12 @@ const TrackRow: React.FC<{
   reload: () => Promise<void>;
   handleDrop: (val: React.DragEvent<HTMLTableRowElement>) => void;
 }> = ({ track, addTracksToQueue, trackgroupId, reload, handleDrop }) => {
+  const [trackPlays, setTrackPlays] = React.useState(
+    (isTrackWithUserCounts(track) && track.plays) || undefined
+  );
+  const loadedRef = React.useRef(false);
   const {
-    state: { playerQueueIds, playing, currentlyPlayingIndex },
+    state: { playerQueueIds, playing, currentlyPlayingIndex, user },
     dispatch,
   } = useGlobalStateContext();
   const { onDragStart, onDragEnd } = useDraggableTrack();
@@ -45,6 +50,18 @@ const TrackRow: React.FC<{
   const onTrackPause = React.useCallback(() => {
     dispatch({ type: "setPlaying", playing: false });
   }, [dispatch]);
+
+  const fetchTrackPlays = React.useCallback(async () => {
+    const playCount = await checkPlayCountOfTrackIds([track.id]);
+    setTrackPlays(playCount[0]?.count);
+  }, [track.id]);
+
+  React.useEffect(() => {
+    if (loadedRef.current) {
+      fetchTrackPlays();
+    }
+    loadedRef.current = true;
+  }, [user?.credits, fetchTrackPlays]);
 
   return (
     <tr
@@ -115,14 +132,14 @@ const TrackRow: React.FC<{
         </Link>
       </td>
       <td>
-        {isTrackWithUserCounts(track) && (
+        {trackPlays !== undefined && (
           <div
             className={css`
               display: flex;
             `}
           >
-            <PlaysTracker width={track.plays * 3} played />
-            <PlaysTracker width={(9 - track.plays) * 3} />
+            <PlaysTracker width={trackPlays * 3} played />
+            <PlaysTracker width={(9 - trackPlays) * 3} />
           </div>
         )}
       </td>
