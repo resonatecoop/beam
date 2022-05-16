@@ -23,9 +23,9 @@ const StaffPicks: React.FC = () => {
     setIsLoading(true);
     try {
       const resp = await fetch(
-        "https://raw.githubusercontent.com/simonv3/beam/main/featured-playlists.json"
+        "https://raw.githubusercontent.com/simonv3/beam/main/featured.json"
       );
-      const ids = await resp.json();
+      const ids = (await resp.json()).playlists;
       const result = await fetchTrackGroup(ids[random(ids.length - 1)]);
       setLatestStaffPick(result);
 
