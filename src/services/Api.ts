@@ -3,6 +3,19 @@ import { resonateUrl } from "../constants";
 const API = `${resonateUrl}api/`;
 export const oidcStorage = `oidc.user:https://id.resonate.coop:${process.env.REACT_APP_CLIENT_ID}`;
 
+class NotFoundError extends Error {
+  constructor(params: any) {
+    super(params);
+    Object.setPrototypeOf(this, NotFoundError.prototype);
+    // Maintains proper stack trace for where our error was thrown (only available on V8)
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, NotFoundError);
+    }
+
+    this.message = "Not Found";
+  }
+}
+
 export const getToken = (apiVersion?: string | number) => {
   let token: string | undefined = undefined;
   try {
@@ -46,6 +59,13 @@ const fetchWrapper = async (
     ...options,
   })
     .then((result) => {
+      if (!result.ok) {
+        if (result.status === 404) {
+          throw new NotFoundError(result);
+        }
+      } else {
+        // go the desired response
+      }
       return result.json();
     })
     .then((result) => {

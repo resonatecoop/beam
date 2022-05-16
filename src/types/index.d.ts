@@ -92,7 +92,7 @@ declare global {
   interface Artist {
     name: string;
     id: number;
-    links: {
+    links?: {
       href: string;
       text: string;
     }[];
