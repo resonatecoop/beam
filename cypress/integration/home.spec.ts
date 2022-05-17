@@ -108,9 +108,10 @@ describe("home page", () => {
     });
 
     it("should be able to navigate to the user's library", () => {
-      cy.intercept("GET", Cypress.env("API") + "artists?limit=50&page=1").as(
-        "getArtists"
-      );
+      cy.intercept(
+        "GET",
+        Cypress.env("API") + "artists?limit=50&order=desc&orderBy=id&page=1"
+      ).as("getArtists");
       cy.intercept(
         "GET",
         Cypress.env("API") + "tracks/latest?limit=50&order=plays&page=1"
