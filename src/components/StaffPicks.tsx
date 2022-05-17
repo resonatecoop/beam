@@ -10,14 +10,6 @@ import Button from "./common/Button";
 import { CenteredSpinner } from "./common/Spinner";
 import TrackList from "./common/TrackList";
 
-const staffPicks = [
-  "c4251486-680f-4cb9-8eed-87afccf5c29d",
-  "2e6d1aa3-cee0-4df9-8621-46e2c0c2993c",
-  "856e3176-e5e3-4d89-b5d9-a676258411b7",
-  "2bf25c61-e44b-4cde-b500-523ca38ec9d8",
-  "486e1abd-99f0-4acd-b1f0-01ebe36d3dda",
-];
-
 const StaffPicks: React.FC = () => {
   const { dispatch } = useGlobalStateContext();
   const [isLoading, setIsLoading] = React.useState(false);
@@ -29,13 +21,20 @@ const StaffPicks: React.FC = () => {
 
   const fetchStaffPicksCallback = React.useCallback(async () => {
     setIsLoading(true);
-    const result = await fetchTrackGroup(
-      staffPicks[random(staffPicks.length - 1)]
-    );
-    setLatestStaffPick(result);
+    try {
+      const resp = await fetch(
+        "https://raw.githubusercontent.com/simonv3/beam/main/featured.json"
+      );
+      const ids = (await resp.json()).playlists;
+      const result = await fetchTrackGroup(ids[random(ids.length - 1)]);
+      setLatestStaffPick(result);
 
-    setTracks(result?.items.map((item) => item.track));
-    setIsLoading(false);
+      setTracks(result?.items.map((item) => item.track));
+    } catch (e) {
+      console.error("e");
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
   const onPlayClick = React.useCallback(() => {

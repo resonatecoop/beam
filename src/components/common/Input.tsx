@@ -17,7 +17,13 @@ const InputEl = styled.input`
   font-size: 1rem;
   margin-bottom: 0.5rem;
   width: 100%;
-  background-color: white;
+  color: ${(props) => props.theme.colors.text};
+  background-color: ${(props) => props.theme.colors.background};
+
+  @media (prefers-color-scheme: dark) {
+    color: ${(props) => props.theme.colors.textDark};
+    background-color: ${(props) => props.theme.colors.backgroundDark};
+  }
 `;
 
 export const Input: React.FC<Props> = ({ onChange, ...props }) => {

@@ -17,14 +17,19 @@ export const PlaylistTracks: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
   const [playlist, setPlaylist] = React.useState<TrackgroupDetail>();
-  const [tracks, setTracks] = React.useState<Track[]>([]);
+  const [tracks, setTracks] = React.useState<IndexedTrack[]>([]);
   const userId = user?.id;
   const fetchTracks = React.useCallback(async (playlistId: string) => {
     setIsLoading(true);
 
     const trackgroup = await fetchUserTrackGroup(playlistId);
     setPlaylist(trackgroup);
-    setTracks(trackgroup.items.map((item) => item.track));
+    setTracks(
+      // FIXME: This should be changed back to item.index
+      // when that's fixed on the API
+      // https://github.com/resonatecoop/tracks-api/issues/34
+      trackgroup.items.map((item, idx) => ({ ...item.track, index: idx }))
+    );
     setIsLoading(false);
   }, []);
 

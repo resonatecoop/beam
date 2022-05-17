@@ -2,6 +2,7 @@ import { css } from "@emotion/css";
 import React from "react";
 import { useParams } from "react-router-dom";
 import { fetchTrackGroup } from "../services/Api";
+import BuyAlbumButton from "./common/BuyAlbumButton";
 import ShareTrackgroupButton from "./common/ShareTrackgroupButton";
 import { CenteredSpinner } from "./common/Spinner";
 import Tags from "./common/Tags";
@@ -75,6 +76,9 @@ export const TrackgroupPage: React.FC = () => {
             `}
           >
             <ShareTrackgroupButton trackgroup={trackgroup} />
+            {trackgroup.type !== "playlist" && (
+              <BuyAlbumButton trackgroup={trackgroup} />
+            )}
           </div>
 
           <div className={padding}>

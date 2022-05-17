@@ -16,6 +16,10 @@ const IconButton = styled.button<Compactable>`
   line-height: 0.9;
   border-radius: 2px;
 
+  @media (prefers-color-scheme: dark) {
+    color: ${(props) => props.theme.colors.textDark};
+  }
+
   &:hover {
     color: ${(props) =>
       colorShade(

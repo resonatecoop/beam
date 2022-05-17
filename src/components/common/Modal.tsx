@@ -40,6 +40,10 @@ const Content = styled.div<ContentProps>`
     right: 0;
     left: 0;
   }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: #333;
+  }
 `;
 
 const close = css`

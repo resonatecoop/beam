@@ -66,3 +66,10 @@ export function isTrackWithUserCounts(
   }
   return (entity as TrackWithUserCounts).favorite !== undefined;
 }
+
+export function isIndexedTrack(entity: unknown): entity is IndexedTrack {
+  if (!entity) {
+    return false;
+  }
+  return (entity as IndexedTrack).index !== undefined;
+}

@@ -23,7 +23,7 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
   const [purchaseSuccess, setPurchaseSuccess] = React.useState(false);
   const onBuyClick = React.useCallback(async () => {
     if (userId) {
-      await buyTrack(userId, track.id);
+      await buyTrack(track.id);
       setPurchaseSuccess(true);
     }
   }, [userId, track.id]);

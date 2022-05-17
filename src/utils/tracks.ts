@@ -56,7 +56,7 @@ export function buildStreamURL(id?: number, clientId?: string) {
 
 export const determineNewTrackOrder = produce(
   (
-    oldTracks: (TrackWithUserCounts | Track)[],
+    oldTracks: (TrackWithUserCounts | Track | IndexedTrack)[],
     droppedInId: string,
     draggingTrackId: number
   ) => {

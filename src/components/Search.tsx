@@ -88,6 +88,10 @@ export const Search: React.FC = () => {
             background: white;
           }
         }
+
+        @media (prefers-color-scheme: dark) {
+          background: #333;
+        }
       `;
 
   return (
@@ -154,6 +158,9 @@ export const Search: React.FC = () => {
               @media (max-width: ${bp.small}px) {
                 width: 100%;
                 left: 0;
+              }
+              @media (prefers-color-scheme: dark) {
+                background-color: #333;
               }
             `}
           >

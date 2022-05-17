@@ -38,7 +38,7 @@ export const AudioWrapper: React.FC<{
   const onEnded = React.useCallback(async () => {
     if (!mostlyListened && currentTrack && userId) {
       try {
-        await registerPlay(userId, currentTrack.id);
+        await registerPlay(currentTrack.id);
       } catch (e) {
         console.error(e);
       }
@@ -60,7 +60,7 @@ export const AudioWrapper: React.FC<{
       ) {
         setMostlyListened(true);
         try {
-          const result = await registerPlay(userId, currentTrack.id);
+          const result = await registerPlay(currentTrack.id);
           dispatch({ type: "setUserCredits", credits: result.total });
         } catch (e) {
           console.error(e);

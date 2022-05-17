@@ -11,16 +11,30 @@ export const Table = styled.table`
     &:nth-of-type(odd) {
       background-color: ${(props) =>
         colorShade(props.theme.colors.background, -10)};
+
+      @media (prefers-color-scheme: dark) {
+        background-color: ${(props) =>
+          colorShade(props.theme.colors.backgroundDark, -10)};
+      }
     }
     &:hover {
       background-color: ${(props) =>
         colorShade(props.theme.colors.background, -40)} !important;
+
+      @media (prefers-color-scheme: dark) {
+        background-color: ${(props) =>
+          colorShade(props.theme.colors.backgroundDark, -40)} !important;
+      }
     }
   }
 
   & th {
     text-align: left;
     background-color: #d8d8d8;
+    @media (prefers-color-scheme: dark) {
+      background-color: ${(props) =>
+        colorShade(props.theme.colors.backgroundDark, -20)};
+    }
   }
   & td,
   & th {

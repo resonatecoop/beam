@@ -6,7 +6,7 @@ import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchTrack } from "../services/Api";
 import { MdQueueMusic } from "react-icons/md";
 import { ImShuffle } from "react-icons/im";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { bp } from "../constants";
 import { FavoriteTrack } from "./common/FavoriteTrack";
 import { mapFavoriteAndPlaysToTracks } from "../utils/tracks";
@@ -114,7 +114,11 @@ const Player = () => {
           <div>
             <div>{currentTrack.title}</div>
             <div>{currentTrack.album}</div>
-            <div>{currentTrack.artist}</div>
+            <div>
+              <Link to={`/library/artist/${currentTrack.creator_id}`}>
+                {currentTrack.artist}
+              </Link>
+            </div>
           </div>
           {isTrackWithUserCounts(currentTrack) && user && (
             <div

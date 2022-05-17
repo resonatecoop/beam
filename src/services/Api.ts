@@ -395,7 +395,6 @@ export const fetchTrack = (trackId: number): Promise<Track> => {
 };
 
 export const registerPlay = (
-  userId: number,
   trackId: number
 ): Promise<{ count: number; cost: number; total: string }> => {
   return fetchWrapper(`user/plays`, {
@@ -404,7 +403,7 @@ export const registerPlay = (
   });
 };
 
-export const buyTrack = async (userId: number, trackId: number) => {
+export const buyTrack = async (trackId: number) => {
   return fetchWrapper(`user/plays/buy`, {
     method: "POST",
     body: JSON.stringify({
