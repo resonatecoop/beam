@@ -93,7 +93,11 @@ const Header: React.FC = () => {
           `}
         />
         <Search />
-        {user && <Link to="/library/explore/playlists">Library</Link>}
+        {user && (
+          <Link to="/library/explore/playlists" data-cy="library-link">
+            Library
+          </Link>
+        )}
         <Login />
       </Content>
     </Wrapper>

@@ -86,7 +86,12 @@ const StaffPicks: React.FC = () => {
               </Link>
             </h4>
             {tracks && (
-              <Button compact startIcon={<FaPlay />} onClick={onPlayClick}>
+              <Button
+                compact
+                startIcon={<FaPlay />}
+                onClick={onPlayClick}
+                data-cy="play-staff-picks"
+              >
                 Play
               </Button>
             )}

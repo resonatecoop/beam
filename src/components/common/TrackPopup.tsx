@@ -32,10 +32,11 @@ const TrackPopup: React.FC<{
   const [artistId, setArtistId] = React.useState<number>();
   const [trackgroup, setTrackgroup] = React.useState<Trackgroup>();
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false);
-  const [track, setTrack] = React.useState<TrackWithUserCounts>();
+  const [track, setTrack] = React.useState<Track | TrackWithUserCounts>();
   const [selectedTrackIds, setSelectedTrackIds] = React.useState<number[]>([]);
   const [isPlaylistPickerOpen, setIsPlaylistPickerOpen] = React.useState(false);
   const [isShareOpen, setIsShareOpen] = React.useState(false);
+  const userId = user?.id;
 
   const openMenu = React.useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -90,9 +91,14 @@ const TrackPopup: React.FC<{
       if (trackId) {
         trackIds.push(trackId);
         const t = await fetchTrack(trackId);
-        const mapped = await mapFavoriteAndPlaysToTracks([t]);
-        setTrack(mapped[0]);
-        setIsFavorite(mapped[0]?.favorite ?? 0);
+        if (userId) {
+          const mapped = await mapFavoriteAndPlaysToTracks([t]);
+
+          setTrack(mapped[0]);
+          setIsFavorite(mapped[0]?.favorite ?? 0);
+        } else {
+          setTrack(t);
+        }
         setArtistId(t.creator_id);
       } else if (groupId) {
         const result = await fetchTrackGroup(groupId);
@@ -107,7 +113,7 @@ const TrackPopup: React.FC<{
 
       setSelectedTrackIds(trackIds);
     },
-    []
+    [userId]
   );
 
   const onClickFavorite = React.useCallback(
@@ -137,7 +143,11 @@ const TrackPopup: React.FC<{
           align-items: center;
         `}
       >
-        <IconButton onClick={(e) => openMenu(e)} compact={compact}>
+        <IconButton
+          onClick={(e) => openMenu(e)}
+          compact={compact}
+          aria-label="open track actions"
+        >
           <FaEllipsisV />
         </IconButton>
       </div>
@@ -188,7 +198,7 @@ const TrackPopup: React.FC<{
               list-style: none;
             `}
           >
-            {track && (
+            {userId && track && (
               <li>
                 <ListButton onClick={onClickFavorite}>
                   <SpinningStar
@@ -204,12 +214,14 @@ const TrackPopup: React.FC<{
                 <FaCode /> Share &amp; embed
               </ListButton>
             </li>
-            <li>
-              <ListButton onClick={openAddToPlaylist}>
-                <FaPlus /> Add to playlist
-              </ListButton>
-            </li>
-            {trackId && groupId && (
+            {userId && (
+              <li>
+                <ListButton onClick={openAddToPlaylist}>
+                  <FaPlus /> Add to playlist
+                </ListButton>
+              </li>
+            )}
+            {userId && trackId && groupId && (
               <li>
                 <ListButton onClick={removeFromPlaylist}>
                   <FaMinus /> Remove from playlist

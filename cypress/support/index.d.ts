@@ -5,5 +5,8 @@ declare namespace Cypress {
      * @example cy.clickOnMyJourneyInCandidateCabinet()
      */
     isPlayingAudio(): Chainable<null>;
+    isAudioPaused(): Chainable<null>;
+    setLoggedInUser(): Chainable<null>;
+    memoryNavigate(url: string): Chainable<null>;
   }
 }
