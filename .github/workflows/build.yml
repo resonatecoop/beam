@@ -6,6 +6,10 @@ on:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
+env: 
+  REACT_APP_CLIENT_ID: ${{ secrets.REACT_APP_CLIENT_ID }}
+  REACT_APP_CLIENT_SECRET: ${{ secrets.REACT_APP_CLIENT_SECRET }}
+
 jobs:
   build:
     runs-on: ${{ matrix.os }}
@@ -35,7 +39,5 @@ jobs:
         run: yarn release
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REACT_APP_CLIENT_ID: ${{ secrets.REACT_APP_CLIENT_ID }}
-          REACT_APP_CLIENT_SECRET: ${{ secrets.REACT_APP_CLIENT_SECRET }}
 
 

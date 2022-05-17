@@ -1,6 +1,6 @@
 {
   "name": "beam",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "homepage": "./",
   "main": "./public/electron.js",
   "author": "Si <simsamsomred@gmail.com>",
