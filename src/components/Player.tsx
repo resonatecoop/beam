@@ -1,6 +1,7 @@
 import React from "react";
 import { css } from "@emotion/css";
 import "react-h5-audio-player/lib/styles.css";
+import { Helmet } from "react-helmet";
 
 import { useGlobalStateContext } from "../contexts/globalState";
 import { fetchTrack } from "../services/Api";
@@ -63,6 +64,7 @@ const Player = () => {
   >();
   const [isLoading, setIsLoading] = React.useState(false);
   const userId = user?.id;
+
   const fetchTrackCallback = React.useCallback(
     async (id: number) => {
       setIsLoading(true);
@@ -73,6 +75,7 @@ const Player = () => {
       } else {
         setCurrentTrack(track);
       }
+
       setIsLoading(false);
     },
     [userId]
@@ -99,8 +102,45 @@ const Player = () => {
     dispatch({ type: "setShuffle", shuffle: !shuffle });
   }, [dispatch, shuffle]);
 
+  React.useEffect(() => {
+    if ("mediaSession" in navigator) {
+      navigator.mediaSession.setActionHandler("nexttrack", () => {
+        dispatch({ type: "incrementCurrentlyPlayingIndex" });
+      });
+      navigator.mediaSession.setActionHandler("previoustrack", () => {
+        dispatch({ type: "decrementCurrentlyPlayingIndex" });
+      });
+    }
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    if (currentTrack) {
+      if ("mediaSession" in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: currentTrack.title,
+          artist: currentTrack.artist,
+          album: currentTrack.album ?? "",
+          artwork: [
+            {
+              src: currentTrack.images.small?.url ?? currentTrack.cover,
+              sizes: `${currentTrack.images.small?.height}x${currentTrack.images.small?.height}`,
+              type: "image/png",
+            },
+          ],
+        });
+      }
+    }
+  }, [currentTrack]);
+
   return (
     <div className={playerClass}>
+      <Helmet>
+        {currentTrack && (
+          <title>
+            {currentTrack.artist} - {currentTrack.title}
+          </title>
+        )}
+      </Helmet>
       {currentTrack && (
         <div className={trackInfo}>
           <ImageWithPlaceholder

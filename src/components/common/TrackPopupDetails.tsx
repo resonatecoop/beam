@@ -1,5 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
+import { isTrackWithUserCounts } from "typeguards";
 import { useGlobalStateContext } from "../../contexts/globalState";
 import { buyTrack } from "../../services/Api";
 import {
@@ -12,36 +13,9 @@ import {
 import Button from "./Button";
 import LoadingSpinner from "./LoadingSpinner";
 
-export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
-  track,
-}) => {
-  const {
-    state: { user },
-  } = useGlobalStateContext();
-  const userId = user?.id;
-  const [isDownloading, setIsDownloading] = React.useState(false);
-  const [purchaseSuccess, setPurchaseSuccess] = React.useState(false);
-  const onBuyClick = React.useCallback(async () => {
-    if (userId) {
-      await buyTrack(track.id);
-      setPurchaseSuccess(true);
-    }
-  }, [userId, track.id]);
-
-  const remainingCost = calculateRemainingCost(track.plays);
-
-  const enoughCredit =
-    0 < +(user?.credits ?? "0") - +formatCredit(remainingCost);
-
-  const download = React.useCallback(async () => {
-    setIsDownloading(true);
-    await downloadFile(
-      buildStreamURL(track.id),
-      `${track.artist} - ${track.title}.m4a`
-    );
-    setIsDownloading(false);
-  }, [track.id, track.artist, track.title]);
-
+export const TrackPopupDetails: React.FC<{
+  track: Track | TrackWithUserCounts;
+}> = ({ track }) => {
   return (
     <div
       className={css`
@@ -84,6 +58,43 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
           </p>
         </div>
       </div>
+      {isTrackWithUserCounts(track) && <TrackOwnerhsip track={track} />}
+    </div>
+  );
+};
+
+const TrackOwnerhsip: React.FC<{ track: TrackWithUserCounts }> = ({
+  track,
+}) => {
+  const {
+    state: { user },
+  } = useGlobalStateContext();
+  const userId = user?.id;
+  const remainingCost = calculateRemainingCost(track.plays);
+  const [isDownloading, setIsDownloading] = React.useState(false);
+  const [purchaseSuccess, setPurchaseSuccess] = React.useState(false);
+
+  const enoughCredit =
+    0 < +(user?.credits ?? "0") - +formatCredit(remainingCost);
+
+  const download = React.useCallback(async () => {
+    setIsDownloading(true);
+    await downloadFile(
+      buildStreamURL(track.id),
+      `${track.artist} - ${track.title}.m4a`
+    );
+    setIsDownloading(false);
+  }, [track.id, track.artist, track.title]);
+
+  const onBuyClick = React.useCallback(async () => {
+    if (userId) {
+      await buyTrack(track.id);
+      setPurchaseSuccess(true);
+    }
+  }, [userId, track.id]);
+
+  return (
+    <>
       {purchaseSuccess && (
         <>
           <h4>Congrats!</h4>
@@ -159,7 +170,7 @@ export const TrackPopupDetails: React.FC<{ track: TrackWithUserCounts }> = ({
           <dd>{formatCredit(calculateCost(track.plays + 1))}</dd>
         </dl>
       </div>
-    </div>
+    </>
   );
 };
 

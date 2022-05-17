@@ -102,7 +102,7 @@ export const Modal: React.FC<{
   return ReactDOM.createPortal(
     <>
       <Background onClick={onCloseWrapper} />
-      <div className={wrapper}>
+      <div className={wrapper} data-cy="modal">
         <Content size={size}>
           <div>
             <IconButton

@@ -35,6 +35,7 @@ export const AudioWrapper: React.FC<{
   const playerRef = React.useRef<any>();
   const [mostlyListened, setMostlyListened] = React.useState(false);
   const userId = user?.id;
+
   const onEnded = React.useCallback(async () => {
     if (!mostlyListened && currentTrack && userId) {
       try {

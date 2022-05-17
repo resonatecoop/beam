@@ -27,12 +27,24 @@ export const LabelPage: React.FC = () => {
 
   const fetchTracks = React.useCallback(async (id: number) => {
     setIsLoading(true);
-    const label = await fetchLabel(id);
-    const releases = await fetchLabelReleases(id);
-    const artists = await fetchLabelArtists(id);
-    setLabel(label);
-    setArtists(artists);
-    setReleases(releases);
+    try {
+      const label = await fetchLabel(id);
+      setLabel(label);
+    } catch (e) {
+      console.error(e);
+    }
+    try {
+      const releases = await fetchLabelReleases(id);
+      setReleases(releases);
+    } catch (e) {
+      console.error(e);
+    }
+    try {
+      const artists = await fetchLabelArtists(id);
+      setArtists(artists);
+    } catch (e) {
+      console.error(e);
+    }
     setIsLoading(false);
   }, []);
 
@@ -92,19 +104,23 @@ export const LabelPage: React.FC = () => {
           {artists && artists.length > 0 && (
             <>
               <h4 style={{ marginTop: "1rem" }}>Artists</h4>
-              {artists.map((artist) => (
-                <GridListItem key={artist.id} maxWidth={120}>
-                  <ImageWithPlaceholder
-                    src={artist.images?.["profile_photo-sm"]}
-                    alt={artist.name}
-                    size={120}
-                    className={css`
-                      margin: 0 1rem 0.25rem 0;
-                    `}
-                  />
-                  <Link to={`/library/artist/${artist.id}`}>{artist.name}</Link>
-                </GridListItem>
-              ))}
+              <ul>
+                {artists.map((artist) => (
+                  <GridListItem key={artist.id} maxWidth={120}>
+                    <ImageWithPlaceholder
+                      src={artist.images?.["profile_photo-sm"]}
+                      alt={artist.name}
+                      size={120}
+                      className={css`
+                        margin: 0 1rem 0.25rem 0;
+                      `}
+                    />
+                    <Link to={`/library/artist/${artist.id}`}>
+                      {artist.name}
+                    </Link>
+                  </GridListItem>
+                ))}
+              </ul>
             </>
           )}
 

@@ -38,9 +38,11 @@ const TrackRow: React.FC<{
     dispatch,
   } = useGlobalStateContext();
   const { onDragStart, onDragEnd } = useDraggableTrack();
-  const currentTrackId = currentlyPlayingIndex
-    ? playerQueueIds[currentlyPlayingIndex]
-    : undefined;
+
+  const currentPlayingTrackId =
+    currentlyPlayingIndex !== undefined
+      ? playerQueueIds[currentlyPlayingIndex]
+      : undefined;
 
   const onTrackPlay = React.useCallback(() => {
     addTracksToQueue(track.id);
@@ -83,13 +85,17 @@ const TrackRow: React.FC<{
     >
       <td>{isTrackWithUserCounts(track) && <FavoriteTrack track={track} />}</td>
       <td>
-        {(!playing || currentTrackId !== track.id) && (
+        {(!playing || currentPlayingTrackId !== track.id) && (
           <IconButton compact className="play-button" onClick={onTrackPlay}>
             <FaPlay />
           </IconButton>
         )}
-        {playing && currentTrackId === track.id && (
-          <IconButton compact onClick={onTrackPause}>
+        {playing && currentPlayingTrackId === track.id && (
+          <IconButton
+            compact
+            data-cy="track-row-pause-button"
+            onClick={onTrackPause}
+          >
             <FaPause />
           </IconButton>
         )}

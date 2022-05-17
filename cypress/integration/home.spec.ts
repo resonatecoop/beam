@@ -68,7 +68,7 @@ describe("home page", () => {
 
     it("can clear a queue", () => {
       cy.intercept(Cypress.env("API") + "tracks/*").as("trackDetails");
-      cy.get("h4").next("button").click();
+      cy.get("[data-cy=play-staff-picks]").click();
       cy.get("[data-cy=queue]").contains("Queue").click();
       cy.get("h3").contains("Queue");
       // eslint-disable-next-line jest/valid-expect-in-promise
@@ -92,13 +92,7 @@ describe("home page", () => {
 
   describe("authenticated", () => {
     beforeEach(() => {
-      window.localStorage.setItem(
-        `oidc.user:https://id.resonate.coop:${Cypress.env("client_id")}`,
-        JSON.stringify({ access_token: "1234" })
-      );
-      cy.intercept("GET", Cypress.env("API") + "user/profile/", {
-        fixture: "user.json",
-      }).as("getProfile");
+      cy.setLoggedInUser();
       cy.visit("/");
       cy.wait("@getProfile").then(() => {});
     });
@@ -116,7 +110,7 @@ describe("home page", () => {
         "GET",
         Cypress.env("API") + "tracks/latest?limit=50&order=plays&page=1"
       ).as("getPlays");
-      cy.get("a").contains("Library").click();
+      cy.get("[data-cy=library-link]").click();
       cy.get("h2").contains("Library");
       cy.get("h3")
         .contains("Explore Resonate")

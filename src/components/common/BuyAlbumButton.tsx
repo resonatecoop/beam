@@ -29,10 +29,9 @@ export const BuyAlbumButton: React.FC<{
   const fetchTracks = React.useCallback(async (checkTracks: Track[]) => {
     setIsLoading(true);
     const plays = await checkPlayCountOfTrackIds(checkTracks.map((c) => c.id));
-    plays.forEach((play) => {});
     let totalRemainingCost = 0;
     checkTracks.forEach((t) => {
-      const hasPlay = plays.find((p) => p.track_id === t.id);
+      const hasPlay = plays?.find((p) => p.track_id === t.id);
       const remainingCost = calculateRemainingCost(hasPlay?.count ?? 0);
       totalRemainingCost += remainingCost;
     });
@@ -78,8 +77,8 @@ export const BuyAlbumButton: React.FC<{
     <>
       {albumRemainingCost > 0 && (
         <>
-          <Button onClick={(e) => openMenu(e)} compact>
-            Buy Album
+          <Button onClick={(e) => openMenu(e)} compact data-cy="buy-album">
+            Buy album
           </Button>
           <Modal
             open={isBuyAlbumOpen}
@@ -110,7 +109,7 @@ export const BuyAlbumButton: React.FC<{
                 disabled={isPurchasing}
                 startIcon={isPurchasing ? <LoadingSpinner /> : undefined}
               >
-                Yes, Please!
+                Yes, please!
               </Button>
             </div>
           </Modal>

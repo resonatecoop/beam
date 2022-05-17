@@ -40,3 +40,40 @@ Cypress.Commands.add("isPlayingAudio", () => {
     expect(audible).eq(true);
   });
 });
+
+Cypress.Commands.add("isAudioPaused", () => {
+  cy.get("audio,video").should((els) => {
+    let paused = false;
+    els.each((i, el) => {
+      // @ts-ignore
+      if (el.duration > 0 && el.paused && !el.muted) {
+        paused = true;
+      }
+
+      // expect(el.duration > 0 && !el.paused && !el.muted).to.eq(false)
+    });
+    expect(paused).eq(true);
+  });
+});
+
+Cypress.Commands.add("setLoggedInUser", () => {
+  window.localStorage.setItem(
+    `oidc.user:https://id.resonate.coop:${Cypress.env("client_id")}`,
+    JSON.stringify({ access_token: "1234" })
+  );
+  cy.intercept("GET", Cypress.env("API") + "user/profile/", {
+    fixture: "user.json",
+  }).as("getProfile");
+});
+
+Cypress.Commands.add("memoryNavigate", (url: string) => {
+  cy.visit("/");
+  cy.get("h2")
+    .should("contain", "co-operative")
+    .then(() => {
+      cy.window().then((win) => {
+        // @ts-ignore
+        win.AppHistory?.navigate(url);
+      });
+    });
+});
