@@ -10,7 +10,7 @@ export const NowPlaying: React.FC = () => {
 
   const { results, isLoading } = usePagination<Track>({
     apiCall: React.useCallback(fetchLatestTracks, []),
-    options: { limit: 2, order: "plays" },
+    options: React.useMemo(() => ({ limit: 2, order: "plays" }), []),
   });
 
   React.useEffect(() => {
