@@ -70,6 +70,7 @@ const PlayWrapper = styled.div<WrapperProps>`
 const Wrapper = styled.div<WrapperProps>`
   position: relative;
   max-width: 100%;
+  overflow: clip;
 
   @media (max-width: ${bp.medium}px) {
     position: relative;
