@@ -14,6 +14,10 @@ export const GridListItem = styled.li<Props>`
   @media (max-width: ${bp.medium}px) {
     margin-right: 0;
   }
+
+  @media (max-width: ${bp.small}px) {
+    max-width: 100%;
+  }
 `;
 
 export default GridListItem;
