@@ -1,7 +1,11 @@
 import { css } from "@emotion/css";
+import { useGlobalStateContext } from "contexts/globalState";
 import React from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
-import { addTrackToUserFavorites } from "../../services/Api";
+import {
+  addTrackToUserFavorites,
+  checkTrackIdsForFavorite,
+} from "../../services/Api";
 import IconButton from "./IconButton";
 
 export const spinner = css`
@@ -30,6 +34,11 @@ export const SpinningStar: React.FC<{ spinning: boolean; full: boolean }> = ({
 export const FavoriteTrack: React.FC<{ track: TrackWithUserCounts }> = ({
   track,
 }) => {
+  const {
+    state: { checkFavoriteStatusFlag },
+    dispatch,
+  } = useGlobalStateContext();
+
   const [isFavorite, setIsFavorite] = React.useState(track.favorite);
   const [loadingFavorite, setLoadingFavorite] = React.useState(false);
 
@@ -42,9 +51,26 @@ export const FavoriteTrack: React.FC<{ track: TrackWithUserCounts }> = ({
       await addTrackToUserFavorites(track.id);
       setIsFavorite((val) => !val);
       setLoadingFavorite(false);
+      dispatch({ type: "incrementFavoriteStatusFlag" });
     },
-    [track.id]
+    [track.id, dispatch]
   );
+
+  const onFavoriteStatusFlagChange = React.useCallback(async () => {
+    const resolution = await checkTrackIdsForFavorite([track.id]);
+    if (resolution.length > 0 && resolution[0].track_id === track.id) {
+      setIsFavorite(true);
+    } else {
+      setIsFavorite(false);
+    }
+  }, [track]);
+
+  React.useEffect(() => {
+    if (checkFavoriteStatusFlag) {
+      onFavoriteStatusFlagChange();
+    }
+  }, [checkFavoriteStatusFlag, onFavoriteStatusFlagChange]);
+
   return (
     <IconButton compact onClick={onClickStar}>
       <SpinningStar spinning={loadingFavorite} full={isFavorite} />
