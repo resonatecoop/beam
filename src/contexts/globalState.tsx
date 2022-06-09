@@ -12,11 +12,16 @@ export interface GlobalState {
   draggingTrackId?: number;
   currentlyPlayingIndex?: number;
   userPlaylists?: { id: string; title: string }[];
+  checkFavoriteStatusFlag?: number;
 }
 
 type SetLoggedInUser = {
   type: "setLoggedInUser";
   user?: LoggedInUser;
+};
+
+type IncrementFavoriteStatusFlag = {
+  type: "incrementFavoriteStatusFlag";
 };
 
 type ClearQueue = {
@@ -112,7 +117,8 @@ type Actions =
   | IncrementCurrentlyPlayingIndex
   | DecrementCurrentlyPlayingIndex
   | SetUserCredits
-  | SetUserPlaylists;
+  | SetUserPlaylists
+  | IncrementFavoriteStatusFlag;
 
 export const stateReducer = produce((draft: GlobalState, action: Actions) => {
   switch (action.type) {
@@ -217,12 +223,20 @@ export const stateReducer = produce((draft: GlobalState, action: Actions) => {
     case "setUserPlaylists":
       draft.userPlaylists = action.playlists;
       break;
+    case "incrementFavoriteStatusFlag":
+      draft.checkFavoriteStatusFlag = (draft.checkFavoriteStatusFlag ?? 0) + 1;
+      break;
     default:
       break;
   }
   localStorage.setItem(
     "state",
-    JSON.stringify({ ...draft, playing: undefined }) // We don't want playing to be persisted
+    JSON.stringify({
+      ...draft,
+      // We don't want these to be persisted
+      checkFavoriteStatusFlag: undefined,
+      playing: undefined,
+    })
   );
   return draft;
 });
@@ -247,6 +261,7 @@ export const GlobalStateProvider: React.FC<GlobalStateProviderProps> = ({
       storedState.playerQueueIds = [];
     }
   } catch (e) {}
+
   const [state, dispatch] = React.useReducer(
     stateReducer,
     storedState ?? { playerQueueIds: [] }
