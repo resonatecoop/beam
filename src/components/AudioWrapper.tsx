@@ -171,7 +171,7 @@ export const AudioWrapper: React.FC<{
               filter: invert(80%);
             }
             @media (prefers-color-scheme: light) {
-              background: #fff;;
+              background: #fff;
             }
           }
         `}
