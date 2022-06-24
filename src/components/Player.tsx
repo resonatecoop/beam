@@ -36,7 +36,7 @@ const playerClass = css`
   }
 
   @media (prefers-color-scheme: light) {
-    background: #fff;;
+    background: #fff;
   }
 
   @media (max-width: ${bp.small}px) {
