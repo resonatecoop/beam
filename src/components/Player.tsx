@@ -29,7 +29,14 @@ const playerClass = css`
   width: 100%;
   z-index: 10;
   bottom: 0;
-  background-color: #fff;
+
+  @media (prefers-color-scheme: dark) {
+    background: #333;
+  }
+
+  @media (prefers-color-scheme: light) {
+    background: #fff;;
+  }
 
   @media (max-width: ${bp.small}px) {
     height: 150px;

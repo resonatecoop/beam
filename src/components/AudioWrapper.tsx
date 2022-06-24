@@ -167,6 +167,12 @@ export const AudioWrapper: React.FC<{
             box-shadow: none;
             padding: 0;
             margin-right: 1rem;
+            @media (prefers-color-scheme: dark) {
+              filter: invert(80%);
+            }
+            @media (prefers-color-scheme: light) {
+              background: #fff;;
+            }
           }
         `}
       />

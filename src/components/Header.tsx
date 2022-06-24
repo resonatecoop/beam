@@ -46,6 +46,9 @@ const Content = styled.div`
       scale: 0.7;
       margin-left: -0.5rem;
       height: 46px;
+      @media (prefers-color-scheme: dark) {
+        filter: invert(1);
+      }
     }
 
     @media (prefers-color-scheme: dark) {
