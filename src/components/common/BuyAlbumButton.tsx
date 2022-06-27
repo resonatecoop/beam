@@ -9,6 +9,7 @@ import {
   fetchUserProfile,
 } from "services/Api";
 import { calculateRemainingCost } from "utils/tracks";
+import { convertCreditsToEuros } from "utils/conversions";
 import Button from "./Button";
 import LoadingSpinner from "./LoadingSpinner";
 import Modal from "./Modal";
@@ -91,7 +92,13 @@ export const BuyAlbumButton: React.FC<{
                 margin-bottom: 1rem;
               `}
             >
-              This will cost <strong>{albumRemainingCost}</strong> credits
+              This will cost
+              <strong>{(albumRemainingCost / 1000).toFixed(2)}</strong> credits
+              (
+              <strong>
+                €{convertCreditsToEuros(albumRemainingCost / 1000)}
+              </strong>
+              )
             </p>
             <div
               className={css`
