@@ -17,7 +17,6 @@ const Wrapper = styled.header`
   min-height: 48px;
   border-bottom: 1px solid ${(props) => colorShade(props.theme.colors.text, 20)};
   display: flex;
-  filter: drop-shadow(0 0 0.15rem #000);
   flex-direction: column;
   position: sticky;
   width: 100%;
