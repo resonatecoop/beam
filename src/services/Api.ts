@@ -1,7 +1,7 @@
 import { resonateUrl } from "../constants";
 
 const API = `${resonateUrl}api/`;
-export const oidcStorage = `oidc.user:https://id.resonate.coop:${process.env.REACT_APP_CLIENT_ID}`;
+export const oidcStorage = `oidc.user:${process.env.REACT_APP_AUTHORITY}:${process.env.REACT_APP_CLIENT_ID}`;
 
 class NotFoundError extends Error {
   constructor(params: any) {
