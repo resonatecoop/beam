@@ -1,4 +1,4 @@
-export const resonateUrl = "https://stream.resonate.coop/";
+export const resonateUrl = process.env.REACT_APP_API;
 
 export const bp = {
   small: "430",

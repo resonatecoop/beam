@@ -42,6 +42,10 @@ export interface AuthProviderProps {
    */
   metadata?: Partial<OidcMetadata>;
   /**
+   * The URL pointing to the .well-known/openid-configuration.
+   */
+  metadataUrl?: string;
+  /**
    * Define where the user store gets stored
    */
   userStore?: WebStorageStateStore;
