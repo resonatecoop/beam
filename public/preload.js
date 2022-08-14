@@ -7,8 +7,8 @@ const { contextBridge, ipcRenderer } = require("electron");
 // They'll be accessible at "window.versions".
 process.once("loaded", () => {
   contextBridge.exposeInMainWorld("versions", process.versions);
-  contextBridge.exposeInMainWorld('darkMode', {
-    toggle: () => ipcRenderer.invoke('dark-mode:toggle'),
-    system: () => ipcRenderer.invoke('dark-mode:system')
-  })
+  contextBridge.exposeInMainWorld("darkMode", {
+    toggle: () => ipcRenderer.invoke("dark-mode:toggle"),
+    system: () => ipcRenderer.invoke("dark-mode:system"),
+  });
 });
