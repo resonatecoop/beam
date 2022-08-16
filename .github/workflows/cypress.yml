@@ -16,6 +16,11 @@ jobs:
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v2
+        env:
+          REACT_APP_CLIENT_ID: ${{ secrets.REACT_APP_CLIENT_ID }}
+          REACT_APP_CLIENT_SECRET: ${{ secrets.REACT_APP_CLIENT_SECRET }}
+          REACT_APP_API: ${{ secrets.REACT_APP_API }}
+          REACT_APP_AUTHORITY: ${{ secrets.REACT_APP_AUTHORITY }}
         with:
           build: yarn build
           start: yarn serve

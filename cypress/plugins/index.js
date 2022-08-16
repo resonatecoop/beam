@@ -21,6 +21,14 @@ module.exports = (on, config) => {
   config.env.client_id = process.env.REACT_APP_CLIENT_ID;
 
   // `on` is used to hook into various events Cypress emits
+  on("task", {
+    log(message) {
+      // eslint-disable-next-line no-console
+      console.log(message);
+
+      return null;
+    },
+  });
   // `config` is the resolved Cypress config
   return config;
 };
