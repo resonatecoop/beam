@@ -77,7 +77,7 @@ export const TrackTable: React.FC<{
       (id: number) => {
         const idx = tracks.findIndex((track) => track.id === id);
         dispatch({
-          type: "setPlayerQueueIds",
+          type: "startPlayingIds",
           playerQueueIds: tracks
             .slice(idx, tracks.length)
             .map((track) => track.id),

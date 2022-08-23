@@ -17,6 +17,7 @@ import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
 import IconButton from "./common/IconButton";
 import { AudioWrapper } from "./AudioWrapper";
 import Spinner from "./common/Spinner";
+import TrackPopup from "./common/TrackPopup";
 
 const playerClass = css`
   min-height: 48px;
@@ -49,15 +50,11 @@ const trackInfo = css`
   display: flex;
   align-items: center;
   flex-grow: 1;
-
-  img {
-    margin-right: 1rem;
-  }
+  margin-right: 0.5rem;
 
   @media (max-width: ${bp.small}px) {
     width: 100%;
     align-items: flex-start;
-    // justify-content: ;
   }
 `;
 
@@ -95,12 +92,14 @@ const Player = () => {
       currentlyPlayingIndex !== undefined &&
       playerQueueIds[currentlyPlayingIndex]
     ) {
-      setCurrentTrack(undefined);
-      fetchTrackCallback(playerQueueIds[currentlyPlayingIndex]);
+      if (currentTrack?.id !== playerQueueIds[currentlyPlayingIndex]) {
+        setCurrentTrack(undefined);
+        fetchTrackCallback(playerQueueIds[currentlyPlayingIndex]);
+      }
     } else {
       setCurrentTrack(undefined);
     }
-  }, [fetchTrackCallback, playerQueueIds, currentlyPlayingIndex]);
+  }, [fetchTrackCallback, playerQueueIds, currentlyPlayingIndex, currentTrack]);
 
   const onClickQueue = React.useCallback(() => {
     navigate("/library/queue");
@@ -130,7 +129,7 @@ const Player = () => {
           album: currentTrack.album ?? "",
           artwork: [
             {
-              src: currentTrack.images.small?.url ?? currentTrack.cover,
+              src: currentTrack.images.small?.url ?? currentTrack.cover ?? "",
               sizes: `${currentTrack.images.small?.height}x${currentTrack.images.small?.height}`,
               type: "image/png",
             },
@@ -157,6 +156,7 @@ const Player = () => {
             alt={currentTrack.title}
             className={css`
               background-color: #efefef;
+              margin-right: 0.5rem;
             `}
           />
           <div>
@@ -179,6 +179,7 @@ const Player = () => {
               <FavoriteTrack track={currentTrack} />
             </div>
           )}
+          <TrackPopup trackId={currentTrack.id} compact />
         </div>
       )}
       {!currentTrack && isLoading && <Spinner size="small" />}
