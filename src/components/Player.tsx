@@ -50,10 +50,6 @@ const trackInfo = css`
   align-items: center;
   flex-grow: 1;
 
-  img {
-    margin-right: 1rem;
-  }
-
   @media (max-width: ${bp.small}px) {
     width: 100%;
     align-items: flex-start;
@@ -130,7 +126,7 @@ const Player = () => {
           album: currentTrack.album ?? "",
           artwork: [
             {
-              src: currentTrack.images.small?.url ?? currentTrack.cover,
+              src: currentTrack.images.small?.url ?? currentTrack.cover ?? "",
               sizes: `${currentTrack.images.small?.height}x${currentTrack.images.small?.height}`,
               type: "image/png",
             },
@@ -157,6 +153,7 @@ const Player = () => {
             alt={currentTrack.title}
             className={css`
               background-color: #efefef;
+              margin-right: 0.5rem;
             `}
           />
           <div>
