@@ -33,7 +33,11 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-      
+
+      - name: What's in env
+        run: env
+      - run: echo "$GITHUB_CONTEXT"
+
       - name: Build
         run: yarn build
 
