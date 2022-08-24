@@ -11,6 +11,7 @@ env:
   REACT_APP_CLIENT_SECRET: ${{ secrets.REACT_APP_CLIENT_SECRET }}
   REACT_APP_AUTHORITY: ${{ secrets.REACT_APP_AUTHORITY }}
   REACT_APP_AUTH_METADATA_URL: ${{ secrets.REACT_APP_AUTH_METADATA_URL }}
+  REACT_APP_API: ${{ secrets.REACT_APP_API }}
 
 jobs:
   build:
@@ -33,10 +34,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-
-      - name: What's in env
-        run: env
-      - run: echo "$GITHUB_CONTEXT"
 
       - name: Build
         run: yarn build
