@@ -275,12 +275,28 @@ export const uploadTrackFile = async (id: number, data: any) => {
     method: "PUT",
     body: fd,
     headers: {
-      // "Content-Type":
-      // 'multipart/form; charset=utf-8; boundary="--ourcustomboundary--"',
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
   });
 };
+
+export const uploadTrackGroupCover = async (id: string, file: File) => {
+  var fd = new FormData();
+  const { token, version: apiVersion } = getToken();
+  fd.append("file", file);
+  let baseUrl = `${API}${apiVersion}/`;
+  return fetch(`${baseUrl}user/trackgroups/${id}/cover`, {
+    method: "PUT",
+    body: fd,
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+};
+
+/**
+ * Misc user info
+ */
 
 export const fetchUserStats = async (
   from: string,
