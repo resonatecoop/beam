@@ -1,6 +1,6 @@
 import { resonateUrl } from "../constants";
 
-const API = `${resonateUrl}api/`;
+export const API = `${resonateUrl}api/`;
 export const oidcStorage = `oidc.user:${process.env.REACT_APP_AUTHORITY}:${process.env.REACT_APP_CLIENT_ID}`;
 
 class NotFoundError extends Error {
@@ -39,7 +39,8 @@ const fetchWrapper = async (
   url: string,
   options: RequestInit,
   apiOptions?: APIOptions,
-  pagination?: boolean
+  pagination?: boolean,
+  contentType?: string
 ) => {
   const { token, version: apiVersion } = getToken(apiOptions?.apiVersion);
   let fullUrl = `${API}${apiVersion}/${url}`;
@@ -53,7 +54,7 @@ const fetchWrapper = async (
 
   return fetch(fullUrl, {
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": contentType ? contentType : "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     ...options,
@@ -144,6 +145,7 @@ export const createTrackGroup = async (data: {
   cover: string;
   title: string;
   type: string;
+  artistId?: number;
 }): Promise<TrackgroupDetail> => {
   return fetchWrapper(`user/trackgroups`, {
     method: "POST",
@@ -215,6 +217,68 @@ export const setNewTracksOnTrackGroup = async (
 export const deleteUserTrackGroup = async (id: string) => {
   return fetchWrapper(`user/trackgroups/${id}`, {
     method: "DELETE",
+  });
+};
+
+/**
+ * User artist endpoints
+ */
+
+export const fetchUserArtists = (
+  options?: APIOptions
+): Promise<APIPaginatedResult<Artist>> => {
+  return fetchWrapper(
+    `user/artists`,
+    {
+      method: "GET",
+    },
+    options,
+    true
+  );
+};
+
+export const fetchUserArtist = (artistId: number): Promise<Artist> => {
+  return fetchWrapper(`user/artists/${artistId}`, {
+    method: "GET",
+  });
+};
+
+export const createUserArtist = async (data: {
+  display_name: string;
+}): Promise<TrackgroupDetail> => {
+  return fetchWrapper(`user/artists`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+};
+
+/**
+ * user tracks
+ */
+
+export const createTrack = async (data: {
+  track_name: string;
+  status: number;
+}) => {
+  return fetchWrapper(`user/tracks`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+};
+
+export const uploadTrackFile = async (id: number, data: any) => {
+  var fd = new FormData();
+  fd.append("files", data.upload[0]);
+  const { token, version: apiVersion } = getToken();
+  let baseUrl = `${API}${apiVersion}/`;
+  return fetch(`${baseUrl}user/tracks/${id}/file`, {
+    method: "PUT",
+    body: fd,
+    headers: {
+      // "Content-Type":
+      // 'multipart/form; charset=utf-8; boundary="--ourcustomboundary--"',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
   });
 };
 

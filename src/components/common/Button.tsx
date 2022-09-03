@@ -85,6 +85,7 @@ export interface ButtonProps extends Compactable {
   disabled?: boolean;
   style?: React.CSSProperties;
   className?: string;
+  type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
 }
 
 export const Button: React.FC<ButtonProps> = ({

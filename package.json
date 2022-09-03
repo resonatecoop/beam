@@ -19,6 +19,7 @@
     "react-dom": "^18.0.0",
     "react-h5-audio-player": "^3.8.3",
     "react-helmet": "^6.1.0",
+    "react-hook-form": "^7.34.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.0",

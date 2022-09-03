@@ -25,12 +25,14 @@ export const Artists: React.FC = () => {
             <GridListItem key={artist.id} maxWidth={300}>
               <ImageWithPlaceholder
                 src={artist.images?.["profile_photo-m"]}
-                alt={artist.name}
+                alt={artist.display_name}
                 size={300}
               />
               <LargeTileDetail
                 title={
-                  <Link to={`/library/artist/${artist.id}`}>{artist.name}</Link>
+                  <Link to={`/library/artist/${artist.id}`}>
+                    {artist.display_name}
+                  </Link>
                 }
               />
             </GridListItem>

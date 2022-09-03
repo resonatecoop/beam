@@ -227,7 +227,7 @@ export const ArtistPage: React.FC = () => {
                 );
               `}
             >
-              {artist.name}
+              {artist.display_name}
             </h3>
           </TitleWrapper>
           <div className={padding}>

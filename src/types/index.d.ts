@@ -56,7 +56,7 @@ declare global {
 
   // FIXME: Suss out the relationship between trackgroups and playlists
   // and possibly define unique types for each. See search result types.
-  type TrackgroupType = "playlist" | "ep";
+  type TrackgroupType = "playlist" | "ep" | "lp";
 
   interface Trackgroup {
     about: null | string;
@@ -73,6 +73,7 @@ declare global {
     uri: string;
     images: ImageSizes;
     private: boolean;
+    enabled: boolean;
   }
 
   interface ArtistImage {
@@ -90,7 +91,7 @@ declare global {
   }
 
   interface Artist {
-    name: string;
+    display_name: string;
     id: number;
     links?: {
       href: string;
@@ -99,6 +100,13 @@ declare global {
     images?: ArtistImage;
     bio: string;
     label?: { id: number; name: string };
+    country: string;
+    trackgroups?: TrackgroupDetail[];
+  }
+
+  interface User {
+    displayName: string;
+    id: string;
     country: string;
   }
 

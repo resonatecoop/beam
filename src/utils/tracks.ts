@@ -1,5 +1,6 @@
 import produce from "immer";
 import {
+  API,
   checkPlayCountOfTrackIds,
   checkTrackIdsForFavorite,
   getToken,
@@ -51,6 +52,10 @@ export function calculateRemainingCost(count: number) {
 }
 
 export function buildStreamURL(id?: number, clientId?: string) {
+  // We assume we're using full OIDC
+  if (process.env.REACT_APP_AUTH_METADATA_URL) {
+    return `${API}v3/user/stream/${id}`;
+  }
   return `${STREAM_API}${id}${clientId ? `?token=${clientId}` : ""}`;
 }
 

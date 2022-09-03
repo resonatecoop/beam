@@ -31,6 +31,7 @@ import SnackbarContext from "contexts/SnackbarContext";
 import Snackbar from "components/common/Snackbar";
 import styled from "@emotion/styled";
 import { useAuth } from "./auth";
+import Manage from "components/Manage";
 
 // export default History;
 
@@ -76,6 +77,11 @@ injectGlobal`
 
   h4 { 
     font-size: 1.4rem;
+    padding-bottom: .75rem;
+  }
+
+  h5 {
+    font-size: 1.2rem;
     padding-bottom: .75rem;
   }
 
@@ -167,6 +173,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/manage" element={<Manage />} />
             <Route path="/library" element={<Library />}>
               <Route path="queue" element={<Queue />} />
               <Route path="search" element={<SearchResults />} />
