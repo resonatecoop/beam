@@ -44,7 +44,10 @@ declare global {
     legacyId: number;
     nickname: string;
     ownedGroups: unknown[];
-    role: "listener";
+    role: {
+      description: string;
+      name: string;
+    };
     token: string;
     uid: number;
   }

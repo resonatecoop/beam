@@ -32,6 +32,8 @@ import Snackbar from "components/common/Snackbar";
 import styled from "@emotion/styled";
 import { useAuth } from "./auth";
 import Manage from "components/Manage";
+import Admin from "components/Admin";
+import AdminUsers from "components/AdminUsers";
 
 // export default History;
 
@@ -144,6 +146,30 @@ const contentWrapper = css`
   }
 `;
 
+const HasPermission: React.FC<{
+  children: React.ReactElement;
+  roles?: ("user" | "artist" | "superadmin")[];
+}> = ({ children, roles }) => {
+  const { userData, isLoading } = useAuth();
+  const {
+    state: { user },
+  } = useGlobalStateContext();
+
+  if (isLoading) {
+    return <>Loading user info...</>;
+  }
+  if (roles?.includes("artist") && user?.role?.name !== "artist") {
+    return <Navigate to="/" />;
+  }
+  if (roles?.includes("superadmin") && user?.role?.name !== "superadmin") {
+    return <Navigate to="/" />;
+  }
+  if (!userData) {
+    return <Navigate to="/" />;
+  }
+  return <>{children}</>;
+};
+
 function App() {
   const { dispatch } = useGlobalStateContext();
   const { userData } = useAuth();
@@ -173,8 +199,34 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/manage" element={<Manage />} />
-            <Route path="/library" element={<Library />}>
+            <Route
+              path="/manage"
+              element={
+                <HasPermission roles={["artist"]}>
+                  <Manage />
+                </HasPermission>
+              }
+            />
+            <Route
+              path="/admin"
+              element={
+                <HasPermission roles={["superadmin"]}>
+                  <Admin />
+                </HasPermission>
+              }
+            >
+              <Route path="users" element={<AdminUsers />} />
+              <Route path="new-music" element={<AdminUsers />} />
+              <Route path="" element={<Navigate to="users" />} />
+            </Route>
+            <Route
+              path="/library"
+              element={
+                <HasPermission>
+                  <Library />
+                </HasPermission>
+              }
+            >
               <Route path="queue" element={<Queue />} />
               <Route path="search" element={<SearchResults />} />
               <Route path="explore" element={<Explore />}>

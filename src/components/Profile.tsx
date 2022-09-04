@@ -126,7 +126,7 @@ const Profile: React.FC = () => {
             </small>
           </div>
           <p className={pClass}>
-            <strong>role: </strong> {user.role}
+            <strong>role: </strong> {user.role.name}
           </p>
         </div>
       )}
