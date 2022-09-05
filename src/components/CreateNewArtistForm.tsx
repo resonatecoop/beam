@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "components/common/Modal";
 import Button from "./common/Button";
 import { useForm } from "react-hook-form";
-import { createUserArtist } from "services/Api";
+import { createUserArtist } from "services/api/User";
 import { InputEl } from "./common/Input";
 
 export interface ShareableTrackgroup {

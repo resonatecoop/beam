@@ -7,7 +7,7 @@ import {
   buyTrack,
   checkPlayCountOfTrackIds,
   fetchUserProfile,
-} from "services/Api";
+} from "services/api/User";
 import { calculateRemainingCost } from "utils/tracks";
 import { convertCreditsToEuros } from "utils/conversions";
 import Button from "./Button";

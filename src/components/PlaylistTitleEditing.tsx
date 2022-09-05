@@ -6,7 +6,7 @@ import {
   deleteUserTrackGroup,
   updateTrackGroup,
   uploadTrackGroupCover,
-} from "../services/Api";
+} from "../services/api/User";
 import Button from "./common/Button";
 import Input from "./common/Input";
 import TextArea from "./common/TextArea";

@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import React from "react";
 import { isTrackWithUserCounts } from "typeguards";
 import { useGlobalStateContext } from "../../contexts/globalState";
-import { buyTrack } from "../../services/Api";
+import { buyTrack } from "../../services/api/User";
 import {
   calculateRemainingCost,
   formatCredit,

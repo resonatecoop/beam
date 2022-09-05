@@ -5,7 +5,7 @@ import { FaStar, FaRegStar } from "react-icons/fa";
 import {
   addTrackToUserFavorites,
   checkTrackIdsForFavorite,
-} from "../../services/Api";
+} from "../../services/api/User";
 import IconButton from "./IconButton";
 
 export const spinner = css`

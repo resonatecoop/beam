@@ -3,7 +3,7 @@ import { css } from "@emotion/css";
 import { useGlobalStateContext } from "../contexts/globalState";
 import Button from "./common/Button";
 import Disclaimer from "./common/Disclaimer";
-import { fetchUserStats } from "services/Api";
+import { fetchUserStats } from "services/api/User";
 import { format, subDays, differenceInDays, addDays } from "date-fns";
 import { useAuth } from "auth";
 import { useNavigate } from "react-router-dom";

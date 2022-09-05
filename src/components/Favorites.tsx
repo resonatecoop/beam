@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { fetchUserFavorites } from "../services/Api";
+import { fetchUserFavorites } from "../services/api/User";
 import usePagination from "../utils/usePagination";
 import TrackTable from "./common/TrackTable";
 

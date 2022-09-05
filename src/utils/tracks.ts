@@ -1,10 +1,10 @@
 import produce from "immer";
+import { API, getToken } from "../services/Api";
+
 import {
-  API,
   checkPlayCountOfTrackIds,
   checkTrackIdsForFavorite,
-  getToken,
-} from "../services/Api";
+} from "../services/api/User";
 
 const STREAM_API = "https://stream.resonate.coop/api/v3/user/stream/";
 

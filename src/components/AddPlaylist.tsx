@@ -2,7 +2,7 @@ import { useGlobalStateContext } from "contexts/globalState";
 import { useSnackbar } from "contexts/SnackbarContext";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
-import { createTrackGroup, fetchUserTrackGroups } from "../services/Api";
+import { createTrackGroup, fetchUserTrackGroups } from "../services/api/User";
 import IconButton from "./common/IconButton";
 import InlineForm from "./common/InlineForm";
 import Input from "./common/Input";

@@ -6,9 +6,10 @@ import {
   addTracksToTrackGroup,
   createTrack,
   uploadTrackFile,
-} from "services/Api";
+} from "services/api/User";
 import TrackTable from "./common/TrackTable";
 import { InputEl } from "./common/Input";
+import { SelectEl } from "./common/Select";
 
 export interface ShareableTrackgroup {
   creator_id: number;
@@ -50,6 +51,16 @@ export const NewtrackModal: React.FC<{
         <h3>New Track</h3>
         <div>
           Title: <InputEl {...register("title")} />
+        </div>
+        <div>
+          Status:
+          <SelectEl defaultValue="paid" {...register("status")}>
+            <option value="free+paid">Free + Paid</option>
+            <option value="hidden">Hidden</option>
+            <option value="free">Free</option>
+            <option value="paid">Paid</option>
+            <option value="deleted">Deleted</option>
+          </SelectEl>
         </div>
 
         <InputEl

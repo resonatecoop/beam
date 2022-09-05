@@ -5,18 +5,17 @@ import IconButton from "./IconButton";
 import Modal from "./Modal";
 import ListButton, { NavLinkAsButton } from "./ListButton";
 import { AddToPlaylist } from "../AddToPlaylist";
-import {
-  addTrackToUserFavorites,
-  fetchTrack,
-  fetchTrackGroup,
-  removeTracksFromTrackGroup,
-} from "../../services/Api";
+import { fetchTrack, fetchTrackGroup } from "../../services/Api";
 import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
 import { SpinningStar } from "./FavoriteTrack";
 import { CenteredSpinner } from "./Spinner";
 import TrackPopupDetails from "./TrackPopupDetails";
 import SharePopUp from "./SharePopUp";
 import { useGlobalStateContext } from "../../contexts/globalState";
+import {
+  removeTracksFromTrackGroup,
+  addTrackToUserFavorites,
+} from "services/api/User";
 
 const TrackPopup: React.FC<{
   trackId?: number;

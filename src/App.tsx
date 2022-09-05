@@ -5,7 +5,7 @@ import { injectGlobal, css } from "@emotion/css";
 import Home from "./components/Home";
 import Library from "./components/Library";
 import { useGlobalStateContext } from "./contexts/globalState";
-import { fetchUserProfile, fetchUserTrackGroups } from "./services/Api";
+import { fetchUserProfile, fetchUserTrackGroups } from "./services/api/User";
 import Profile from "./components/Profile";
 import Header from "./components/Header";
 import Player from "./components/Player";
@@ -33,7 +33,13 @@ import styled from "@emotion/styled";
 import { useAuth } from "./auth";
 import Manage from "components/Manage";
 import Admin from "components/Admin";
-import AdminUsers from "components/AdminUsers";
+import AdminTrackgroups from "components/Admin/Trackgroups";
+import AdminUsers from "components/Admin/Users";
+import AdminTracks from "components/Admin/Tracks";
+import UserDetails from "components/Admin/UserDetails";
+import TrackgroupDetails from "components/Admin/TrackgroupDetails";
+import TrackDetails from "components/Admin/TrackDetails";
+import UpdateUserForm from "components/Admin/UpdateUserForm";
 
 // export default History;
 
@@ -206,7 +212,11 @@ function App() {
                   <Manage />
                 </HasPermission>
               }
-            />
+            >
+              <Route path="earnings" element={<Manage />} />
+              <Route path="files" element={<Manage />} />
+              <Route path="plays" element={<Manage />} />
+            </Route>
             <Route
               path="/admin"
               element={
@@ -215,8 +225,21 @@ function App() {
                 </HasPermission>
               }
             >
-              <Route path="users" element={<AdminUsers />} />
-              <Route path="new-music" element={<AdminUsers />} />
+              <Route path="users" element={<AdminUsers />}>
+                <Route path=":userId" element={<UserDetails />}>
+                  <Route path="" element={<UpdateUserForm />} />
+                  <Route path="earnings" element={<UserDetails />} />
+                  <Route path="analytics" element={<UserDetails />} />
+                  <Route path="earnings" element={<UserDetails />} />
+                </Route>
+              </Route>
+
+              <Route path="trackgroups" element={<AdminTrackgroups />}>
+                <Route path=":trackgroupId" element={<TrackgroupDetails />} />
+              </Route>
+              <Route path="tracks" element={<AdminTracks />}>
+                <Route path=":trackId" element={<TrackDetails />} />
+              </Route>
               <Route path="" element={<Navigate to="users" />} />
             </Route>
             <Route

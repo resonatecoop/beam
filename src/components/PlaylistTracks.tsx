@@ -3,7 +3,7 @@ import React from "react";
 import { FaEdit, FaEye, FaLock } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { useGlobalStateContext } from "../contexts/globalState";
-import { fetchUserTrackGroup } from "../services/Api";
+import { fetchUserTrackGroup } from "../services/api/User";
 import IconButton from "./common/IconButton";
 import { CenteredSpinner } from "./common/Spinner";
 import TrackTable from "./common/TrackTable";

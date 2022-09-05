@@ -12,7 +12,10 @@ export const Admin: React.FC = () => {
           <NavLink to="users">Users</NavLink>
         </li>
         <li>
-          <NavLink to="new-music">New music submissions</NavLink>
+          <NavLink to="trackgroups">Trackgroups</NavLink>
+        </li>
+        <li>
+          <NavLink to="tracks">Tracks</NavLink>
         </li>
       </Tabs>
       <div

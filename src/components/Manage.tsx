@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import React from "react";
 
 import BackButton from "./common/BackButton";
-import { fetchUserArtists } from "services/Api";
+import { fetchUserArtists } from "services/api/User";
 import NewAlbumForm from "./NewAlbumForm";
 import Button from "./common/Button";
 import ManageAlbumForm from "./ManageAlbumForm";
