@@ -56,7 +56,7 @@ export const BuyAlbumButton: React.FC<{
         }) ?? []
       );
       const profile = await fetchUserProfile();
-      dispatch({ type: "setUserCredits", credits: profile.credits });
+      dispatch({ type: "setUserCredits", credits: profile.credit.total });
       snackbar("You bought the song!", { type: "success" });
       setIsBuyAlbumOpen(false);
     } catch (e) {

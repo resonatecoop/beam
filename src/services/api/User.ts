@@ -298,3 +298,26 @@ export const checkPlayCountOfTrackIds = async (
     }),
   });
 };
+
+/**
+ * Products
+ */
+
+export interface Product {
+  id: string;
+  images: string[];
+  name: string;
+  default_price: string;
+  price: {
+    unit_amount: number;
+    type: "one_time" | "recurring";
+    currency: "eur";
+    id: string;
+  };
+}
+
+export const fetchProducts = async (): Promise<Product[]> => {
+  return fetchWrapper("user/products", {
+    method: "GET",
+  });
+};

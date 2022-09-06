@@ -39,14 +39,19 @@ declare global {
 
   interface LoggedInUser {
     clientId: string;
-    credits: string;
+    // credits: string;
     id: number;
     legacyId: number;
     nickname: string;
+    email: string;
     ownedGroups: unknown[];
+    newsletterNotification: boolean;
     role: {
       description: string;
       name: string;
+    };
+    credit: {
+      total: string;
     };
     token: string;
     uid: number;

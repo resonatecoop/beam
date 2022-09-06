@@ -9,6 +9,7 @@ import { useAuth } from "auth";
 import { useNavigate } from "react-router-dom";
 
 import beamPackage from "../../package.json";
+import ManageAccount from "./ManageAccount";
 
 const pClass = css`
   display: flex;
@@ -116,7 +117,7 @@ const Profile: React.FC = () => {
           </p>
           <div className={pClass} style={{ flexDirection: "column" }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <strong>credits: </strong> {user.credits}
+              <strong>credits: </strong> {user.credit.total}
             </div>
             <small style={{ textAlign: "right" }}>
               Want to add credits to your account? Use{" "}
@@ -130,6 +131,7 @@ const Profile: React.FC = () => {
           </p>
         </div>
       )}
+      <ManageAccount />
       <Button onClick={logout}>Log out</Button>
       <div
         className={css`

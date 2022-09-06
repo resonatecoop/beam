@@ -63,7 +63,7 @@ const TrackRow: React.FC<{
       fetchTrackPlays();
     }
     loadedRef.current = true;
-  }, [user?.credits, fetchTrackPlays]);
+  }, [user?.credit.total, fetchTrackPlays]);
 
   return (
     <tr

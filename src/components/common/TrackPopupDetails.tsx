@@ -75,7 +75,7 @@ const TrackOwnerhsip: React.FC<{ track: TrackWithUserCounts }> = ({
   const [purchaseSuccess, setPurchaseSuccess] = React.useState(false);
 
   const enoughCredit =
-    0 < +(user?.credits ?? "0") - +formatCredit(remainingCost);
+    0 < +(user?.credit.total ?? "0") - +formatCredit(remainingCost);
 
   const download = React.useCallback(async () => {
     setIsDownloading(true);
