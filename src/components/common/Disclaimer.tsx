@@ -8,7 +8,7 @@ export const Disclaimer = () => {
       `}
     >
       Using resonate means you agree with the{" "}
-      <a href="https://community.resonate.is/docs?topic=1865">
+      <a href="https://community.resonate.coop/docs?topic=1865">
         terms and conditions outlined here
       </a>
       .
