@@ -196,6 +196,9 @@ const TrackPopup: React.FC<{
           <ul
             className={css`
               list-style: none;
+              @media (prefers-color-scheme: dark) {
+                filter: invert(1);
+              }
             `}
           >
             {userId && track && (

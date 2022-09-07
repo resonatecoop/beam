@@ -54,7 +54,10 @@ injectGlobal`
   }
 
   @media (prefers-color-scheme: dark) {
-    body { background: #333; color: white; }
+    body {
+      background: #333;
+      color: white;
+    }
   }
 
   html {
