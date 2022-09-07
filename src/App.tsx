@@ -58,9 +58,6 @@ injectGlobal`
       background: #333;
       color: white;
     }
-    .css-1lybari {
-      filter: invert(1);
-    }
   }
 
   html {

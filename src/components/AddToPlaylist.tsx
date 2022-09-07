@@ -68,6 +68,9 @@ export const AddToPlaylist: React.FC<{
           list-style: none;
           overflow-x: scroll;
           max-height: 30vh;
+          @media (prefers-color-scheme: dark) {
+            filter: invert(1);
+          }
         `}
       >
         {playlists?.map((playlist) => {
