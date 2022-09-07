@@ -39,7 +39,7 @@ cp .env .env.local
 
 Then, you'll need to set `REACT_APP_CLIENT_SECRET` to be the client \
 secret for your client app. If you're working on beam directly, \
-you can message [Si](https://community.resonate.is/u/psi/summary) \
+you can message [Si](https://community.resonate.coop/u/psi/summary) \
 to get a client secret.
 
 ### Production build

@@ -1,12 +1,12 @@
 # Contributing
 
-Thanks for your interest in contributing! Please see the [Developer Guide](https://community.resonate.is/t/dev-volunteers-needed-to-build-the-resonate-ecosystem/2262) in our [Resonate Handbook](https://community.resonate.is/docs) for a clear overview of all things development related.
+Thanks for your interest in contributing! Please see the [Developer Guide](https://community.resonate.coop/t/dev-volunteers-needed-to-build-the-resonate-ecosystem/2262) in our [Resonate Handbook](https://community.resonate.coop/docs) for a clear overview of all things development related.
 
 There are many ways to contribute:
 
 - Refactoring code
 - Fixing bugs, after reporting them
-- Building new features, based on the open issues and the [backlog in our community forum](https://community.resonate.is/c/platform/52)
+- Building new features, based on the open issues and the [backlog in our community forum](https://community.resonate.coop/c/platform/52)
 
 ## Guidelines
 
