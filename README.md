@@ -1,8 +1,8 @@
-# Beam
-
 > 🛠 **Status: Active Development | Stable**
 >
 > This project is under active development.
+
+# Beam
 
 This is a music player that uses Resonate's API.
 
