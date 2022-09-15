@@ -1,5 +1,9 @@
 # Beam
 
+> 🛠 **Status: Active Development | Stable**
+>
+> This project is under active development.
+
 This is a music player that uses Resonate's API.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
