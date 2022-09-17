@@ -42,7 +42,7 @@ export const TagList: React.FC = () => {
               <SmallTileDetails
                 title={group.title}
                 subtitle={
-                  <Link to={`/library/artist/${group.creator_id}`}>
+                  <Link to={`/library/artist/${group.creatorId}`}>
                     {group.display_artist}
                   </Link>
                 }

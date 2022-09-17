@@ -6,7 +6,7 @@ import { createUserArtist } from "services/api/User";
 import { InputEl } from "./common/Input";
 
 export interface ShareableTrackgroup {
-  creator_id: number;
+  creatorId: number;
   slug: string;
 }
 
@@ -34,7 +34,7 @@ export const CreateNewArtistForm: React.FC<{
       <form onSubmit={handleSubmit(doAddArtist)}>
         <h3>New artist</h3>
         <div>
-          Title: <InputEl {...register("display_name")} />
+          Title: <InputEl {...register("displayName")} />
         </div>
         <Button type="submit">Add artist</Button>
       </form>

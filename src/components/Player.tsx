@@ -163,7 +163,7 @@ const Player = () => {
             <div>{currentTrack.title}</div>
             <div>{currentTrack.album}</div>
             <div>
-              <Link to={`/library/artist/${currentTrack.creator_id}`}>
+              <Link to={`/library/artist/${currentTrack.creatorId}`}>
                 {currentTrack.artist}
               </Link>
             </div>

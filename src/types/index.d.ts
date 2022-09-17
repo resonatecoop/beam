@@ -40,7 +40,7 @@ declare global {
   interface LoggedInUser {
     clientId: string;
     // credits: string;
-    id: number;
+    id: string;
     legacyId: number;
     nickname: string;
     email: string;
@@ -70,7 +70,7 @@ declare global {
     about: null | string;
     cover: string;
     cover_metadata: CoverMetadata;
-    creator_id: number;
+    creatorId: string;
     display_artist: null | string;
     id: string;
     slug: string;
@@ -99,7 +99,7 @@ declare global {
   }
 
   interface Artist {
-    display_name: string;
+    displayName: string;
     id: number;
     links?: {
       href: string;
@@ -120,7 +120,7 @@ declare global {
 
   interface Track {
     id: number;
-    creator_id: number;
+    creatorId: string;
     title: string;
     duration: number;
     album: string;
@@ -165,7 +165,7 @@ declare global {
     title: string;
     kind: "album";
     score: number;
-    creator_id: number;
+    creatorId: number;
     slug: string;
     cover: string;
     images: ImageSizes;
@@ -193,7 +193,7 @@ declare global {
     cover: string;
     duration: number;
     display_artist: string;
-    creator_id: number;
+    creatorId: number;
     various: boolean;
     items: TrackgroupItem[];
   }
@@ -230,7 +230,7 @@ declare global {
   }
 
   interface AlbumSearchResult extends SearchResultBase {
-    creator_id: number;
+    creatorId: number;
     track_group_id: string;
     slug: string;
     kind: "album";

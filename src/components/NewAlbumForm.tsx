@@ -30,7 +30,7 @@ const NewAlbumForm: React.FC<{
   return (
     <Modal open={open} onClose={onClose}>
       <form onSubmit={handleSubmit(doSave)}>
-        <h4>New Album for {artist.display_name}</h4>
+        <h4>New Album for {artist.displayName}</h4>
         <div>
           Display artist: <InputEl {...register("display_artist")} />
         </div>

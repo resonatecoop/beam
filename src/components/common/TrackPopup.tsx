@@ -28,7 +28,7 @@ const TrackPopup: React.FC<{
   } = useGlobalStateContext();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isFavorite, setIsFavorite] = React.useState(false);
-  const [artistId, setArtistId] = React.useState<number>();
+  const [artistId, setArtistId] = React.useState<string>();
   const [trackgroup, setTrackgroup] = React.useState<Trackgroup>();
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false);
   const [track, setTrack] = React.useState<Track | TrackWithUserCounts>();
@@ -98,10 +98,10 @@ const TrackPopup: React.FC<{
         } else {
           setTrack(t);
         }
-        setArtistId(t.creator_id);
+        setArtistId(t.creatorId);
       } else if (groupId) {
         const result = await fetchTrackGroup(groupId);
-        setArtistId(result.creator_id);
+        setArtistId(result.creatorId);
         setTrackgroup(result);
         trackIds.push(...result.items.map((item) => item.track.id));
       } else {

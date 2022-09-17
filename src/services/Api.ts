@@ -170,19 +170,19 @@ export const fetchArtists = (
   );
 };
 
-export const fetchArtist = (artistId: number): Promise<Artist> => {
+export const fetchArtist = (artistId: string): Promise<Artist> => {
   return fetchWrapper(`artists/${artistId}`, {
     method: "GET",
   });
 };
 
-export const fetchArtistReleases = (artistId: number): Promise<Release[]> => {
+export const fetchArtistReleases = (artistId: string): Promise<Release[]> => {
   return fetchWrapper(`artists/${artistId}/releases`, {
     method: "GET",
   });
 };
 
-export const fetchArtistTopTracks = (artistId: number): Promise<Track[]> => {
+export const fetchArtistTopTracks = (artistId: string): Promise<Track[]> => {
   return fetchWrapper(`artists/${artistId}/tracks/top`, {
     method: "GET",
   });

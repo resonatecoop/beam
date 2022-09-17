@@ -147,7 +147,7 @@ export const fetchUserArtist = (artistId: number): Promise<Artist> => {
 };
 
 export const createUserArtist = async (data: {
-  display_name: string;
+  displayName: string;
 }): Promise<TrackgroupDetail> => {
   return fetchWrapper(`user/artists`, {
     method: "POST",

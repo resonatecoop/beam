@@ -76,7 +76,7 @@ export const Manage: React.FC = () => {
               margin-bottom: 2rem;
             `}
           >
-            <h4>{a.display_name}</h4>
+            <h4>{a.displayName}</h4>
 
             <h5>Your albums</h5>
             <Table>
@@ -133,7 +133,7 @@ export const Manage: React.FC = () => {
               }}
               style={{ marginTop: "1rem" }}
             >
-              Add new album to {a.display_name}
+              Add new album to {a.displayName}
             </Button>
             <NewAlbumForm
               open={addingNewAlbum}

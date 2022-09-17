@@ -157,7 +157,7 @@ export const ArtistPage: React.FC = () => {
   const [artist, setArtist] = React.useState<Artist>();
   const [releases, setReleases] = React.useState<Release[]>();
 
-  const fetchTracks = React.useCallback(async (id: number) => {
+  const fetchTracks = React.useCallback(async (id: string) => {
     setIsLoading(true);
     try {
       const result = await fetchArtist(id);
@@ -183,7 +183,7 @@ export const ArtistPage: React.FC = () => {
 
   React.useEffect(() => {
     if (artistId) {
-      fetchTracks(+artistId);
+      fetchTracks(artistId);
     }
   }, [fetchTracks, artistId]);
 
@@ -227,7 +227,7 @@ export const ArtistPage: React.FC = () => {
                 );
               `}
             >
-              {artist.display_name}
+              {artist.displayName}
             </h3>
           </TitleWrapper>
           <div className={padding}>

@@ -43,7 +43,7 @@ const embed = (url: string) => `<iframe
   ></iframe>`;
 
 export interface ShareableTrackgroup {
-  creator_id: number;
+  creatorId: string;
   slug: string;
 }
 
@@ -55,7 +55,7 @@ export const SharePopUp: React.FC<{
 }> = ({ open, track, trackgroup, onClose }) => {
   const displayMessage = useSnackbar();
   const url = trackgroup
-    ? `${embedRoot}artist/${trackgroup.creator_id}/release/${trackgroup.slug}`
+    ? `${embedRoot}artist/${trackgroup.creatorId}/release/${trackgroup.slug}`
     : `${embedRoot}track/${track?.id}`;
   const copyToClipboard = () => {
     navigator.clipboard.writeText(embed(url));

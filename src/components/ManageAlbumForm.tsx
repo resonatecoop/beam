@@ -12,7 +12,7 @@ import { InputEl } from "./common/Input";
 import { SelectEl } from "./common/Select";
 
 export interface ShareableTrackgroup {
-  creator_id: number;
+  creatorId: number;
   slug: string;
 }
 
@@ -29,7 +29,7 @@ export const NewtrackModal: React.FC<{
     async (data) => {
       const track = await createTrack({
         ...data,
-        creator_id: trackgroup.creator_id,
+        creatorId: trackgroup.creatorId,
       });
       await uploadTrackFile(track.id, data);
       await addTracksToTrackGroup(trackgroup.id, {
@@ -41,7 +41,7 @@ export const NewtrackModal: React.FC<{
       });
       await reload();
     },
-    [trackgroup.id, trackgroup.creator_id, reload]
+    [trackgroup.id, trackgroup.creatorId, reload]
   );
 
   return (

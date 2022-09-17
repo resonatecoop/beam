@@ -132,7 +132,7 @@ const TrackRow: React.FC<{
           onClick={(e) => {
             e.stopPropagation();
           }}
-          to={`/library/artist/${track.creator_id}`}
+          to={`/library/artist/${track.creatorId}`}
         >
           {track.artist}
         </Link>
