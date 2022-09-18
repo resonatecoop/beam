@@ -81,7 +81,7 @@ const TrackOwnerhsip: React.FC<{ track: TrackWithUserCounts }> = ({
     setIsDownloading(true);
     await downloadFile(
       buildStreamURL(track.id),
-      `${track.artist} - ${track.title}.m4a`
+      `${track.artist} - ${track.title}`
     );
     setIsDownloading(false);
   }, [track.id, track.artist, track.title]);
