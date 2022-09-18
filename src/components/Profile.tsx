@@ -121,8 +121,9 @@ const Profile: React.FC = () => {
             <small style={{ textAlign: "right" }}>
               Want to add credits to your account? Use{" "}
               <a href="https://id.resonate.coop/account?login_redirect_uri=%2Fweb%2Faccount">
-                the web app.
+                the web app
               </a>
+              .
             </small>
           </div>
           <p className={pClass}>
