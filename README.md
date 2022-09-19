@@ -1,6 +1,8 @@
 > 🛠 **Status: Active Development | Stable**
 >
 > This project is under active development.
+> 
+> ⚠️ ⚠️ The `main` branch works with [api](https://github.com/resonatecoop/api). If you want to fix a bug in the currently **live** version of Beam, which works with the active id.resonate.coop services, please submit them to the [v0.5-maintenance](https://github.com/resonatecoop/beam/tree/v0.5-maintenance) branch.
 
 # Beam
 
