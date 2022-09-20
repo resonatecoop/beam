@@ -101,7 +101,7 @@ export const SearchResults: React.FC = () => {
                     subtitle={
                       <>
                         by:{" "}
-                        <Link to={`/library/artist/${result.creator_id}`}>
+                        <Link to={`/library/artist/${result.creatorId}`}>
                           {result.display_artist}
                         </Link>
                       </>

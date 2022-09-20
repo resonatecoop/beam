@@ -5,18 +5,17 @@ import IconButton from "./IconButton";
 import Modal from "./Modal";
 import ListButton, { NavLinkAsButton } from "./ListButton";
 import { AddToPlaylist } from "../AddToPlaylist";
-import {
-  addTrackToUserFavorites,
-  fetchTrack,
-  fetchTrackGroup,
-  removeTracksFromTrackGroup,
-} from "../../services/Api";
+import { fetchTrack, fetchTrackGroup } from "../../services/Api";
 import { mapFavoriteAndPlaysToTracks } from "../../utils/tracks";
 import { SpinningStar } from "./FavoriteTrack";
 import { CenteredSpinner } from "./Spinner";
 import TrackPopupDetails from "./TrackPopupDetails";
 import SharePopUp from "./SharePopUp";
 import { useGlobalStateContext } from "../../contexts/globalState";
+import {
+  removeTracksFromTrackGroup,
+  addTrackToUserFavorites,
+} from "services/api/User";
 
 const TrackPopup: React.FC<{
   trackId?: number;
@@ -29,7 +28,7 @@ const TrackPopup: React.FC<{
   } = useGlobalStateContext();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isFavorite, setIsFavorite] = React.useState(false);
-  const [artistId, setArtistId] = React.useState<number>();
+  const [artistId, setArtistId] = React.useState<string>();
   const [trackgroup, setTrackgroup] = React.useState<Trackgroup>();
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false);
   const [track, setTrack] = React.useState<Track | TrackWithUserCounts>();
@@ -99,10 +98,10 @@ const TrackPopup: React.FC<{
         } else {
           setTrack(t);
         }
-        setArtistId(t.creator_id);
+        setArtistId(t.creatorId);
       } else if (groupId) {
         const result = await fetchTrackGroup(groupId);
-        setArtistId(result.creator_id);
+        setArtistId(result.creatorId);
         setTrackgroup(result);
         trackIds.push(...result.items.map((item) => item.track.id));
       } else {

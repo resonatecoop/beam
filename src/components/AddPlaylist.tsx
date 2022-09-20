@@ -2,7 +2,7 @@ import { useGlobalStateContext } from "contexts/globalState";
 import { useSnackbar } from "contexts/SnackbarContext";
 import React from "react";
 import { FaPlus } from "react-icons/fa";
-import { createTrackGroup, fetchUserTrackGroups } from "../services/Api";
+import { createTrackGroup, fetchUserTrackGroups } from "../services/api/User";
 import IconButton from "./common/IconButton";
 import InlineForm from "./common/InlineForm";
 import Input from "./common/Input";
@@ -25,7 +25,7 @@ export const AddPlaylist: React.FC<{ refresh: (id: string) => void }> = ({
       const trackgroup = await createTrackGroup({
         // FIXME: the POST trackgroup API endpoint requires a cover id,
         // which doesn't really make sense in this flow.
-        cover: "4903e433-f429-4ad1-9ab2-5ba962acbbd1",
+        cover: "ba6c693f-e2c8-44f8-8d1b-742c81a1c551",
         title: newPlaylistName,
         type: "playlist",
       });

@@ -1,6 +1,6 @@
 import { resonateUrl } from "../constants";
 
-const API = `${resonateUrl}api/`;
+export const API = `${resonateUrl}api/`;
 export const oidcStorage = `oidc.user:${process.env.REACT_APP_AUTHORITY}:${process.env.REACT_APP_CLIENT_ID}`;
 
 class NotFoundError extends Error {
@@ -35,11 +35,12 @@ export const getToken = (apiVersion?: string | number) => {
   return { token: token, version };
 };
 
-const fetchWrapper = async (
+export const fetchWrapper = async (
   url: string,
   options: RequestInit,
   apiOptions?: APIOptions,
-  pagination?: boolean
+  pagination?: boolean,
+  contentType?: string
 ) => {
   const { token, version: apiVersion } = getToken(apiOptions?.apiVersion);
   let fullUrl = `${API}${apiVersion}/${url}`;
@@ -53,7 +54,7 @@ const fetchWrapper = async (
 
   return fetch(fullUrl, {
     headers: {
-      "Content-Type": "application/json",
+      "Content-Type": contentType ? contentType : "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     ...options,
@@ -76,44 +77,9 @@ const fetchWrapper = async (
     });
 };
 
-export const fetchUserProfile = async (): Promise<LoggedInUser> => {
-  return fetchWrapper("user/profile/", {
-    method: "GET",
-  });
-};
-
-export const fetchUserPlaylists = async (
-  id: number,
-  options?: APIOptions
-): Promise<Trackgroup[]> => {
-  return fetchWrapper(
-    `users/${id}/playlists`,
-    {
-      method: "GET",
-    },
-    options
-  );
-};
-
-interface FetchTrackGroupFilter extends APIOptions {
+export interface FetchTrackGroupFilter extends APIOptions {
   type?: TrackgroupType;
 }
-
-// FIXME: What's the difference between fetching a user's playlists
-// (as with the staff picks) and fetching the user's trackgroups.
-// Also note that if you don't supply a type, then the listing returns
-// 0. That might be an API error?
-export const fetchUserTrackGroups = async (
-  options?: FetchTrackGroupFilter
-): Promise<TrackgroupDetail[]> => {
-  return fetchWrapper(
-    `user/trackgroups`,
-    {
-      method: "GET",
-    },
-    options
-  );
-};
 
 export const fetchTrackGroups = async (
   options?: FetchTrackGroupFilter
@@ -133,153 +99,6 @@ export const fetchTrackGroup = async (
 ): Promise<TrackgroupDetail> => {
   return fetchWrapper(`trackgroups/${id}`, {
     method: "GET",
-  });
-};
-
-/**
- * User track groups
- */
-
-export const createTrackGroup = async (data: {
-  cover: string;
-  title: string;
-  type: string;
-}): Promise<TrackgroupDetail> => {
-  return fetchWrapper(`user/trackgroups`, {
-    method: "POST",
-    body: JSON.stringify(data),
-  });
-};
-
-export const updateTrackGroup = async (
-  id: string,
-  data: {
-    cover: string;
-    title: string;
-    private: boolean;
-    tags: string[];
-    type: string;
-    about?: string;
-  }
-): Promise<TrackgroupDetail> => {
-  return fetchWrapper(`user/trackgroups/${id}`, {
-    method: "PUT",
-    body: JSON.stringify(data),
-  });
-};
-
-export const fetchUserTrackGroup = async (
-  id: string
-): Promise<TrackgroupDetail> => {
-  return fetchWrapper(`user/trackgroups/${id}`, {
-    method: "GET",
-  });
-};
-
-export const addTracksToTrackGroup = async (
-  id: string,
-  data: {
-    tracks: { track_id: number }[];
-  }
-) => {
-  return fetchWrapper(`user/trackgroups/${id}/items/add`, {
-    method: "PUT",
-    body: JSON.stringify(data),
-  });
-};
-
-export const removeTracksFromTrackGroup = async (
-  id: string,
-  data: {
-    tracks: { track_id: number }[];
-  }
-) => {
-  return fetchWrapper(`user/trackgroups/${id}/items/remove`, {
-    method: "PUT",
-    body: JSON.stringify(data),
-  });
-};
-
-export const setNewTracksOnTrackGroup = async (
-  id: string,
-  data: {
-    tracks: { track_id: number; index?: number }[];
-  }
-) => {
-  return fetchWrapper(`user/trackgroups/${id}/items`, {
-    method: "PUT",
-    body: JSON.stringify(data),
-  });
-};
-
-export const deleteUserTrackGroup = async (id: string) => {
-  return fetchWrapper(`user/trackgroups/${id}`, {
-    method: "DELETE",
-  });
-};
-
-export const fetchUserStats = async (
-  from: string,
-  to: string
-): Promise<Stat[]> => {
-  return fetchWrapper(`user/plays/stats?from=${from}&to=${to}`, {
-    method: "GET",
-  });
-};
-
-export const fetchUserArtistHistory = async (
-  options?: APIOptions
-): Promise<APIPaginatedResult<{ uid: number; meta_value: string }>> => {
-  return fetchWrapper(
-    "user/plays/history/artists",
-    { method: "GET" },
-    options,
-    true
-  );
-};
-
-export const fetchUserCollection = async (
-  options?: APIOptions
-): Promise<APIPaginatedResult<Track>> => {
-  return fetchWrapper("user/collection/", { method: "GET" }, options, true);
-};
-
-export const fetchUserHistory = async (
-  options?: APIOptions
-): Promise<APIPaginatedResult<Track>> => {
-  return fetchWrapper("user/plays/history/", { method: "GET" }, options, true);
-};
-
-export const fetchUserFavorites = async (
-  options?: APIOptions
-): Promise<APIPaginatedResult<Track>> => {
-  return fetchWrapper(
-    "user/favorites",
-    {
-      method: "GET",
-    },
-    options,
-    true
-  );
-};
-
-export const addTrackToUserFavorites = async (id: number): Promise<Track[]> => {
-  return fetchWrapper("user/favorites", {
-    method: "POST",
-    body: JSON.stringify({
-      track_id: id,
-    }),
-  });
-};
-
-export const checkTrackIdsForFavorite = async (
-  ids: number[]
-): Promise<{ track_id: number }[]> => {
-  return fetchWrapper("user/favorites/resolve", {
-    method: "POST",
-    body: JSON.stringify({
-      ids,
-    }),
   });
 };
 
@@ -351,19 +170,19 @@ export const fetchArtists = (
   );
 };
 
-export const fetchArtist = (artistId: number): Promise<Artist> => {
+export const fetchArtist = (artistId: string): Promise<Artist> => {
   return fetchWrapper(`artists/${artistId}`, {
     method: "GET",
   });
 };
 
-export const fetchArtistReleases = (artistId: number): Promise<Release[]> => {
+export const fetchArtistReleases = (artistId: string): Promise<Release[]> => {
   return fetchWrapper(`artists/${artistId}/releases`, {
     method: "GET",
   });
 };
 
-export const fetchArtistTopTracks = (artistId: number): Promise<Track[]> => {
+export const fetchArtistTopTracks = (artistId: string): Promise<Track[]> => {
   return fetchWrapper(`artists/${artistId}/tracks/top`, {
     method: "GET",
   });
@@ -391,35 +210,6 @@ export const fetchLatestTracks = (
 export const fetchTrack = (trackId: number): Promise<Track> => {
   return fetchWrapper(`tracks/${trackId}`, {
     method: "GET",
-  });
-};
-
-export const registerPlay = (
-  trackId: number
-): Promise<{ count: number; cost: number; total: string }> => {
-  return fetchWrapper(`user/plays`, {
-    method: "POST",
-    body: JSON.stringify({ track_id: trackId }),
-  });
-};
-
-export const buyTrack = async (trackId: number) => {
-  return fetchWrapper(`user/plays/buy`, {
-    method: "POST",
-    body: JSON.stringify({
-      track_id: trackId,
-    }),
-  });
-};
-
-export const checkPlayCountOfTrackIds = async (
-  ids: number[]
-): Promise<{ track_id: number; count: number }[]> => {
-  return fetchWrapper("user/plays/resolve", {
-    method: "POST",
-    body: JSON.stringify({
-      ids,
-    }),
   });
 };
 

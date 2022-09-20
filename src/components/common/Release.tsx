@@ -14,7 +14,7 @@ interface ReleaseDetails {
   title?: string;
   about: string | null;
   tags?: string[];
-  creator_id: number;
+  creatorId: string;
   slug: string;
 }
 

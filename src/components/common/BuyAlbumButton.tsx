@@ -7,7 +7,7 @@ import {
   buyTrack,
   checkPlayCountOfTrackIds,
   fetchUserProfile,
-} from "services/Api";
+} from "services/api/User";
 import { calculateRemainingCost } from "utils/tracks";
 import { convertCreditsToEuros } from "utils/conversions";
 import Button from "./Button";
@@ -56,7 +56,7 @@ export const BuyAlbumButton: React.FC<{
         }) ?? []
       );
       const profile = await fetchUserProfile();
-      dispatch({ type: "setUserCredits", credits: profile.credits });
+      dispatch({ type: "setUserCredits", credits: profile.credit.total });
       snackbar("You bought the song!", { type: "success" });
       setIsBuyAlbumOpen(false);
     } catch (e) {

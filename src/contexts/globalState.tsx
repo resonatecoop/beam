@@ -217,7 +217,7 @@ export const stateReducer = produce((draft: GlobalState, action: Actions) => {
       break;
     case "setUserCredits":
       if (draft.user) {
-        draft.user.credits = action.credits;
+        draft.user.credit.total = action.credits;
       }
       break;
     case "setUserPlaylists":

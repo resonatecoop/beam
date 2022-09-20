@@ -39,12 +39,20 @@ declare global {
 
   interface LoggedInUser {
     clientId: string;
-    credits: string;
-    id: number;
+    // credits: string;
+    id: string;
     legacyId: number;
     nickname: string;
+    email: string;
     ownedGroups: unknown[];
-    role: "listener";
+    newsletterNotification: boolean;
+    role: {
+      description: string;
+      name: string;
+    };
+    credit: {
+      total: string;
+    };
     token: string;
     uid: number;
   }
@@ -56,13 +64,13 @@ declare global {
 
   // FIXME: Suss out the relationship between trackgroups and playlists
   // and possibly define unique types for each. See search result types.
-  type TrackgroupType = "playlist" | "ep";
+  type TrackgroupType = "playlist" | "ep" | "lp";
 
   interface Trackgroup {
     about: null | string;
     cover: string;
     cover_metadata: CoverMetadata;
-    creator_id: number;
+    creatorId: string;
     display_artist: null | string;
     id: string;
     slug: string;
@@ -73,6 +81,7 @@ declare global {
     uri: string;
     images: ImageSizes;
     private: boolean;
+    enabled: boolean;
   }
 
   interface ArtistImage {
@@ -90,7 +99,7 @@ declare global {
   }
 
   interface Artist {
-    name: string;
+    displayName: string;
     id: number;
     links?: {
       href: string;
@@ -100,11 +109,18 @@ declare global {
     bio: string;
     label?: { id: number; name: string };
     country: string;
+    trackgroups?: TrackgroupDetail[];
+  }
+
+  interface User {
+    displayName: string;
+    id: string;
+    country: string;
   }
 
   interface Track {
     id: number;
-    creator_id: number;
+    creatorId: string;
     title: string;
     duration: number;
     album: string;
@@ -149,7 +165,7 @@ declare global {
     title: string;
     kind: "album";
     score: number;
-    creator_id: number;
+    creatorId: number;
     slug: string;
     cover: string;
     images: ImageSizes;
@@ -177,7 +193,7 @@ declare global {
     cover: string;
     duration: number;
     display_artist: string;
-    creator_id: number;
+    creatorId: number;
     various: boolean;
     items: TrackgroupItem[];
   }
@@ -214,7 +230,7 @@ declare global {
   }
 
   interface AlbumSearchResult extends SearchResultBase {
-    creator_id: number;
+    creatorId: number;
     track_group_id: string;
     slug: string;
     kind: "album";

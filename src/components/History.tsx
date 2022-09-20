@@ -1,7 +1,7 @@
 import { css } from "@emotion/css";
 import React from "react";
 import { useGlobalStateContext } from "../contexts/globalState";
-import { fetchUserHistory } from "../services/Api";
+import { fetchUserHistory } from "../services/api/User";
 import usePagination from "../utils/usePagination";
 import TrackTable from "./common/TrackTable";
 

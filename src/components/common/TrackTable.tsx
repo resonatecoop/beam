@@ -1,7 +1,10 @@
 import { cloneDeep, isEqual } from "lodash";
 import React from "react";
 import { useGlobalStateContext } from "contexts/globalState";
-import { fetchUserTrackGroup, setNewTracksOnTrackGroup } from "services/Api";
+import {
+  fetchUserTrackGroup,
+  setNewTracksOnTrackGroup,
+} from "services/api/User";
 
 import {
   determineNewTrackOrder,

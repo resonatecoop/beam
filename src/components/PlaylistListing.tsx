@@ -4,7 +4,7 @@ import React from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { bp } from "../constants";
 import { useGlobalStateContext } from "../contexts/globalState";
-import { addTracksToTrackGroup } from "../services/Api";
+import { addTracksToTrackGroup } from "../services/api/User";
 import AddPlaylist from "./AddPlaylist";
 import { NavLinkAsButton } from "./common/ListButton";
 

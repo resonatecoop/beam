@@ -15,12 +15,12 @@ const ReleaseItem: React.FC<{ group: Trackgroup }> = ({ group }) => {
 
   const checkForArtist = React.useCallback(async () => {
     try {
-      await fetchArtist(group.creator_id);
+      await fetchArtist(group.creatorId);
       setArtistExists(true);
     } catch (e) {
       setArtistExists(false);
     }
-  }, [group.creator_id]);
+  }, [group.creatorId]);
 
   React.useEffect(() => {
     checkForArtist();
@@ -47,7 +47,7 @@ const ReleaseItem: React.FC<{ group: Trackgroup }> = ({ group }) => {
           <>
             {artistExists && (
               <Link
-                to={`/library/artist/${group.creator_id}`}
+                to={`/library/artist/${group.creatorId}`}
                 data-cy="artist-link"
               >
                 {group.display_artist}

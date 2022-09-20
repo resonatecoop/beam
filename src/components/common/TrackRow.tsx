@@ -11,7 +11,7 @@ import IconButton from "./IconButton";
 import TrackPopup from "./TrackPopup";
 import styled from "@emotion/styled";
 import { colorShade } from "utils/theme";
-import { checkPlayCountOfTrackIds } from "services/Api";
+import { checkPlayCountOfTrackIds } from "services/api/User";
 
 const PlaysTracker = styled.div<{ width: number; played?: boolean }>`
   width: ${(props) => props.width}px;
@@ -63,7 +63,7 @@ const TrackRow: React.FC<{
       fetchTrackPlays();
     }
     loadedRef.current = true;
-  }, [user?.credits, fetchTrackPlays]);
+  }, [user?.credit.total, fetchTrackPlays]);
 
   return (
     <tr
@@ -132,7 +132,7 @@ const TrackRow: React.FC<{
           onClick={(e) => {
             e.stopPropagation();
           }}
-          to={`/library/artist/${track.creator_id}`}
+          to={`/library/artist/${track.creatorId}`}
         >
           {track.artist}
         </Link>

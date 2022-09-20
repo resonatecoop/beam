@@ -5,7 +5,7 @@ import { injectGlobal, css } from "@emotion/css";
 import Home from "./components/Home";
 import Library from "./components/Library";
 import { useGlobalStateContext } from "./contexts/globalState";
-import { fetchUserProfile, fetchUserTrackGroups } from "./services/Api";
+import { fetchUserProfile, fetchUserTrackGroups } from "./services/api/User";
 import Profile from "./components/Profile";
 import Header from "./components/Header";
 import Player from "./components/Player";
@@ -31,6 +31,15 @@ import SnackbarContext from "contexts/SnackbarContext";
 import Snackbar from "components/common/Snackbar";
 import styled from "@emotion/styled";
 import { useAuth } from "./auth";
+import Manage from "components/Manage";
+import Admin from "components/Admin";
+import AdminTrackgroups from "components/Admin/Trackgroups";
+import AdminUsers from "components/Admin/Users";
+import AdminTracks from "components/Admin/Tracks";
+import UserDetails from "components/Admin/UserDetails";
+import TrackgroupDetails from "components/Admin/TrackgroupDetails";
+import TrackDetails from "components/Admin/TrackDetails";
+import UpdateUserForm from "components/Admin/UpdateUserForm";
 
 // export default History;
 
@@ -79,6 +88,11 @@ injectGlobal`
 
   h4 { 
     font-size: 1.4rem;
+    padding-bottom: .75rem;
+  }
+
+  h5 {
+    font-size: 1.2rem;
     padding-bottom: .75rem;
   }
 
@@ -141,6 +155,30 @@ const contentWrapper = css`
   }
 `;
 
+const HasPermission: React.FC<{
+  children: React.ReactElement;
+  roles?: ("user" | "artist" | "superadmin")[];
+}> = ({ children, roles }) => {
+  const { userData, isLoading } = useAuth();
+  const {
+    state: { user },
+  } = useGlobalStateContext();
+
+  if (isLoading) {
+    return <>Loading user info...</>;
+  }
+  if (roles?.includes("artist") && user?.role?.name !== "artist") {
+    return <Navigate to="/" />;
+  }
+  if (roles?.includes("superadmin") && user?.role?.name !== "superadmin") {
+    return <Navigate to="/" />;
+  }
+  if (!userData) {
+    return <Navigate to="/" />;
+  }
+  return <>{children}</>;
+};
+
 function App() {
   const { dispatch } = useGlobalStateContext();
   const { userData } = useAuth();
@@ -170,7 +208,51 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
-            <Route path="/library" element={<Library />}>
+            <Route
+              path="/manage"
+              element={
+                <HasPermission roles={["artist"]}>
+                  <Manage />
+                </HasPermission>
+              }
+            >
+              <Route path="earnings" element={<Manage />} />
+              <Route path="files" element={<Manage />} />
+              <Route path="plays" element={<Manage />} />
+            </Route>
+            <Route
+              path="/admin"
+              element={
+                <HasPermission roles={["superadmin"]}>
+                  <Admin />
+                </HasPermission>
+              }
+            >
+              <Route path="users" element={<AdminUsers />}>
+                <Route path=":userId" element={<UserDetails />}>
+                  <Route path="" element={<UpdateUserForm />} />
+                  <Route path="earnings" element={<UserDetails />} />
+                  <Route path="analytics" element={<UserDetails />} />
+                  <Route path="earnings" element={<UserDetails />} />
+                </Route>
+              </Route>
+
+              <Route path="trackgroups" element={<AdminTrackgroups />}>
+                <Route path=":trackgroupId" element={<TrackgroupDetails />} />
+              </Route>
+              <Route path="tracks" element={<AdminTracks />}>
+                <Route path=":trackId" element={<TrackDetails />} />
+              </Route>
+              <Route path="" element={<Navigate to="users" />} />
+            </Route>
+            <Route
+              path="/library"
+              element={
+                <HasPermission>
+                  <Library />
+                </HasPermission>
+              }
+            >
               <Route path="queue" element={<Queue />} />
               <Route path="search" element={<SearchResults />} />
               <Route path="explore" element={<Explore />}>

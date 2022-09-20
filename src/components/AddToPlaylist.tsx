@@ -2,7 +2,10 @@ import React from "react";
 
 import { css } from "@emotion/css";
 import { bp } from "../constants";
-import { addTracksToTrackGroup, fetchUserTrackGroups } from "../services/Api";
+import {
+  addTracksToTrackGroup,
+  fetchUserTrackGroups,
+} from "../services/api/User";
 import AddPlaylist from "./AddPlaylist";
 import ListButton from "./common/ListButton";
 import { FaCheck } from "react-icons/fa";

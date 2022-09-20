@@ -4,7 +4,7 @@
     "cover": "https://dash.resonate.coop/images/4903e433-f429-4ad1-9ab2-5ba962acbbd1-x600.webp",
     "title": "Tracks",
     "type": "playlist",
-    "creator_id": 2359,
+    "creatorId": 2359,
     "about": null,
     "private": true,
     "display_artist": null,

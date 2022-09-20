@@ -71,6 +71,16 @@ const Wrapper = styled.div<WrapperProps>`
   position: relative;
   max-width: 100%;
   overflow: clip;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: block;
+    padding-top: ${(props) => props.width / 2 - 12}px;
+  }
 
   @media (max-width: ${bp.medium}px) {
     position: relative;

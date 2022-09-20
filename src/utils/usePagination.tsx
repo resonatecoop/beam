@@ -42,9 +42,11 @@ export function usePagination<T>({
   const loadMore = React.useCallback(
     async (currentPage: number, reset?: boolean) => {
       setLoading(true);
+
       const r = await apiCall({ ...options, page: currentPage });
       setPages(r.numberOfPages ?? r.pages ?? 0);
       setPage(currentPage);
+
       if (r.data) {
         setResults((existing) => [...(reset ? [] : existing), ...r.data]);
       }

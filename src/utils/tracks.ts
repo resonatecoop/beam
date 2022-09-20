@@ -1,9 +1,10 @@
 import produce from "immer";
+import { API, getToken } from "../services/Api";
+
 import {
   checkPlayCountOfTrackIds,
   checkTrackIdsForFavorite,
-  getToken,
-} from "../services/Api";
+} from "../services/api/User";
 
 const STREAM_API = "https://stream.resonate.coop/api/v3/user/stream/";
 
@@ -51,6 +52,10 @@ export function calculateRemainingCost(count: number) {
 }
 
 export function buildStreamURL(id?: number, clientId?: string) {
+  // We assume we're using full OIDC
+  if (process.env.REACT_APP_AUTH_METADATA_URL) {
+    return `${API}v3/user/stream/${id}`;
+  }
   return `${STREAM_API}${id}${clientId ? `?token=${clientId}` : ""}`;
 }
 

@@ -4,7 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { bp, tags } from "../constants";
 import { useGlobalStateContext } from "../contexts/globalState";
-import { fetchUserArtistHistory } from "../services/Api";
+import { fetchUserArtistHistory } from "../services/api/User";
 import Background from "./common/Background";
 import IconButton from "./common/IconButton";
 import InlineForm from "./common/InlineForm";
