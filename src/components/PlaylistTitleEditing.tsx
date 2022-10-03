@@ -3,9 +3,9 @@ import React from "react";
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import {
-  deleteUserTrackGroup,
-  updateTrackGroup,
-  uploadTrackGroupCover,
+  deleteUserPlaylist,
+  updatePlaylist,
+  uploadPlaylistCover,
 } from "../services/api/User";
 import Button from "./common/Button";
 import Input from "./common/Input";
@@ -30,7 +30,7 @@ const PlaylistTitleEditing: React.FC<{
 
   const onSave = React.useCallback(
     async (e) => {
-      await updateTrackGroup(playlist.id, {
+      await updatePlaylist(playlist.id, {
         cover: playlist.cover_metadata.id,
         tags: playlist.tags,
         type: "playlist",
@@ -45,13 +45,13 @@ const PlaylistTitleEditing: React.FC<{
 
   const replaceImage = React.useCallback(
     async (e) => {
-      await uploadTrackGroupCover(playlist.id, e.target.files[0]);
+      await uploadPlaylistCover(playlist.id, e.target.files[0]);
     },
     [playlist.id]
   );
 
   const onDelete = React.useCallback(async () => {
-    await deleteUserTrackGroup(playlist.id);
+    await deleteUserPlaylist(playlist.id);
     navigate("/library");
   }, [playlist.id, navigate]);
 

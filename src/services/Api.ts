@@ -81,6 +81,33 @@ export interface FetchTrackGroupFilter extends APIOptions {
   type?: TrackgroupType;
 }
 
+/**
+ * Playlists
+ */
+
+export const fetchPlaylists = async (
+  options?: FetchTrackGroupFilter
+): Promise<APIPaginatedResult<Trackgroup>> => {
+  return fetchWrapper(
+    "playlists",
+    {
+      method: "GET",
+    },
+    options,
+    true
+  );
+};
+
+export const fetchPlaylist = async (id: string): Promise<TrackgroupDetail> => {
+  return fetchWrapper(`playlists/${id}`, {
+    method: "GET",
+  });
+};
+
+/**
+ * Track groups
+ */
+
 export const fetchTrackGroups = async (
   options?: FetchTrackGroupFilter
 ): Promise<APIPaginatedResult<Trackgroup>> => {

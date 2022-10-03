@@ -5,7 +5,7 @@ import { FaPlay } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { useGlobalStateContext } from "../contexts/globalState";
 
-import { fetchTrackGroup } from "../services/Api";
+import { fetchPlaylist } from "../services/Api";
 import Button from "./common/Button";
 import { CenteredSpinner } from "./common/Spinner";
 import TrackList from "./common/TrackList";
@@ -26,7 +26,7 @@ const StaffPicks: React.FC = () => {
         "https://raw.githubusercontent.com/simonv3/beam/main/featured.json"
       );
       const ids = (await resp.json()).playlists;
-      const result = await fetchTrackGroup(ids[random(ids.length - 1)]);
+      const result = await fetchPlaylist(ids[random(ids.length - 1)]);
       setLatestStaffPick(result);
 
       setTracks(result?.items.map((item) => item.track));
