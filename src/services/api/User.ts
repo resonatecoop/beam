@@ -61,6 +61,12 @@ export const updatePlaylist = async (
   });
 };
 
+export const fetchUserPlaylists = async (): Promise<TrackgroupDetail[]> => {
+  return fetchWrapper(`user/playlists`, {
+    method: "GET",
+  });
+};
+
 export const fetchUserPlaylist = async (
   id: string
 ): Promise<TrackgroupDetail> => {
@@ -116,7 +122,7 @@ export const uploadPlaylistCover = async (id: string, file: File) => {
   const { token, version: apiVersion } = getToken();
   fd.append("file", file);
   let baseUrl = `${API}${apiVersion}/`;
-  return fetch(`${baseUrl}user/trackgroups/${id}/cover`, {
+  return fetch(`${baseUrl}user/playlist/${id}/cover`, {
     method: "PUT",
     body: fd,
     headers: {

@@ -5,7 +5,7 @@ import { injectGlobal, css } from "@emotion/css";
 import Home from "./components/Home";
 import Library from "./components/Library";
 import { useGlobalStateContext } from "./contexts/globalState";
-import { fetchUserProfile, fetchUserTrackGroups } from "./services/api/User";
+import { fetchUserPlaylists, fetchUserProfile } from "./services/api/User";
 import Profile from "./components/Profile";
 import Header from "./components/Header";
 import Player from "./components/Player";
@@ -188,7 +188,7 @@ function App() {
     const user = await fetchUserProfile();
     dispatch({ type: "setLoggedInUser", user });
 
-    const playlists = await fetchUserTrackGroups({ type: "playlist" });
+    const playlists = await fetchUserPlaylists();
     dispatch({ type: "setUserPlaylists", playlists });
   }, [dispatch]);
 
