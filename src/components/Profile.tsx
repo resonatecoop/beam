@@ -117,7 +117,7 @@ const Profile: React.FC = () => {
           </p>
           <div className={pClass} style={{ flexDirection: "column" }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <strong>credits: </strong> {user.credit.total}
+              <strong>credits: </strong> {user.credit?.total ?? "None"}
             </div>
             <small style={{ textAlign: "right" }}>
               Want to add credits to your account? Use{" "}
