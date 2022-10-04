@@ -3,7 +3,7 @@ import React from "react";
 import { FaEdit, FaEye, FaLock } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { useGlobalStateContext } from "../contexts/globalState";
-import { fetchUserTrackGroup } from "../services/api/User";
+import { fetchUserPlaylist } from "../services/api/User";
 import IconButton from "./common/IconButton";
 import { CenteredSpinner } from "./common/Spinner";
 import TrackTable from "./common/TrackTable";
@@ -22,7 +22,7 @@ export const PlaylistTracks: React.FC = () => {
   const fetchTracks = React.useCallback(async (playlistId: string) => {
     setIsLoading(true);
 
-    const trackgroup = await fetchUserTrackGroup(playlistId);
+    const trackgroup = await fetchUserPlaylist(playlistId);
     setPlaylist(trackgroup);
     setTracks(
       // FIXME: This should be changed back to item.index

@@ -15,7 +15,7 @@ export const fetchUserProfile = async (): Promise<LoggedInUser> => {
   });
 };
 
-export const fetchUserPlaylists = async (
+export const fetchPublicUserPlaylists = async (
   id: number,
   options?: APIOptions
 ): Promise<Trackgroup[]> => {
@@ -27,6 +27,107 @@ export const fetchUserPlaylists = async (
     options
   );
 };
+
+/**
+ * User playlists
+ */
+
+export const createPlaylist = async (data: {
+  cover: string;
+  title: string;
+  type: string;
+  artistId?: number;
+}): Promise<TrackgroupDetail> => {
+  return fetchWrapper(`user/playlists`, {
+    method: "POST",
+    body: JSON.stringify(data),
+  });
+};
+
+export const updatePlaylist = async (
+  id: string,
+  data: {
+    cover: string;
+    title: string;
+    private: boolean;
+    tags: string[];
+    type: string;
+    about?: string;
+  }
+): Promise<TrackgroupDetail> => {
+  return fetchWrapper(`user/playlists/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+};
+
+export const fetchUserPlaylist = async (
+  id: string
+): Promise<TrackgroupDetail> => {
+  return fetchWrapper(`user/playlists/${id}`, {
+    method: "GET",
+  });
+};
+
+export const addTracksToPlaylist = async (
+  id: string,
+  data: {
+    tracks: { track_id: number }[];
+  }
+) => {
+  return fetchWrapper(`user/playlists/${id}/items/add`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+};
+
+export const removeTracksFromPlaylist = async (
+  id: string,
+  data: {
+    tracks: { track_id: number }[];
+  }
+) => {
+  return fetchWrapper(`user/playlists/${id}/items/remove`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+};
+
+export const setNewTracksOnPlaylist = async (
+  id: string,
+  data: {
+    tracks: { track_id: number; index?: number }[];
+  }
+) => {
+  return fetchWrapper(`user/playlists/${id}/items`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+};
+
+export const deleteUserPlaylist = async (id: string) => {
+  return fetchWrapper(`user/playlists/${id}`, {
+    method: "DELETE",
+  });
+};
+
+export const uploadPlaylistCover = async (id: string, file: File) => {
+  var fd = new FormData();
+  const { token, version: apiVersion } = getToken();
+  fd.append("file", file);
+  let baseUrl = `${API}${apiVersion}/`;
+  return fetch(`${baseUrl}user/trackgroups/${id}/cover`, {
+    method: "PUT",
+    body: fd,
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+};
+
+/**
+ * User Track groups
+ */
 
 export const createTrackGroup = async (data: {
   cover: string;
@@ -57,10 +158,6 @@ export const updateTrackGroup = async (
   });
 };
 
-// FIXME: What's the difference between fetching a user's playlists
-// (as with the staff picks) and fetching the user's trackgroups.
-// Also note that if you don't supply a type, then the listing returns
-// 0. That might be an API error?
 export const fetchUserTrackGroups = async (
   options?: FetchTrackGroupFilter
 ): Promise<TrackgroupDetail[]> => {
@@ -123,6 +220,20 @@ export const deleteUserTrackGroup = async (id: string) => {
   });
 };
 
+export const uploadTrackGroupCover = async (id: string, file: File) => {
+  var fd = new FormData();
+  const { token, version: apiVersion } = getToken();
+  fd.append("file", file);
+  let baseUrl = `${API}${apiVersion}/`;
+  return fetch(`${baseUrl}user/trackgroups/${id}/cover`, {
+    method: "PUT",
+    body: fd,
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  });
+};
+
 /**
  * User artist endpoints
  */
@@ -175,20 +286,6 @@ export const uploadTrackFile = async (id: number, data: any) => {
   const { token, version: apiVersion } = getToken();
   let baseUrl = `${API}${apiVersion}/`;
   return fetch(`${baseUrl}user/tracks/${id}/file`, {
-    method: "PUT",
-    body: fd,
-    headers: {
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-    },
-  });
-};
-
-export const uploadTrackGroupCover = async (id: string, file: File) => {
-  var fd = new FormData();
-  const { token, version: apiVersion } = getToken();
-  fd.append("file", file);
-  let baseUrl = `${API}${apiVersion}/`;
-  return fetch(`${baseUrl}user/trackgroups/${id}/cover`, {
     method: "PUT",
     body: fd,
     headers: {

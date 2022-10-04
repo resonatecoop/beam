@@ -2,7 +2,7 @@ import { css } from "@emotion/css";
 import ClickToPlay from "components/common/ClickToPlay";
 import React from "react";
 import { Link } from "react-router-dom";
-import { fetchTrackGroups } from "../../services/Api";
+import { fetchPlaylists } from "../../services/Api";
 import usePagination from "../../utils/usePagination";
 import GridListItem from "../common/GridListItem";
 import LargeTileDetail from "../common/LargeTileDetail";
@@ -11,7 +11,7 @@ import StaffPicks from "../StaffPicks";
 
 export const Playlists: React.FC = () => {
   const { LoadingButton, results, isLoading } = usePagination<Trackgroup>({
-    apiCall: React.useCallback(fetchTrackGroups, []),
+    apiCall: React.useCallback(fetchPlaylists, []),
     options: React.useMemo(() => ({ limit: 50, type: "playlist" }), []),
   });
 

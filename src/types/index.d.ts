@@ -84,6 +84,16 @@ declare global {
     enabled: boolean;
   }
 
+  interface Playlist {
+    about: null | string;
+    cover: string;
+    title: string;
+    private: boolean;
+    creatorId: string;
+    feature: boolean;
+    items: TrackGroupItem[];
+  }
+
   interface ArtistImage {
     "cover_photo-l": string;
     "cover_photo-s": string;
