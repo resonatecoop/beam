@@ -15,12 +15,4 @@ export const oidcConfig: AuthProviderProps = {
   responseType: "code",
   automaticSilentRenew: true,
   userStore: new WebStorageStateStore({ store: window.localStorage }),
-  metadata: metadataUrl
-    ? undefined
-    : {
-        issuer: process.env.REACT_APP_AUTHORITY,
-        authorization_endpoint: "https://id.resonate.coop/web/authorize",
-        token_endpoint: "https://id.resonate.coop/v1/oauth/tokens",
-        userinfo_endpoint: "",
-      },
 };

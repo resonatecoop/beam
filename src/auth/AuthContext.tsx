@@ -97,6 +97,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({
 
   const signOutHooks = async (): Promise<void> => {
     setUserData(null);
+    await userManager.signoutPopup();
     onSignOut && onSignOut();
   };
 
