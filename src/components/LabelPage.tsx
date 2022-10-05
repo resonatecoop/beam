@@ -25,7 +25,7 @@ export const LabelPage: React.FC = () => {
   const [artists, setArtists] = React.useState<LabelArtist[]>();
   const [releases, setReleases] = React.useState<Release[]>();
 
-  const fetchTracks = React.useCallback(async (id: number) => {
+  const fetchTracks = React.useCallback(async (id: string) => {
     setIsLoading(true);
     try {
       const label = await fetchLabel(id);
@@ -50,7 +50,7 @@ export const LabelPage: React.FC = () => {
 
   React.useEffect(() => {
     if (labelId) {
-      fetchTracks(+labelId);
+      fetchTracks(labelId);
     }
   }, [fetchTracks, labelId]);
 
@@ -93,7 +93,7 @@ export const LabelPage: React.FC = () => {
           </div>
           <p className={padding}>
             {label.links?.map((link) => (
-              <LinkToWeb key={link.href} link={link} />
+              <LinkToWeb key={link.uri} link={link} />
             ))}
           </p>
 

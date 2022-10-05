@@ -156,25 +156,25 @@ export const fetchLabels = (
   return fetchWrapper(`labels`, { method: "GET" }, options, true);
 };
 
-export const fetchLabel = (labelId: number): Promise<Label> => {
+export const fetchLabel = (labelId: string): Promise<Label> => {
   return fetchWrapper(`labels/${labelId}`, {
     method: "GET",
   });
 };
 
-export const fetchLabelReleases = (labelId: number): Promise<Release[]> => {
+export const fetchLabelReleases = (labelId: string): Promise<Release[]> => {
   return fetchWrapper(`labels/${labelId}/releases`, {
     method: "GET",
   });
 };
 
-export const fetchLabelArtists = (labelId: number): Promise<LabelArtist[]> => {
+export const fetchLabelArtists = (labelId: string): Promise<LabelArtist[]> => {
   return fetchWrapper(`labels/${labelId}/artists`, {
     method: "GET",
   });
 };
 
-export const fetchLabelAlbums = (labelId: number): Promise<LabelAlbum[]> => {
+export const fetchLabelAlbums = (labelId: string): Promise<LabelAlbum[]> => {
   return fetchWrapper(`labels/${labelId}/albums`, {
     method: "GET",
   });

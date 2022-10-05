@@ -8,9 +8,9 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 
-export const LinkToWeb: React.FC<{ link: { href: string; text: string } }> = ({
-  link,
-}) => {
+export const LinkToWeb: React.FC<{
+  link: { uri: string; platform: string };
+}> = ({ link }) => {
   const determineIcon = (text: string) => {
     if (text.includes("facebook")) {
       return <FaFacebook />;
@@ -26,15 +26,19 @@ export const LinkToWeb: React.FC<{ link: { href: string; text: string } }> = ({
     }
     return <FaGlobe />;
   };
+
+  if (link.uri === "") {
+    return null;
+  }
   return (
     <a
-      href={link.href}
-      key={link.href}
+      href={link.uri}
+      key={link.uri}
       className={css`
         margin-right: 0.5rem;
       `}
     >
-      {determineIcon(link.text)}
+      {determineIcon(link.platform)}
     </a>
   );
 };

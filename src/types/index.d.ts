@@ -112,8 +112,8 @@ declare global {
     displayName: string;
     id: number;
     links?: {
-      href: string;
-      text: string;
+      uri: string;
+      platform: string;
     }[];
     images?: ArtistImage;
     bio: string;
@@ -186,7 +186,7 @@ declare global {
   interface Label {
     name: string;
     id: number;
-    links?: { href: string; text: string }[];
+    links?: { uri: string; platform: string }[];
     images?: ArtistImage;
     bio: string;
     country: string;

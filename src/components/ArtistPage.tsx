@@ -243,7 +243,7 @@ export const ArtistPage: React.FC = () => {
           )}
           <p className={padding}>
             {artist.links?.map((link) => (
-              <LinkToWeb key={link.href} link={link} />
+              <LinkToWeb key={link.uri} link={link} />
             ))}
           </p>
           {tracks && (
