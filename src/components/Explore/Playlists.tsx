@@ -43,7 +43,7 @@ export const Playlists: React.FC = () => {
                 />
                 <LargeTileDetail
                   title={
-                    <Link to={`/library/trackgroup/${playlist.id}`}>
+                    <Link to={`/library/playlist/${playlist.id}`}>
                       {playlist.title}
                     </Link>
                   }

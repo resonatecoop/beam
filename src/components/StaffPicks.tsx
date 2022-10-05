@@ -81,7 +81,7 @@ const StaffPicks: React.FC = () => {
             `}
           >
             <h4>
-              <Link to={`/library/trackgroup/${latestStaffPick.id}`}>
+              <Link to={`/library/playlist/${latestStaffPick.id}`}>
                 {latestStaffPick.title}
               </Link>
             </h4>
