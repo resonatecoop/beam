@@ -30,7 +30,7 @@ import Tracks from "./components/Explore/Tracks";
 import SnackbarContext from "contexts/SnackbarContext";
 import Snackbar from "components/common/Snackbar";
 import styled from "@emotion/styled";
-import { useAuth } from "./auth";
+import { useAuth } from "oidc-react";
 import Manage from "components/Manage";
 import Admin from "components/Admin";
 import AdminTrackgroups from "components/Admin/Trackgroups";
