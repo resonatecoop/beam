@@ -11,7 +11,7 @@ import { ThemeProvider } from "@emotion/react";
 import { theme } from "utils/theme";
 
 import { useNavigate } from "react-router-dom";
-import { AuthProvider } from "auth";
+import { AuthProvider } from "oidc-react";
 import { oidcConfig } from "auth/config";
 
 const AppHistory: {

@@ -61,6 +61,10 @@ const CustomButton = styled.button<Compactable>`
   margin-right: 0.25rem;
   white-space: nowrap;
 
+  &[disabled] {
+    opacity: 0.6;
+  }
+
   &:hover:not(:disabled) {
     cursor: pointer;
   }

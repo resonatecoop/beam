@@ -257,6 +257,7 @@ export const GlobalStateProvider: React.FC<GlobalStateProviderProps> = ({
 
   try {
     storedState = JSON.parse(storedStateString ?? "");
+
     if (!storedState.playerQueueIds) {
       storedState.playerQueueIds = [];
     }

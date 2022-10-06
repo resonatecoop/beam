@@ -17,10 +17,10 @@ export const SetupError = () => {
 
   const fetchNews = async () => {
     if (
-      !oidcConfig.clientId ||
-      oidcConfig.clientId === "" ||
-      !oidcConfig.clientSecret ||
-      oidcConfig.clientSecret === ""
+      !oidcConfig.userManager?.settings.client_id ||
+      oidcConfig.userManager?.settings.client_id === "" ||
+      !oidcConfig.userManager?.settings.client_secret ||
+      oidcConfig.userManager?.settings.client_secret === ""
     ) {
       setWarning(
         <>

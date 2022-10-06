@@ -5,7 +5,7 @@ import Button from "./common/Button";
 import Disclaimer from "./common/Disclaimer";
 import { fetchUserStats } from "services/api/User";
 import { format, subDays, differenceInDays, addDays } from "date-fns";
-import { useAuth } from "auth";
+import { useAuth } from "oidc-react";
 import { useNavigate } from "react-router-dom";
 
 import beamPackage from "../../package.json";
@@ -27,15 +27,16 @@ const Profile: React.FC = () => {
     dispatch,
   } = useGlobalStateContext();
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, userManager } = useAuth();
   const [stats, setStats] = React.useState<{ date: string; plays: Number }[]>(
     []
   );
   const [date] = React.useState(new Date());
 
-  const logout = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  const logout = async (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
     signOut();
+    userManager.signoutPopup();
     dispatch({
       type: "setValuesDirectly",
       values: {
