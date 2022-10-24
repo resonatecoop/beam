@@ -174,12 +174,6 @@ export const fetchLabelArtists = (labelId: string): Promise<LabelArtist[]> => {
   });
 };
 
-export const fetchLabelAlbums = (labelId: string): Promise<LabelAlbum[]> => {
-  return fetchWrapper(`labels/${labelId}/albums`, {
-    method: "GET",
-  });
-};
-
 /**
  * Artist endpoints
  */

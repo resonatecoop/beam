@@ -361,11 +361,13 @@ export const addTrackToUserFavorites = async (id: number): Promise<Track[]> => {
 export const checkTrackIdsForFavorite = async (
   ids: number[]
 ): Promise<{ track_id: number }[]> => {
-  return fetchWrapper("user/favorites/resolve", {
-    method: "POST",
-    body: JSON.stringify({
-      ids,
-    }),
+  const params = new URLSearchParams();
+  ids.forEach((id) => {
+    params.append("ids", `${id}`);
+  });
+  const query = params.toString();
+  return fetchWrapper(`user/favorites/resolve?${query}`, {
+    method: "GET",
   });
 };
 
@@ -394,11 +396,14 @@ export const buyTrack = async (trackId: number) => {
 export const checkPlayCountOfTrackIds = async (
   ids: number[]
 ): Promise<{ track_id: number; count: number }[]> => {
-  return fetchWrapper("user/plays/resolve", {
-    method: "POST",
-    body: JSON.stringify({
-      ids,
-    }),
+  const params = new URLSearchParams();
+  ids.forEach((id) => {
+    params.append("ids", `${id}`);
+  });
+  const query = params.toString();
+
+  return fetchWrapper(`user/plays/resolve?${query}`, {
+    method: "GET",
   });
 };
 
