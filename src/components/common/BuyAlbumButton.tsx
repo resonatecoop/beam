@@ -32,7 +32,7 @@ export const BuyAlbumButton: React.FC<{
     const plays = await checkPlayCountOfTrackIds(checkTracks.map((c) => c.id));
     let totalRemainingCost = 0;
     checkTracks.forEach((t) => {
-      const hasPlay = plays?.find((p) => p.track_id === t.id);
+      const hasPlay = plays?.find((p) => p.trackId === t.id);
       const remainingCost = calculateRemainingCost(hasPlay?.count ?? 0);
       totalRemainingCost += remainingCost;
     });

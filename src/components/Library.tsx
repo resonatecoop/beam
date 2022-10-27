@@ -3,8 +3,13 @@ import React from "react";
 import { PlaylistListing } from "./PlaylistListing";
 import { Outlet } from "react-router-dom";
 import BackButton from "./common/BackButton";
+import { useGlobalStateContext } from "contexts/globalState";
 
 export const Library: React.FC = () => {
+  const {
+    state: { user },
+  } = useGlobalStateContext();
+
   return (
     <>
       <div
@@ -23,7 +28,7 @@ export const Library: React.FC = () => {
 
         <h2 className={css``}>Library</h2>
 
-        <PlaylistListing />
+        {user && <PlaylistListing />}
       </div>
       <div
         className={css`

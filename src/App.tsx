@@ -195,7 +195,6 @@ function App() {
   React.useEffect(() => {
     if (userData?.access_token && userData?.access_token !== "") {
       fetchUserProfileCallback();
-      // setPlaylists(result);
     }
   }, [fetchUserProfileCallback, userData?.access_token]);
 
@@ -245,14 +244,7 @@ function App() {
               </Route>
               <Route path="" element={<Navigate to="users" />} />
             </Route>
-            <Route
-              path="/library"
-              element={
-                <HasPermission>
-                  <Library />
-                </HasPermission>
-              }
-            >
+            <Route path="/library" element={<Library />}>
               <Route path="queue" element={<Queue />} />
               <Route path="search" element={<SearchResults />} />
               <Route path="explore" element={<Explore />}>
@@ -271,9 +263,30 @@ function App() {
                 element={<TrackgroupPage />}
               />
 
-              <Route path="favorites" element={<Favorites />} />
-              <Route path="history" element={<History />} />
-              <Route path="collection" element={<Collection />} />
+              <Route
+                path="favorites"
+                element={
+                  <HasPermission>
+                    <Favorites />
+                  </HasPermission>
+                }
+              />
+              <Route
+                path="history"
+                element={
+                  <HasPermission>
+                    <History />
+                  </HasPermission>
+                }
+              />
+              <Route
+                path="collection"
+                element={
+                  <HasPermission>
+                    <Collection />
+                  </HasPermission>
+                }
+              />
             </Route>
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

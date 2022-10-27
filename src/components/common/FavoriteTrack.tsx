@@ -58,7 +58,7 @@ export const FavoriteTrack: React.FC<{ track: TrackWithUserCounts }> = ({
 
   const onFavoriteStatusFlagChange = React.useCallback(async () => {
     const resolution = await checkTrackIdsForFavorite([track.id]);
-    if (resolution.length > 0 && resolution[0].track_id === track.id) {
+    if (resolution.length > 0 && resolution[0].trackId === track.id) {
       setIsFavorite(true);
     } else {
       setIsFavorite(false);

@@ -6,8 +6,6 @@ import {
   checkTrackIdsForFavorite,
 } from "../services/api/User";
 
-const STREAM_API = "https://stream.resonate.coop/api/v3/user/stream/";
-
 export const mapFavoriteAndPlaysToTracks = async (
   checkTracks: Track[]
 ): Promise<TrackWithUserCounts[]> => {
@@ -19,8 +17,8 @@ export const mapFavoriteAndPlaysToTracks = async (
   return checkTracks.map(
     produce((t) => ({
       ...t,
-      favorite: !!favorites.find((f) => f.track_id === t.id),
-      plays: plays.find((f) => f.track_id === t.id)?.count ?? 0,
+      favorite: !!favorites.find((f) => f.trackId === t.id),
+      plays: plays.find((f) => f.trackId === t.id)?.count ?? 0,
     }))
   );
 };
@@ -53,10 +51,8 @@ export function calculateRemainingCost(count: number) {
 
 export function buildStreamURL(id?: number, clientId?: string) {
   // We assume we're using full OIDC
-  if (process.env.REACT_APP_AUTH_METADATA_URL) {
-    return `${API}v3/user/stream/${id}`;
-  }
-  return `${STREAM_API}${id}${clientId ? `?token=${clientId}` : ""}`;
+  // if (process.env.REACT_APP_AUTH_METADATA_URL) {
+  return `${API}v3/user/stream/${id}`;
 }
 
 export const determineNewTrackOrder = produce(
@@ -80,8 +76,8 @@ export const determineNewTrackOrder = produce(
 export const getCORSSong = async (remoteFilePath: string): Promise<Blob> => {
   const { token } = getToken();
   const result = await fetch(remoteFilePath, {
-    credentials: "include",
-    mode: "cors",
+    // credentials: "include",
+    // mode: "cors",
     headers: {
       "Content-Type": "audio/x-m4a; charset=utf-8",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),

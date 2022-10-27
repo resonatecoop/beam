@@ -31,7 +31,7 @@ const StaffPicks: React.FC = () => {
 
       setTracks(result?.items.map((item) => item.track));
     } catch (e) {
-      console.error("e");
+      console.error("Staff picks loading error");
     } finally {
       setIsLoading(false);
     }

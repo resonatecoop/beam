@@ -360,7 +360,7 @@ export const addTrackToUserFavorites = async (id: number): Promise<Track[]> => {
 
 export const checkTrackIdsForFavorite = async (
   ids: number[]
-): Promise<{ track_id: number }[]> => {
+): Promise<{ trackId: number }[]> => {
   const params = new URLSearchParams();
   ids.forEach((id) => {
     params.append("ids", `${id}`);
@@ -395,7 +395,7 @@ export const buyTrack = async (trackId: number) => {
 
 export const checkPlayCountOfTrackIds = async (
   ids: number[]
-): Promise<{ track_id: number; count: number }[]> => {
+): Promise<{ trackId: number; count: number }[]> => {
   const params = new URLSearchParams();
   ids.forEach((id) => {
     params.append("ids", `${id}`);
