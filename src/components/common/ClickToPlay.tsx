@@ -79,7 +79,7 @@ const Wrapper = styled.div<WrapperProps>`
     height: 100%;
     text-align: center;
     display: block;
-    padding-top: ${(props) => props.width / 2 - 12}px;
+    // padding-top: ${(props) => props.height / 2 - 12}px;
   }
 
   @media (max-width: ${bp.medium}px) {
