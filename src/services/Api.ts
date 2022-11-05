@@ -59,13 +59,18 @@ export const fetchWrapper = async (
     },
     ...options,
   })
-    .then((result) => {
+    .then(async (result) => {
       if (!result.ok) {
         if (result.status === 404) {
           throw new NotFoundError(result);
         }
-      } else {
-        // go the desired response
+        if (result.status === 400) {
+          const error = await result.json();
+          console.error(error.status, error.message, error);
+          if (error.errors) {
+            throw new Error("There was a problem communicating with the API");
+          }
+        }
       }
       return result.json();
     })
@@ -136,7 +141,9 @@ interface TagOptions extends APIOptions {
 export const fetchByTag = async ({
   tag,
   ...options
-}: TagOptions): Promise<APIPaginatedResult<TagResult>> => {
+}: TagOptions): Promise<{
+  data: { trackgroups: Trackgroup[]; tracks: Track[] };
+}> => {
   return fetchWrapper(
     `tag/${tag}`,
     {
@@ -213,11 +220,11 @@ export const fetchArtistTopTracks = (artistId: string): Promise<Track[]> => {
  * Track endpoints
  */
 
-export const fetchLatestTracks = (
+export const fetchTracks = (
   options: APIOptions
 ): Promise<APIPaginatedResult<Track>> => {
   return fetchWrapper(
-    `tracks/${options.order !== "random" ? "latest" : ""}`,
+    `tracks`,
     {
       method: "GET",
     },

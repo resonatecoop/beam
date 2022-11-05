@@ -129,7 +129,7 @@ export const AudioWrapper: React.FC<{
       // so we'll just set the audio src directly.
       playerRef.current.audio.current.src = streamUrl;
     }
-  }, [currentTrack]);
+  }, [currentTrack.id]);
 
   React.useEffect(() => {
     getAudioSrc();

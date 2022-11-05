@@ -14,7 +14,7 @@ const Header = () => {
 
   const onOAuth2Click = async (e?: React.MouseEvent<HTMLButtonElement>) => {
     e?.preventDefault();
-    if (userData && userData.access_token !== "") {
+    if (userData && userData.access_token !== "" && !userData?.expired) {
       navigate("/profile");
     } else {
       signIn();

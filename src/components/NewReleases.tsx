@@ -37,12 +37,11 @@ const ReleaseItem: React.FC<{ group: Trackgroup }> = ({ group }) => {
           }}
           title={group.title}
           groupId={group.id}
+          trackGroupType="trackgroup"
         />
       )}
       <LargeTileDetail
-        title={
-          <Link to={`/library/trackgroup/${group.id}`}>{group.title}</Link>
-        }
+        title={<Link to={`/library/playlist/${group.id}`}>{group.title}</Link>}
         subtitle={
           <>
             {artistExists && (

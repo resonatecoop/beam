@@ -27,6 +27,7 @@ export const Artists: React.FC = () => {
                 }}
                 title={trackgroup.title}
                 groupId={trackgroup.id}
+                trackGroupType="trackgroup"
               />
               <LargeTileDetail
                 title={

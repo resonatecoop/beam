@@ -16,6 +16,7 @@ import {
   removeTracksFromTrackGroup,
   addTrackToUserFavorites,
 } from "services/api/User";
+import { useSnackbar } from "contexts/SnackbarContext";
 
 const TrackPopup: React.FC<{
   trackId?: number;
@@ -26,6 +27,7 @@ const TrackPopup: React.FC<{
   const {
     state: { user },
   } = useGlobalStateContext();
+  const snackbar = useSnackbar();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [isFavorite, setIsFavorite] = React.useState(false);
   const [artistId, setArtistId] = React.useState<string>();
@@ -118,14 +120,19 @@ const TrackPopup: React.FC<{
   const onClickFavorite = React.useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.stopPropagation();
-      setIsLoadingFavorite(true);
-      await Promise.all(
-        selectedTrackIds.map((id) => addTrackToUserFavorites(id))
-      );
-      setIsFavorite((val) => !val);
-      setIsLoadingFavorite(false);
+      try {
+        setIsLoadingFavorite(true);
+        await Promise.all(
+          selectedTrackIds.map((id) => addTrackToUserFavorites(id))
+        );
+        setIsFavorite((val) => !val);
+      } catch (e: any) {
+        snackbar(e.message, { type: "warning" });
+      } finally {
+        setIsLoadingFavorite(false);
+      }
     },
-    [selectedTrackIds]
+    [selectedTrackIds, snackbar]
   );
 
   React.useEffect(() => {
@@ -232,7 +239,12 @@ const TrackPopup: React.FC<{
             )}
             {artistId && (
               <li>
-                <NavLinkAsButton to={`/library/artist/${artistId}`}>
+                <NavLinkAsButton
+                  to={`/library/artist/${artistId}`}
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                  }}
+                >
                   <FaFont />
                   Artist page
                 </NavLinkAsButton>

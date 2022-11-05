@@ -86,20 +86,30 @@ const Player = () => {
     [userId]
   );
 
+  const currentTrackId = currentTrack?.id;
+  const playerQueueIdAtIndex =
+    currentlyPlayingIndex !== undefined &&
+    playerQueueIds?.[currentlyPlayingIndex];
+
+  const playerQueueIdsLength = playerQueueIds.length;
+
+  // FIXME: Something is causing this to trigger twice and
+  // call the above callback twice.
   React.useEffect(() => {
-    if (
-      playerQueueIds &&
-      currentlyPlayingIndex !== undefined &&
-      playerQueueIds[currentlyPlayingIndex]
-    ) {
-      if (currentTrack?.id !== playerQueueIds[currentlyPlayingIndex]) {
+    if (playerQueueIdsLength && playerQueueIdAtIndex) {
+      if (currentTrackId !== playerQueueIdAtIndex) {
         setCurrentTrack(undefined);
-        fetchTrackCallback(playerQueueIds[currentlyPlayingIndex]);
+        fetchTrackCallback(playerQueueIdAtIndex);
       }
     } else {
       setCurrentTrack(undefined);
     }
-  }, [fetchTrackCallback, playerQueueIds, currentlyPlayingIndex, currentTrack]);
+  }, [
+    fetchTrackCallback,
+    playerQueueIdsLength,
+    playerQueueIdAtIndex,
+    currentTrackId,
+  ]);
 
   const onClickQueue = React.useCallback(() => {
     navigate("/library/queue");

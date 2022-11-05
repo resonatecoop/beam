@@ -1,4 +1,4 @@
-import Button from "components/common/Button";
+// import Button from "components/common/Button";
 import { InputEl } from "components/common/Input";
 import { SelectEl } from "components/common/Select";
 import React from "react";
@@ -49,9 +49,9 @@ export const UpdateUserForm: React.FC = () => {
         </SelectEl>
       </div>
 
-      <Button type="submit" style={{ marginTop: "1rem" }}>
+      {/* <Button type="submit" style={{ marginTop: "1rem" }}>
         Save user
-      </Button>
+      </Button> */}
     </form>
   );
 };

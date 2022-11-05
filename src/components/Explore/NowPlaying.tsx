@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { fetchLatestTracks } from "../../services/Api";
+import { fetchTracks } from "../../services/Api";
 import usePagination from "../../utils/usePagination";
 import { CenteredSpinner } from "../common/Spinner";
 import TrackList from "../common/TrackList";
@@ -9,7 +9,7 @@ export const NowPlaying: React.FC = () => {
   const [tracks, setTracks] = React.useState<Track[]>([]);
 
   const { results, isLoading } = usePagination<Track>({
-    apiCall: React.useCallback(fetchLatestTracks, []),
+    apiCall: React.useCallback(fetchTracks, []),
     options: React.useMemo(() => ({ limit: 2, order: "plays" }), []),
   });
 

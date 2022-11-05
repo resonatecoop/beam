@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { fetchLatestTracks } from "../../services/Api";
+import { fetchTracks } from "../../services/Api";
 import usePagination from "../../utils/usePagination";
 import Select from "../common/Select";
 import { CenteredSpinner } from "../common/Spinner";
@@ -11,7 +11,7 @@ export const Tracks: React.FC = () => {
   const [tracks, setTracks] = React.useState<Track[]>([]);
 
   const { LoadingButton, results, isLoading } = usePagination<Track>({
-    apiCall: React.useCallback(fetchLatestTracks, []),
+    apiCall: React.useCallback(fetchTracks, []),
     options: React.useMemo(() => ({ limit: 50, order }), [order]),
   });
 
@@ -57,10 +57,10 @@ export const Tracks: React.FC = () => {
           value={order}
           onChange={onChangeOrder}
           options={[
-            { label: "Latest", value: "newest" },
+            { label: "Latest", value: "latest" },
             { label: "Random", value: "random" },
             // { label: "Oldest", value: "oldest" },
-            { label: "Currently playing", value: "plays" },
+            // { label: "Currently playing", value: "plays" },
           ]}
         />
       </div>

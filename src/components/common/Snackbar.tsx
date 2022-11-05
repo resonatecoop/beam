@@ -10,8 +10,15 @@ const Container = styled.div<{ variant: Variant }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: ${(props) =>
-    props.variant === "success" ? props.theme.colors.success : "#323232"};
+  background: ${(props) => {
+    if (props.variant === "success") {
+      return props.theme.colors.success;
+    }
+    if (props.variant === "warning") {
+      return props.theme.colors.warning;
+    }
+    return "#323232";
+  }};
   color: #fff;
   z-index: 1000;
   margin: 16px;

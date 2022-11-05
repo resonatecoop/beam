@@ -90,6 +90,7 @@ export const SearchResults: React.FC = () => {
                       title={result.title}
                       image={result.images.small}
                       groupId={result.track_group_id}
+                      trackGroupType="trackgroup"
                     />
                   )}
                   <SmallTileDetails

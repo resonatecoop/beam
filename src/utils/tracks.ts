@@ -9,18 +9,21 @@ import {
 export const mapFavoriteAndPlaysToTracks = async (
   checkTracks: Track[]
 ): Promise<TrackWithUserCounts[]> => {
-  const favorites = await checkTrackIdsForFavorite(
-    checkTracks.map((c) => c.id)
-  );
-  const plays = await checkPlayCountOfTrackIds(checkTracks.map((c) => c.id));
+  if (checkTracks.length) {
+    const favorites = await checkTrackIdsForFavorite(
+      checkTracks.map((c) => c.id)
+    );
+    const plays = await checkPlayCountOfTrackIds(checkTracks.map((c) => c.id));
 
-  return checkTracks.map(
-    produce((t) => ({
-      ...t,
-      favorite: !!favorites.find((f) => f.trackId === t.id),
-      plays: plays.find((f) => f.trackId === t.id)?.count ?? 0,
-    }))
-  );
+    return checkTracks.map(
+      produce((t) => ({
+        ...t,
+        favorite: !!favorites.find((f) => f.trackId === t.id),
+        plays: plays.find((f) => f.trackId === t.id)?.count ?? 0,
+      }))
+    );
+  }
+  return checkTracks.map(produce((t) => t));
 };
 
 export function formatCredit(tokens: number) {

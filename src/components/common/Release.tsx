@@ -38,6 +38,7 @@ const Release: React.FC<{ release: ReleaseDetails }> = ({ release }) => {
           }}
           title={release.title ?? ""}
           groupId={release.id}
+          trackGroupType="trackgroup"
           className={css`
             margin: 0 1rem 1rem 0;
           `}

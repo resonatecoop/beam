@@ -39,6 +39,7 @@ export const Playlists: React.FC = () => {
                     height: 300,
                   }}
                   title={playlist.title}
+                  trackGroupType="playlist"
                   groupId={playlist.id}
                 />
                 <LargeTileDetail

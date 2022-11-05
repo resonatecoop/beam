@@ -353,7 +353,7 @@ export const addTrackToUserFavorites = async (id: number): Promise<Track[]> => {
   return fetchWrapper("user/favorites", {
     method: "POST",
     body: JSON.stringify({
-      track_id: id,
+      trackId: id,
     }),
   });
 };
@@ -380,7 +380,7 @@ export const registerPlay = (
 ): Promise<{ count: number; cost: number; total: string }> => {
   return fetchWrapper(`user/plays`, {
     method: "POST",
-    body: JSON.stringify({ track_id: trackId }),
+    body: JSON.stringify({ trackId }),
   });
 };
 

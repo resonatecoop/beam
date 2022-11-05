@@ -2,10 +2,7 @@ import React from "react";
 
 import { css } from "@emotion/css";
 import { bp } from "../constants";
-import {
-  addTracksToTrackGroup,
-  fetchUserTrackGroups,
-} from "../services/api/User";
+import { addTracksToPlaylist, fetchUserPlaylists } from "../services/api/User";
 import AddPlaylist from "./AddPlaylist";
 import ListButton from "./common/ListButton";
 import { FaCheck } from "react-icons/fa";
@@ -20,10 +17,10 @@ export const AddToPlaylist: React.FC<{
 
   const fetchPlaylistsCallback = React.useCallback(
     async (id?: string) => {
-      const result = await fetchUserTrackGroups({ type: "playlist" });
+      const result = await fetchUserPlaylists();
       setPlaylists(result);
       if (id) {
-        await addTracksToTrackGroup(id, {
+        await addTracksToPlaylist(id, {
           tracks: selectedTrackIds.map((id) => ({ track_id: id })),
         });
         onSongAdded();
@@ -42,12 +39,17 @@ export const AddToPlaylist: React.FC<{
       playlistId: string,
       playlistName: string
     ) => {
-      e.stopPropagation();
-      await addTracksToTrackGroup(playlistId, {
-        tracks: selectedTrackIds.map((id) => ({ track_id: id })),
-      });
-      onSongAdded();
-      snackbar(`Added song to "${playlistName}"`, { type: "success" });
+      try {
+        e.stopPropagation();
+        await addTracksToPlaylist(playlistId, {
+          tracks: selectedTrackIds.map((id) => ({ track_id: id })),
+        });
+        onSongAdded();
+        snackbar(`Added song to "${playlistName}"`, { type: "success" });
+      } catch (e: any) {
+        snackbar(e.message, { type: "warning" });
+        console.error("failed to add", e);
+      }
     },
     [selectedTrackIds, onSongAdded, snackbar]
   );

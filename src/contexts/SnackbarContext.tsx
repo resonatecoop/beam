@@ -1,6 +1,6 @@
 import React from "react";
 
-export type Variant = "success" | undefined;
+export type Variant = "success" | "warning" | undefined;
 
 const SnackbarContext = React.createContext<{
   msg: string;

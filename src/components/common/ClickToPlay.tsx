@@ -7,7 +7,7 @@ import { MdQueue } from "react-icons/md";
 import { bp } from "../../constants";
 
 import { useGlobalStateContext } from "../../contexts/globalState";
-import { fetchTrackGroup } from "../../services/Api";
+import { fetchPlaylist, fetchTrackGroup } from "../../services/Api";
 import Button from "./Button";
 import ImageWithPlaceholder from "./ImageWithPlaceholder";
 import { PlayingMusicBars } from "./PlayingMusicBars";
@@ -98,8 +98,17 @@ const ClickToPlay: React.FC<{
   title: string;
   image: ResonateImage;
   className?: string;
+  trackGroupType?: "playlist" | "trackgroup";
   playActionIntercept?: (trackId: number) => void;
-}> = ({ groupId, title, image, trackId, className, playActionIntercept }) => {
+}> = ({
+  groupId,
+  title,
+  image,
+  trackId,
+  className,
+  playActionIntercept,
+  trackGroupType,
+}) => {
   const {
     state: { playing, playerQueueIds, currentlyPlayingIndex },
     dispatch,
@@ -109,7 +118,9 @@ const ClickToPlay: React.FC<{
   const onClickPlay = React.useCallback(async () => {
     let ids: number[] = [];
     if (groupId) {
-      const result = await fetchTrackGroup(groupId);
+      const fetchFunction =
+        trackGroupType === "playlist" ? fetchPlaylist : fetchTrackGroup;
+      const result = await fetchFunction(groupId);
       ids = result.items.map((item) => item.track.id);
     } else if (trackId) {
       if (playActionIntercept) {
@@ -129,11 +140,20 @@ const ClickToPlay: React.FC<{
       type: "startPlayingIds",
       playerQueueIds: ids,
     });
-  }, [dispatch, groupId, trackId, playerQueueIds, playActionIntercept]);
+  }, [
+    dispatch,
+    groupId,
+    trackId,
+    playerQueueIds,
+    trackGroupType,
+    playActionIntercept,
+  ]);
 
   const onClickQueue = React.useCallback(async () => {
     if (groupId) {
-      await fetchTrackGroup(groupId).then((result) => {
+      const fetchFunction =
+        trackGroupType === "playlist" ? fetchPlaylist : fetchTrackGroup;
+      await fetchFunction(groupId).then((result) => {
         dispatch({
           type: "addTrackIdsToBackOfQueue",
           idsToAdd: result.items.map((item) => item.track.id),
@@ -146,7 +166,7 @@ const ClickToPlay: React.FC<{
       });
     }
     displayMessage("Added to queue");
-  }, [dispatch, groupId, trackId, displayMessage]);
+  }, [dispatch, groupId, trackId, trackGroupType, displayMessage]);
 
   const onPause = React.useCallback(async () => {
     dispatch({ type: "setPlaying", playing: false });

@@ -192,11 +192,20 @@ function App() {
     dispatch({ type: "setUserPlaylists", playlists });
   }, [dispatch]);
 
+  const accessToken = userData?.access_token;
+  const expired = userData?.expired;
+
   React.useEffect(() => {
-    if (userData?.access_token && userData?.access_token !== "") {
+    if (accessToken && accessToken !== "" && !expired) {
       fetchUserProfileCallback();
     }
-  }, [fetchUserProfileCallback, userData?.access_token]);
+  }, [fetchUserProfileCallback, accessToken, expired]);
+
+  React.useEffect(() => {
+    if (!userData) {
+      dispatch({ type: "setLoggedInUser", user: undefined });
+    }
+  }, [userData, dispatch]);
 
   return (
     <>

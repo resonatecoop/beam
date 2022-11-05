@@ -1,5 +1,6 @@
 import { css } from "@emotion/css";
 import { useGlobalStateContext } from "contexts/globalState";
+import { useSnackbar } from "contexts/SnackbarContext";
 import React from "react";
 import { FaStar, FaRegStar } from "react-icons/fa";
 import {
@@ -38,6 +39,7 @@ export const FavoriteTrack: React.FC<{ track: TrackWithUserCounts }> = ({
     state: { checkFavoriteStatusFlag },
     dispatch,
   } = useGlobalStateContext();
+  const snackbar = useSnackbar();
 
   const [isFavorite, setIsFavorite] = React.useState(track.favorite);
   const [loadingFavorite, setLoadingFavorite] = React.useState(false);
@@ -46,14 +48,21 @@ export const FavoriteTrack: React.FC<{ track: TrackWithUserCounts }> = ({
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
       e.stopPropagation();
-      setLoadingFavorite(true);
+      try {
+        setLoadingFavorite(true);
 
-      await addTrackToUserFavorites(track.id);
-      setIsFavorite((val) => !val);
-      setLoadingFavorite(false);
-      dispatch({ type: "incrementFavoriteStatusFlag" });
+        await addTrackToUserFavorites(track.id);
+        setIsFavorite((val) => !val);
+        dispatch({ type: "incrementFavoriteStatusFlag" });
+      } catch (e: any) {
+        snackbar(e.message, {
+          type: "warning",
+        });
+      } finally {
+        setLoadingFavorite(false);
+      }
     },
-    [track.id, dispatch]
+    [track.id, dispatch, snackbar]
   );
 
   const onFavoriteStatusFlagChange = React.useCallback(async () => {
