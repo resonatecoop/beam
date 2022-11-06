@@ -3,6 +3,7 @@ import React from "react";
 import { FaEdit, FaEye, FaLock } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { fetchPlaylist } from "services/Api";
+import { fetchUserPlaylist } from "services/api/User";
 import { useGlobalStateContext } from "../contexts/globalState";
 import IconButton from "./common/IconButton";
 import { CenteredSpinner } from "./common/Spinner";
@@ -19,19 +20,28 @@ export const PlaylistTracks: React.FC = () => {
   const [playlist, setPlaylist] = React.useState<TrackgroupDetail>();
   const [tracks, setTracks] = React.useState<IndexedTrack[]>([]);
   const userId = user?.id;
-  const fetchTracks = React.useCallback(async (playlistId: string) => {
-    setIsLoading(true);
 
-    const trackgroup = await fetchPlaylist(playlistId);
-    setPlaylist(trackgroup);
-    setTracks(
-      // FIXME: This should be changed back to item.index
-      // when that's fixed on the API
-      // https://github.com/resonatecoop/tracks-api/issues/34
-      trackgroup.items.map((item, idx) => ({ ...item.track, index: idx }))
-    );
-    setIsLoading(false);
-  }, []);
+  const ownedByUser = userId && playlist?.creatorId === userId;
+
+  const fetchTracks = React.useCallback(
+    async (playlistId: string) => {
+      if (userId) {
+        setIsLoading(true);
+
+        const fetchFunction = ownedByUser ? fetchUserPlaylist : fetchPlaylist;
+        const trackgroup = await fetchFunction(playlistId);
+        setPlaylist(trackgroup);
+        setTracks(
+          // FIXME: This should be changed back to item.index
+          // when that's fixed on the API
+          // https://github.com/resonatecoop/tracks-api/issues/34
+          trackgroup.items.map((item, idx) => ({ ...item.track, index: idx }))
+        );
+        setIsLoading(false);
+      }
+    },
+    [userId, ownedByUser]
+  );
 
   React.useEffect(() => {
     if (playlistId) {
@@ -73,14 +83,16 @@ export const PlaylistTracks: React.FC = () => {
               }
             `}
           >
-            {playlist?.private ? <FaLock /> : <FaEye />}
+            {ownedByUser && playlist?.private ? <FaLock /> : <FaEye />}
             {playlist?.title ?? "Tracks"}{" "}
-            <IconButton
-              onClick={() => setIsEditing(true)}
-              aria-label="edit playlist"
-            >
-              <FaEdit />
-            </IconButton>
+            {ownedByUser && (
+              <IconButton
+                onClick={() => setIsEditing(true)}
+                aria-label="edit playlist"
+              >
+                <FaEdit />
+              </IconButton>
+            )}
           </h3>
           {playlist?.about && (
             <p
