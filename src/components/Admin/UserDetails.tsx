@@ -30,7 +30,7 @@ export const UserDetails: React.FC = () => {
           <NavLink to="releases">Releases</NavLink>
         </li>
         <li>
-          <NavLink to="analytics">Releases</NavLink>
+          <NavLink to="analytics">Analytics</NavLink>
         </li>
         <li>
           <NavLink to="earnings">Earnings</NavLink>

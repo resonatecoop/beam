@@ -1,5 +1,23 @@
 import { fetchWrapper } from "services/Api";
 
+export const fetchCSVAndDownload = async (
+  endpointFnc: (options: any) => Promise<any>,
+  options: { [key: string]: any }
+) => {
+  const params = new URLSearchParams(options);
+  const csv = (await endpointFnc({
+    format: "application/csv",
+    ...options,
+  })) as unknown as Blob;
+  const blobUrl = URL.createObjectURL(csv);
+  const link = document.createElement("a"); // Or maybe get it from the current document
+  link.href = blobUrl;
+  const date = new Date();
+  link.download = `user-table-${params.toString()}-${date.toISOString()}.csv`;
+  link.click();
+  window.URL.revokeObjectURL(blobUrl);
+};
+
 export interface AdminUser {
   country: string;
   displayName: string;
@@ -9,6 +27,7 @@ export interface AdminUser {
   id: string;
   member: string;
   role: { name: string; description: string };
+  updatedAt?: string;
 }
 
 export const fetchUsers = (

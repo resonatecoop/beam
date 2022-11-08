@@ -119,9 +119,9 @@ export const deleteUserPlaylist = async (id: string) => {
 
 export const uploadPlaylistCover = async (id: string, file: File) => {
   var fd = new FormData();
-  const { token, version: apiVersion } = getToken();
+  const { token } = getToken();
   fd.append("file", file);
-  let baseUrl = `${API}${apiVersion}/`;
+  let baseUrl = `${API}/`;
   return fetch(`${baseUrl}user/playlist/${id}/cover`, {
     method: "PUT",
     body: fd,
@@ -228,9 +228,9 @@ export const deleteUserTrackGroup = async (id: string) => {
 
 export const uploadTrackGroupCover = async (id: string, file: File) => {
   var fd = new FormData();
-  const { token, version: apiVersion } = getToken();
+  const { token } = getToken();
   fd.append("file", file);
-  let baseUrl = `${API}${apiVersion}/`;
+  let baseUrl = `${API}/`;
   return fetch(`${baseUrl}user/trackgroups/${id}/cover`, {
     method: "PUT",
     body: fd,
@@ -289,8 +289,8 @@ export const createTrack = async (data: {
 export const uploadTrackFile = async (id: number, data: any) => {
   var fd = new FormData();
   fd.append("files", data.upload[0]);
-  const { token, version: apiVersion } = getToken();
-  let baseUrl = `${API}${apiVersion}/`;
+  const { token } = getToken();
+  let baseUrl = `${API}/`;
   return fetch(`${baseUrl}user/tracks/${id}/file`, {
     method: "PUT",
     body: fd,

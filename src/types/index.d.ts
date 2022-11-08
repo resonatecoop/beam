@@ -10,7 +10,7 @@ declare global {
   }
 
   interface APIOptions {
-    [key: string]: string | number | undefined;
+    [key: string]: string | number | boolean | undefined;
   }
 
   interface APIPaginatedResult<T> {

@@ -243,9 +243,9 @@ function App() {
               <Route path="users" element={<AdminUsers />}>
                 <Route path=":userId" element={<UserDetails />}>
                   <Route path="" element={<UpdateUserForm />} />
-                  <Route path="earnings" element={<UserDetails />} />
-                  <Route path="analytics" element={<UserDetails />} />
-                  <Route path="earnings" element={<UserDetails />} />
+                  <Route path="releases" element={<>TODO</>} />
+                  <Route path="analytics" element={<>TODO</>} />
+                  <Route path="earnings" element={<>TODO</>} />
                 </Route>
               </Route>
 
