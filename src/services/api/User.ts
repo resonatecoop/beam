@@ -33,10 +33,7 @@ export const fetchPublicUserPlaylists = async (
  */
 
 export const createPlaylist = async (data: {
-  cover: string;
   title: string;
-  type: string;
-  artistId?: number;
 }): Promise<TrackgroupDetail> => {
   return fetchWrapper(`user/playlists`, {
     method: "POST",

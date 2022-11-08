@@ -63,7 +63,7 @@ const UserPurchases: React.FC = () => {
         userId: `${user.id}`,
         callbackURL: window.location.href,
       });
-      window.location.href = `${API}v3/user/products/checkout?${params.toString()}`;
+      window.location.href = `${API}user/products/checkout?${params.toString()}`;
     },
     [products, user]
   );
