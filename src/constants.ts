@@ -1,5 +1,7 @@
 export const resonateUrl = process.env.REACT_APP_API;
 
+export const apiRoot = `api/v3`;
+
 export const bp = {
   small: "430",
   medium: "800",

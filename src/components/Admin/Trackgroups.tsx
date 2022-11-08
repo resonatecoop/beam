@@ -47,8 +47,6 @@ export const AdminTrackGroups: React.FC = () => {
               <th>Private?</th>
               <th>Enabled?</th>
               <th>Display artist</th>
-              <th>Composers</th>
-              <th>Performers</th>
               <th>Release date</th>
               <th />
             </tr>
@@ -61,8 +59,6 @@ export const AdminTrackGroups: React.FC = () => {
                 <td>{trackgroup.private ? <FaCheck /> : undefined}</td>
                 <td>{trackgroup.enabled ? <FaCheck /> : undefined}</td>
                 <td>{trackgroup.display_artist}</td>
-                <td>{trackgroup.composers.join(", ")}</td>
-                <td>{trackgroup.performers.join(", ")}</td>
                 <td>{trackgroup.release_date}</td>
                 <td className="alignRight">
                   <IconButton

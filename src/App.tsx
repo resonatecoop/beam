@@ -157,14 +157,15 @@ const contentWrapper = css`
 
 const HasPermission: React.FC<{
   children: React.ReactElement;
+  isLoading: boolean;
   roles?: ("user" | "artist" | "superadmin")[];
-}> = ({ children, roles }) => {
-  const { userData, isLoading } = useAuth();
+}> = ({ children, roles, isLoading }) => {
+  const { userData, isLoading: loginLoading } = useAuth();
   const {
     state: { user },
   } = useGlobalStateContext();
 
-  if (isLoading) {
+  if (isLoading || loginLoading) {
     return <>Loading user info...</>;
   }
   if (roles?.includes("artist") && user?.role?.name !== "artist") {
@@ -181,15 +182,18 @@ const HasPermission: React.FC<{
 
 function App() {
   const { dispatch } = useGlobalStateContext();
+  const [isLoading, setIsLoading] = React.useState(true);
   const { userData } = useAuth();
   const { isDisplayed } = useContext(SnackbarContext);
 
   const fetchUserProfileCallback = React.useCallback(async () => {
+    setIsLoading(true);
     const user = await fetchUserProfile();
     dispatch({ type: "setLoggedInUser", user });
 
     const playlists = await fetchUserPlaylists();
     dispatch({ type: "setUserPlaylists", playlists });
+    setIsLoading(false);
   }, [dispatch]);
 
   const accessToken = userData?.access_token;
@@ -205,7 +209,7 @@ function App() {
     if (!userData) {
       dispatch({ type: "setLoggedInUser", user: undefined });
     }
-  }, [userData, dispatch]);
+  }, [userData, dispatch, fetchUserProfileCallback]);
 
   return (
     <>
@@ -219,7 +223,7 @@ function App() {
             <Route
               path="/manage"
               element={
-                <HasPermission roles={["artist"]}>
+                <HasPermission roles={["artist"]} isLoading={isLoading}>
                   <Manage />
                 </HasPermission>
               }
@@ -231,7 +235,7 @@ function App() {
             <Route
               path="/admin"
               element={
-                <HasPermission roles={["superadmin"]}>
+                <HasPermission roles={["superadmin"]} isLoading={isLoading}>
                   <Admin />
                 </HasPermission>
               }
@@ -239,9 +243,9 @@ function App() {
               <Route path="users" element={<AdminUsers />}>
                 <Route path=":userId" element={<UserDetails />}>
                   <Route path="" element={<UpdateUserForm />} />
-                  <Route path="earnings" element={<UserDetails />} />
-                  <Route path="analytics" element={<UserDetails />} />
-                  <Route path="earnings" element={<UserDetails />} />
+                  <Route path="releases" element={<>TODO</>} />
+                  <Route path="analytics" element={<>TODO</>} />
+                  <Route path="earnings" element={<>TODO</>} />
                 </Route>
               </Route>
 
@@ -275,7 +279,7 @@ function App() {
               <Route
                 path="favorites"
                 element={
-                  <HasPermission>
+                  <HasPermission isLoading={isLoading}>
                     <Favorites />
                   </HasPermission>
                 }
@@ -283,7 +287,7 @@ function App() {
               <Route
                 path="history"
                 element={
-                  <HasPermission>
+                  <HasPermission isLoading={isLoading}>
                     <History />
                   </HasPermission>
                 }
@@ -291,7 +295,7 @@ function App() {
               <Route
                 path="collection"
                 element={
-                  <HasPermission>
+                  <HasPermission isLoading={isLoading}>
                     <Collection />
                   </HasPermission>
                 }

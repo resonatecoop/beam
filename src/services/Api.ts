@@ -1,6 +1,6 @@
-import { resonateUrl } from "../constants";
+import { apiRoot, resonateUrl } from "../constants";
 
-export const API = `${resonateUrl}api/`;
+export const API = `${resonateUrl}${apiRoot}/`;
 export const oidcStorage = `oidc.user:${process.env.REACT_APP_AUTHORITY}:${process.env.REACT_APP_CLIENT_ID}`;
 
 class NotFoundError extends Error {
@@ -16,7 +16,7 @@ class NotFoundError extends Error {
   }
 }
 
-export const getToken = (apiVersion?: string | number) => {
+export const getToken = () => {
   let token: string | undefined = undefined;
   try {
     const stateString = localStorage.getItem("state");
@@ -24,26 +24,22 @@ export const getToken = (apiVersion?: string | number) => {
     token = state?.token;
   } catch (e) {}
 
-  let version = apiVersion ?? "v3";
-
   try {
     const oauthStateString = localStorage.getItem(oidcStorage);
     const oauthState = JSON.parse(oauthStateString ?? "");
     token = oauthState.access_token;
-    version = apiVersion ?? "v3";
   } catch (e) {}
-  return { token: token, version };
+  return { token: token };
 };
 
 export const fetchWrapper = async (
   url: string,
   options: RequestInit,
   apiOptions?: APIOptions,
-  pagination?: boolean,
-  contentType?: string
+  pagination?: boolean
 ) => {
-  const { token, version: apiVersion } = getToken(apiOptions?.apiVersion);
-  let fullUrl = `${API}${apiVersion}/${url}`;
+  const { token } = getToken();
+  let fullUrl = `${API}${url}`;
   if (apiOptions && options.method === "GET") {
     const params = new URLSearchParams();
     Object.keys(apiOptions).forEach((key) => {
@@ -54,7 +50,10 @@ export const fetchWrapper = async (
 
   return fetch(fullUrl, {
     headers: {
-      "Content-Type": contentType ? contentType : "application/json",
+      "Content-Type":
+        apiOptions?.format && typeof apiOptions?.format === "string"
+          ? apiOptions.format
+          : "application/json",
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     ...options,
@@ -72,7 +71,10 @@ export const fetchWrapper = async (
           }
         }
       }
-      return result.json();
+      if (apiOptions?.format !== "application/csv") {
+        return result.json();
+      }
+      return result.blob();
     })
     .then((result) => {
       if (pagination) {
@@ -82,13 +84,13 @@ export const fetchWrapper = async (
     });
 };
 
-export interface FetchTrackGroupFilter extends APIOptions {
-  type?: TrackgroupType;
-}
-
 /**
  * Playlists
  */
+
+export interface FetchTrackGroupFilter extends APIOptions {
+  type?: TrackgroupType;
+}
 
 export const fetchPlaylists = async (
   options?: FetchTrackGroupFilter
