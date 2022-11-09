@@ -10,7 +10,7 @@ import { CenteredSpinner } from "../common/Spinner";
 export const Labels: React.FC = () => {
   const { LoadingButton, results, isLoading } = usePagination<Label>({
     apiCall: React.useCallback(fetchLabels, []),
-    options: React.useMemo(() => ({ limit: 50 }), []),
+    options: React.useMemo(() => ({ limit: 20 }), []),
   });
   return (
     <>

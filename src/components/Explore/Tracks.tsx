@@ -12,7 +12,7 @@ export const Tracks: React.FC = () => {
 
   const { LoadingButton, results, isLoading } = usePagination<Track>({
     apiCall: React.useCallback(fetchTracks, []),
-    options: React.useMemo(() => ({ limit: 50, order }), [order]),
+    options: React.useMemo(() => ({ limit: 20, order }), [order]),
   });
 
   React.useEffect(() => {

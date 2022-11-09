@@ -10,7 +10,7 @@ import { CenteredSpinner } from "../common/Spinner";
 export const Artists: React.FC = () => {
   const { LoadingButton, results, isLoading } = usePagination<Trackgroup>({
     apiCall: React.useCallback(fetchTrackGroups, []),
-    options: React.useMemo(() => ({ limit: 50 }), []),
+    options: React.useMemo(() => ({ limit: 20 }), []),
   });
   return (
     <>
