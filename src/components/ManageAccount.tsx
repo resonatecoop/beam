@@ -9,11 +9,13 @@ import { useGlobalStateContext } from "contexts/globalState";
 import { css } from "@emotion/css";
 import UserPurchases from "./UserPurchases";
 
-const ManageAccount: React.FC = () => {
+const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
+  open,
+  onClose,
+}) => {
   const {
     state: { user },
   } = useGlobalStateContext();
-  const [open, setOpen] = React.useState(false);
   const { register, handleSubmit, reset } = useForm();
 
   React.useEffect(() => {
@@ -28,9 +30,7 @@ const ManageAccount: React.FC = () => {
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>Manage Account</Button>
-
-      <Modal open={open} onClose={() => setOpen(false)} size="small">
+      <Modal open={open} onClose={onClose} size="small">
         <form onSubmit={handleSubmit(doSave)}>
           <h4>Update your account</h4>
           <div>

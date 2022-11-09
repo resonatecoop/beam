@@ -12,12 +12,18 @@ const CustomButton = styled.button<Compactable>`
   background: none;
   border: none;
   transition: 0.25s background-color, 0.25s color;
+  font-size: 1rem;
+  line-height: 1rem;
+  margin-right: 0.25rem;
 
   ${(props) => {
     switch (props.variant) {
       case "link":
         return `
           color: ${props.theme.colors.primary};
+          margin-right: 0;
+          font-size: inherit;
+          line-height: inherit;
 
           &:hover:not(:disabled) {
             color: ${props.theme.colors.primaryHighlight};
@@ -55,10 +61,7 @@ const CustomButton = styled.button<Compactable>`
   align-items: center;
   display: inline-flex;
   border-radius: 6px;
-  font-size: 1rem;
   justify-content: center;
-  line-height: 1rem;
-  margin-right: 0.25rem;
   white-space: nowrap;
 
   &[disabled] {

@@ -82,16 +82,16 @@ const UserPurchases: React.FC = () => {
       <h5>Purchases</h5>
       <SelectEl {...register("credits")}>
         <option value="Stream-Credit-05">
-          €5 (5,000 Credits, 16h of listening)
+          €7 (5 Credits, 16h of listening)
         </option>
-        <option value="Stream-Credit-12">
-          €12 (10,000 Credits, 32h of listening)
+        <option value="Stream-Credit-10">
+          €12 (10 Credits, 32h of listening)
         </option>
-        <option value="Stream-Credit-22">
-          €22 (20,000 Credits, 64h of listening)
+        <option value="Stream-Credit-20">
+          €22 (20 Credits, 64h of listening)
         </option>
         <option value="Stream-Credit-50">
-          €50 (50,000 Credits, 128h of listening)
+          €50 (50 Credits, 128h of listening)
         </option>
       </SelectEl>
       <div

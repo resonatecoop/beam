@@ -27,6 +27,8 @@ const Profile: React.FC = () => {
     dispatch,
   } = useGlobalStateContext();
   const navigate = useNavigate();
+  const [openAccount, setOpenAccount] = React.useState(false);
+
   const { signOut, userManager } = useAuth();
   const [stats, setStats] = React.useState<{ date: string; plays: Number }[]>(
     []
@@ -121,10 +123,10 @@ const Profile: React.FC = () => {
               <strong>credits: </strong> {user.credit?.total ?? "None"}
             </div>
             <small style={{ textAlign: "right" }}>
-              Want to add credits to your account? Use{" "}
-              <a href="https://id.resonate.coop/account?login_redirect_uri=%2Fweb%2Faccount">
-                the web app
-              </a>
+              Want to add credits to your account? Go to{" "}
+              <Button variant="link" onClick={() => setOpenAccount(true)}>
+                manage your account
+              </Button>
               .
             </small>
           </div>
@@ -133,7 +135,8 @@ const Profile: React.FC = () => {
           </p>
         </div>
       )}
-      <ManageAccount />
+      <Button onClick={() => setOpenAccount(true)}>Manage Account</Button>
+      <ManageAccount open={openAccount} onClose={() => setOpenAccount(false)} />
       <Button onClick={logout}>Log out</Button>
       <div
         className={css`
