@@ -19,7 +19,7 @@ import {
 import { useSnackbar } from "contexts/SnackbarContext";
 
 const TrackPopup: React.FC<{
-  trackId?: number;
+  trackId?: string;
   groupId?: string;
   compact?: boolean;
   reload?: () => Promise<void>;
@@ -34,7 +34,7 @@ const TrackPopup: React.FC<{
   const [trackgroup, setTrackgroup] = React.useState<Trackgroup>();
   const [isLoadingFavorite, setIsLoadingFavorite] = React.useState(false);
   const [track, setTrack] = React.useState<Track | TrackWithUserCounts>();
-  const [selectedTrackIds, setSelectedTrackIds] = React.useState<number[]>([]);
+  const [selectedTrackIds, setSelectedTrackIds] = React.useState<string[]>([]);
   const [isPlaylistPickerOpen, setIsPlaylistPickerOpen] = React.useState(false);
   const [isShareOpen, setIsShareOpen] = React.useState(false);
   const userId = user?.id;
@@ -87,7 +87,7 @@ const TrackPopup: React.FC<{
   }, []);
 
   const determineTracks = React.useCallback(
-    async (trackId?: number, groupId?: string) => {
+    async (trackId?: string, groupId?: string) => {
       let trackIds = [];
       if (trackId) {
         trackIds.push(trackId);

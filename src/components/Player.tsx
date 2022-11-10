@@ -71,7 +71,7 @@ const Player = () => {
   const userId = user?.id;
 
   const fetchTrackCallback = React.useCallback(
-    async (id: number) => {
+    async (id: string) => {
       setIsLoading(true);
       const track = await fetchTrack(id);
       if (userId) {

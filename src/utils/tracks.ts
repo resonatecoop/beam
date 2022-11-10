@@ -52,7 +52,7 @@ export function calculateRemainingCost(count: number) {
   return 1022 - cost;
 }
 
-export function buildStreamURL(id?: number, clientId?: string) {
+export function buildStreamURL(id?: string) {
   // We assume we're using full OIDC
   // if (process.env.REACT_APP_AUTH_METADATA_URL) {
   return `${API}user/stream/${id}`;
@@ -62,7 +62,7 @@ export const determineNewTrackOrder = produce(
   (
     oldTracks: (TrackWithUserCounts | Track | IndexedTrack)[],
     droppedInId: string,
-    draggingTrackId: number
+    draggingTrackId: string
   ) => {
     const dragIdx = oldTracks.findIndex(
       (track) => track.id === draggingTrackId

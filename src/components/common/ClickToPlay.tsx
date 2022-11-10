@@ -94,12 +94,12 @@ const Wrapper = styled.div<WrapperProps>`
 
 const ClickToPlay: React.FC<{
   groupId?: string;
-  trackId?: number;
+  trackId?: string;
   title: string;
   image: ResonateImage;
   className?: string;
   trackGroupType?: "playlist" | "trackgroup";
-  playActionIntercept?: (trackId: number) => void;
+  playActionIntercept?: (trackId: string) => void;
 }> = ({
   groupId,
   title,
@@ -116,7 +116,7 @@ const ClickToPlay: React.FC<{
   const displayMessage = useSnackbar();
 
   const onClickPlay = React.useCallback(async () => {
-    let ids: number[] = [];
+    let ids: string[] = [];
     if (groupId) {
       const fetchFunction =
         trackGroupType === "playlist" ? fetchPlaylist : fetchTrackGroup;

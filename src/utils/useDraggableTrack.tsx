@@ -7,7 +7,7 @@ const useDraggableTrack = () => {
     (ev: React.DragEvent<HTMLElement>) => {
       dispatch({
         type: "setDraggingTrackId",
-        draggingTrackId: +ev.currentTarget.id,
+        draggingTrackId: ev.currentTarget.id,
       });
     },
     [dispatch]

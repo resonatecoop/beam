@@ -37,7 +37,7 @@ declare global {
     large?: ResonateImage;
   }
 
-  interface LoggedInUser {
+  interface LoggedInUser extends User {
     clientId: string;
     // credits: string;
     id: string;
@@ -59,7 +59,7 @@ declare global {
 
   interface User {
     id: number;
-    nicename: string;
+    nickname: string;
   }
 
   // FIXME: Suss out the relationship between trackgroups and playlists
@@ -82,6 +82,7 @@ declare global {
     images: ImageSizes;
     private: boolean;
     enabled: boolean;
+    release_date: string;
   }
 
   interface Playlist {
@@ -126,10 +127,15 @@ declare global {
     displayName: string;
     id: string;
     country: string;
+    userGroups?: UserGroup[];
+  }
+
+  interface UserGroup {
+    displayName: string;
   }
 
   interface Track {
-    id: number;
+    id: string;
     creatorId: string;
     title: string;
     duration: number;
@@ -215,7 +221,7 @@ declare global {
   }
 
   interface TrackSearchResult extends SearchResultBase {
-    track_id: number;
+    track_id: string;
     kind: "track";
     display_artist: string;
     title: string;

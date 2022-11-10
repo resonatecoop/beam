@@ -1,14 +1,14 @@
 import { css } from "@emotion/css";
 import React from "react";
 
-import BackButton from "./common/BackButton";
+import BackButton from "../common/BackButton";
 import { fetchUserArtists } from "services/api/User";
 import NewAlbumForm from "./NewAlbumForm";
-import Button from "./common/Button";
+import Button from "../common/Button";
 import ManageAlbumForm from "./ManageAlbumForm";
-import Table from "./common/Table";
+import Table from "../common/Table";
 import { FaCheck } from "react-icons/fa";
-import CreateNewArtistForm from "./CreateNewArtistForm";
+import CreateNewArtistForm from "../CreateNewArtistForm";
 
 export const Manage: React.FC = () => {
   const [artists, setArtists] = React.useState<Artist[]>([]);
@@ -125,6 +125,7 @@ export const Manage: React.FC = () => {
                 trackgroup={addingTrackToAlbum}
                 onClose={() => setAddingTrackToAlbum(undefined)}
                 reload={fetchArtists}
+                artist={a}
               />
             )}
             <Button

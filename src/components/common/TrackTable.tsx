@@ -2,7 +2,9 @@ import { cloneDeep, isEqual } from "lodash";
 import React from "react";
 import { useGlobalStateContext } from "contexts/globalState";
 import {
+  fetchUserPlaylist,
   fetchUserTrackGroup,
+  setNewTracksOnPlaylist,
   setNewTracksOnTrackGroup,
 } from "services/api/User";
 
@@ -17,10 +19,11 @@ import { isIndexedTrack } from "typeguards";
 
 export const TrackTable: React.FC<{
   tracks: Track[];
+  isPlaylist?: boolean;
   trackgroupId?: string;
   editable?: boolean;
 }> = React.memo(
-  ({ tracks, trackgroupId, editable }) => {
+  ({ tracks, trackgroupId, editable, isPlaylist }) => {
     const [isLoading, setIsLoading] = React.useState(false);
     const {
       state: { user, draggingTrackId },
@@ -44,7 +47,11 @@ export const TrackTable: React.FC<{
           if (trackgroupId) {
             setDisplayTracks(newTracks);
 
-            await setNewTracksOnTrackGroup(trackgroupId, {
+            const setFnc = isPlaylist
+              ? setNewTracksOnPlaylist
+              : setNewTracksOnTrackGroup;
+
+            await setFnc(trackgroupId, {
               tracks: newTracks.map((t, index) => ({
                 track_id: t.id,
                 index: index + 1,
@@ -53,7 +60,7 @@ export const TrackTable: React.FC<{
           }
         }
       },
-      [displayTracks, editable, trackgroupId, draggingTrackId]
+      [displayTracks, editable, isPlaylist, trackgroupId, draggingTrackId]
     );
 
     const fetchTracks = React.useCallback(
@@ -77,7 +84,7 @@ export const TrackTable: React.FC<{
     }, [tracks, fetchTracks]);
 
     const addTracksToQueue = React.useCallback(
-      (id: number) => {
+      (id: string) => {
         const idx = tracks.findIndex((track) => track.id === id);
         dispatch({
           type: "startPlayingIds",
@@ -91,17 +98,18 @@ export const TrackTable: React.FC<{
 
     const reload = React.useCallback(async () => {
       if (trackgroupId) {
-        const newTracks = await fetchUserTrackGroup(trackgroupId);
+        const fetchGroup = isPlaylist ? fetchUserPlaylist : fetchUserTrackGroup;
+        const newTracks = await fetchGroup(trackgroupId);
         fetchTracks(newTracks.items.map((i) => i.track));
       }
-    }, [fetchTracks, trackgroupId]);
+    }, [fetchTracks, isPlaylist, trackgroupId]);
 
     if (isLoading) {
       return <CenteredSpinner />;
     }
 
     return (
-      <Table style={{ marginBottom: "2rem" }}>
+      <Table style={{ marginBottom: "1.5rem", marginTop: "1.5rem" }}>
         <thead>
           <tr>
             <th />

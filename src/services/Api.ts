@@ -32,6 +32,24 @@ export const getToken = () => {
   return { token: token };
 };
 
+export const errorHandler = async (result: Response) => {
+  if (!result.ok) {
+    if (result.status === 404) {
+      throw new NotFoundError(result);
+    }
+    if (result.status === 400) {
+      const error = await result.json();
+      console.error(error.status, error.message, error);
+      if (error.errors) {
+        throw new Error("There was a problem communicating with the API");
+      }
+    }
+    if (result.status === 500) {
+      throw new Error("There was a problem communicating with the API");
+    }
+  }
+};
+
 export const fetchWrapper = async (
   url: string,
   options: RequestInit,
@@ -59,18 +77,7 @@ export const fetchWrapper = async (
     ...options,
   })
     .then(async (result) => {
-      if (!result.ok) {
-        if (result.status === 404) {
-          throw new NotFoundError(result);
-        }
-        if (result.status === 400) {
-          const error = await result.json();
-          console.error(error.status, error.message, error);
-          if (error.errors) {
-            throw new Error("There was a problem communicating with the API");
-          }
-        }
-      }
+      await errorHandler(result);
       if (apiOptions?.format !== "application/csv") {
         return result.json();
       }
@@ -237,7 +244,7 @@ export const fetchTracks = (
   });
 };
 
-export const fetchTrack = (trackId: number): Promise<Track> => {
+export const fetchTrack = (trackId: string): Promise<Track> => {
   return fetchWrapper(`tracks/${trackId}`, {
     method: "GET",
   });

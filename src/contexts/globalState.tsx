@@ -4,12 +4,12 @@ import { clone, pullAt, shuffle } from "lodash";
 
 export interface GlobalState {
   user?: LoggedInUser;
-  playerQueueIds: number[];
+  playerQueueIds: string[];
   token?: string;
   playing?: boolean;
   looping?: "loopTrack" | "loopQueue";
   shuffle?: boolean;
-  draggingTrackId?: number;
+  draggingTrackId?: string;
   currentlyPlayingIndex?: number;
   userPlaylists?: { id: string; title: string }[];
   checkFavoriteStatusFlag?: number;
@@ -30,7 +30,7 @@ type ClearQueue = {
 
 type AddToBackQueue = {
   type: "addTrackIdsToBackOfQueue";
-  idsToAdd: number[];
+  idsToAdd: string[];
 };
 
 type ShuffleQueue = {
@@ -54,12 +54,12 @@ type SetPlaying = {
 
 type SetPlayerQueueIds = {
   type: "setPlayerQueueIds";
-  playerQueueIds: number[];
+  playerQueueIds: string[];
 };
 
 type SetDraggingTrackId = {
   type: "setDraggingTrackId";
-  draggingTrackId: number | undefined;
+  draggingTrackId: string | undefined;
 };
 
 type SetValuesDirectly = {
@@ -79,7 +79,7 @@ type SetShuffle = {
 
 type StartPlayingIds = {
   type: "startPlayingIds";
-  playerQueueIds: number[];
+  playerQueueIds: string[];
 };
 
 type IncrementCurrentlyPlayingIndex = {
@@ -182,7 +182,7 @@ export const stateReducer = produce((draft: GlobalState, action: Actions) => {
       draft.currentlyPlayingIndex = 0;
       break;
     case "shuffleQueue": {
-      let shuffled: number[] = [];
+      let shuffled: string[] = [];
       if (draft.playing && draft.currentlyPlayingIndex !== undefined) {
         const currentlyPlayingID = pullAt(
           draft.playerQueueIds,

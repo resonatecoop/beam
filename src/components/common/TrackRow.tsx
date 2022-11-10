@@ -25,7 +25,7 @@ const PlaysTracker = styled.div<{ width: number; played?: boolean }>`
 const TrackRow: React.FC<{
   track: TrackWithUserCounts | Track;
   trackgroupId?: string;
-  addTracksToQueue: (id: number) => void;
+  addTracksToQueue: (id: string) => void;
   reload: () => Promise<void>;
   handleDrop: (val: React.DragEvent<HTMLTableRowElement>) => void;
 }> = ({ track, addTracksToQueue, trackgroupId, reload, handleDrop }) => {

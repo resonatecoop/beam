@@ -4,6 +4,7 @@
 
 import {
   API,
+  errorHandler,
   FetchTrackGroupFilter,
   fetchWrapper,
   getToken,
@@ -75,7 +76,7 @@ export const fetchUserPlaylist = async (
 export const addTracksToPlaylist = async (
   id: string,
   data: {
-    tracks: { track_id: number }[];
+    tracks: { track_id: string }[];
   }
 ) => {
   return fetchWrapper(`user/playlists/${id}/items/add`, {
@@ -99,7 +100,7 @@ export const removeTracksFromPlaylist = async (
 export const setNewTracksOnPlaylist = async (
   id: string,
   data: {
-    tracks: { track_id: number; index?: number }[];
+    tracks: { track_id: string; index?: number }[];
   }
 ) => {
   return fetchWrapper(`user/playlists/${id}/items`, {
@@ -118,14 +119,13 @@ export const uploadPlaylistCover = async (id: string, file: File) => {
   var fd = new FormData();
   const { token } = getToken();
   fd.append("file", file);
-  let baseUrl = `${API}/`;
-  return fetch(`${baseUrl}user/playlist/${id}/cover`, {
+  return fetch(`${API}user/playlists/${id}/cover`, {
     method: "PUT",
     body: fd,
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-  });
+  }).then(errorHandler);
 };
 
 /**
@@ -146,14 +146,14 @@ export const createTrackGroup = async (data: {
 
 export const updateTrackGroup = async (
   id: string,
-  data: {
+  data: Partial<{
     cover: string;
     title: string;
     private: boolean;
     tags: string[];
     type: string;
     about?: string;
-  }
+  }>
 ): Promise<TrackgroupDetail> => {
   return fetchWrapper(`user/trackgroups/${id}`, {
     method: "PUT",
@@ -184,7 +184,7 @@ export const fetchUserTrackGroup = async (
 export const addTracksToTrackGroup = async (
   id: string,
   data: {
-    tracks: { track_id: number }[];
+    tracks: { track_id: string }[];
   }
 ) => {
   return fetchWrapper(`user/trackgroups/${id}/items/add`, {
@@ -196,7 +196,7 @@ export const addTracksToTrackGroup = async (
 export const removeTracksFromTrackGroup = async (
   id: string,
   data: {
-    tracks: { track_id: number }[];
+    tracks: { track_id: string }[];
   }
 ) => {
   return fetchWrapper(`user/trackgroups/${id}/items/remove`, {
@@ -208,7 +208,7 @@ export const removeTracksFromTrackGroup = async (
 export const setNewTracksOnTrackGroup = async (
   id: string,
   data: {
-    tracks: { track_id: number; index?: number }[];
+    tracks: { track_id: string; index?: number }[];
   }
 ) => {
   return fetchWrapper(`user/trackgroups/${id}/items`, {
@@ -227,14 +227,13 @@ export const uploadTrackGroupCover = async (id: string, file: File) => {
   var fd = new FormData();
   const { token } = getToken();
   fd.append("file", file);
-  let baseUrl = `${API}/`;
-  return fetch(`${baseUrl}user/trackgroups/${id}/cover`, {
+  return fetch(`${API}user/trackgroups/${id}/cover`, {
     method: "PUT",
     body: fd,
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-  });
+  }).then(errorHandler);
 };
 
 /**
@@ -287,14 +286,15 @@ export const uploadTrackFile = async (id: number, data: any) => {
   var fd = new FormData();
   fd.append("files", data.upload[0]);
   const { token } = getToken();
-  let baseUrl = `${API}/`;
-  return fetch(`${baseUrl}user/tracks/${id}/file`, {
+  // This doesn't use fetchwrapper because we don't know
+  // how to set the multipart form data content delimiter
+  return fetch(`${API}user/tracks/${id}/file`, {
     method: "PUT",
     body: fd,
     headers: {
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
-  });
+  }).then(errorHandler);
 };
 
 /**
@@ -346,7 +346,7 @@ export const fetchUserFavorites = async (
   );
 };
 
-export const addTrackToUserFavorites = async (id: number): Promise<Track[]> => {
+export const addTrackToUserFavorites = async (id: string): Promise<Track[]> => {
   return fetchWrapper("user/favorites", {
     method: "POST",
     body: JSON.stringify({
@@ -356,8 +356,8 @@ export const addTrackToUserFavorites = async (id: number): Promise<Track[]> => {
 };
 
 export const checkTrackIdsForFavorite = async (
-  ids: number[]
-): Promise<{ trackId: number }[]> => {
+  ids: string[]
+): Promise<{ trackId: string }[]> => {
   const params = new URLSearchParams();
   ids.forEach((id) => {
     params.append("ids", `${id}`);
@@ -373,7 +373,7 @@ export const checkTrackIdsForFavorite = async (
  */
 
 export const registerPlay = (
-  trackId: number
+  trackId: string
 ): Promise<{ count: number; cost: number; total: string }> => {
   return fetchWrapper(`user/plays`, {
     method: "POST",
@@ -381,7 +381,7 @@ export const registerPlay = (
   });
 };
 
-export const buyTrack = async (trackId: number) => {
+export const buyTrack = async (trackId: string) => {
   return fetchWrapper(`user/plays/buy`, {
     method: "POST",
     body: JSON.stringify({
@@ -391,8 +391,8 @@ export const buyTrack = async (trackId: number) => {
 };
 
 export const checkPlayCountOfTrackIds = async (
-  ids: number[]
-): Promise<{ trackId: number; count: number }[]> => {
+  ids: string[]
+): Promise<{ trackId: string; count: number }[]> => {
   const params = new URLSearchParams();
   ids.forEach((id) => {
     params.append("ids", `${id}`);

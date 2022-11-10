@@ -1,4 +1,5 @@
 import { css } from "@emotion/css";
+import { useSnackbar } from "contexts/SnackbarContext";
 import React from "react";
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -15,6 +16,7 @@ const PlaylistTitleEditing: React.FC<{
   playlist: Release;
   onDone: (update?: boolean) => void;
 }> = ({ playlist, onDone }) => {
+  const snackbar = useSnackbar();
   const navigate = useNavigate();
   const [playlistTitle, setPlaylistTitle] = React.useState(playlist.title);
   const [about, setAbout] = React.useState(playlist.about ?? "");
@@ -45,9 +47,15 @@ const PlaylistTitleEditing: React.FC<{
 
   const replaceImage = React.useCallback(
     async (e) => {
-      await uploadPlaylistCover(playlist.id, e.target.files[0]);
+      try {
+        await uploadPlaylistCover(playlist.id, e.target.files[0]);
+        onDone(true);
+        snackbar("Replaced cover", { type: "success" });
+      } catch (e) {
+        snackbar("Something went wrong with the API", { type: "warning" });
+      }
     },
-    [playlist.id]
+    [playlist.id, onDone, snackbar]
   );
 
   const onDelete = React.useCallback(async () => {

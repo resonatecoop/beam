@@ -29,7 +29,7 @@ export const Queue: React.FC = () => {
     });
   }, [dispatch]);
 
-  const fetchQueueDetails = React.useCallback(async (ids: number[]) => {
+  const fetchQueueDetails = React.useCallback(async (ids: string[]) => {
     if (ids && ids.length > 0) {
       const results = await Promise.all(
         ids.map((id) => {

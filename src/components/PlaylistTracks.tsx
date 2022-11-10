@@ -20,7 +20,6 @@ export const PlaylistTracks: React.FC = () => {
   const [playlist, setPlaylist] = React.useState<TrackgroupDetail>();
   const [tracks, setTracks] = React.useState<IndexedTrack[]>([]);
   const userId = user?.id;
-
   const ownedByUser = userId && playlist?.creatorId === userId;
 
   const fetchTracks = React.useCallback(
@@ -67,43 +66,58 @@ export const PlaylistTracks: React.FC = () => {
       `}
     >
       {!isEditing && !isLoading && (
-        <>
-          <h3
-            className={css`
-              display: flex;
-              align-items: center;
-
-              > svg {
-                margin-right: 0.5rem;
-                font-size: 1rem;
-              }
-
-              button > svg {
-                margin-left: 0.5rem;
-              }
-            `}
-          >
-            {ownedByUser && playlist?.private ? <FaLock /> : <FaEye />}
-            {playlist?.title ?? "Tracks"}{" "}
-            {ownedByUser && (
-              <IconButton
-                onClick={() => setIsEditing(true)}
-                aria-label="edit playlist"
-              >
-                <FaEdit />
-              </IconButton>
-            )}
-          </h3>
-          {playlist?.about && (
-            <p
+        <div
+          className={css`
+            display: flex;
+          `}
+        >
+          {playlist?.images.small && (
+            <img
+              alt="album cover"
+              src={playlist?.images.small.url}
               className={css`
-                margin-bottom: 1rem;
+                margin-right: 1rem;
+              `}
+            />
+          )}
+          <div>
+            <h3
+              className={css`
+                display: flex;
+                align-items: center;
+
+                > svg {
+                  margin-right: 0.5rem;
+                  font-size: 1rem;
+                }
+
+                button > svg {
+                  margin-left: 0.5rem;
+                }
               `}
             >
-              {playlist.about}
-            </p>
-          )}
-        </>
+              {ownedByUser && playlist?.private ? <FaLock /> : <FaEye />}
+              {playlist?.title ?? "Tracks"}{" "}
+              {ownedByUser && (
+                <IconButton
+                  onClick={() => setIsEditing(true)}
+                  aria-label="edit playlist"
+                >
+                  <FaEdit />
+                </IconButton>
+              )}
+            </h3>
+            {playlist?.about && (
+              <p
+                className={css`
+                  margin-bottom: 1rem;
+                `}
+              >
+                {playlist.about}
+              </p>
+            )}
+          </div>
+        </div>
       )}
       {playlist && isEditing && (
         <PlaylistTitleEditing playlist={playlist} onDone={onDone} />

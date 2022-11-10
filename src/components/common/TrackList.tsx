@@ -32,7 +32,7 @@ const TrackList: React.FC<{
   }, [tracks]);
 
   const addTracksToQueue = React.useCallback(
-    (id: number) => {
+    (id: string) => {
       const idx = tracks.findIndex((track) => track.id === id);
       dispatch({
         type: "startPlayingIds",
@@ -67,7 +67,7 @@ const TrackLIWrapper: React.FC<{
   handleDrop?: (ev: React.DragEvent<HTMLLIElement>) => void;
   draggable?: boolean;
   fullWidth?: boolean;
-  addTracksToQueue?: (id: number) => void;
+  addTracksToQueue?: (id: string) => void;
 }> = ({ track, draggable, fullWidth, handleDrop, addTracksToQueue }) => {
   const { onDragStart, onDragEnd } = useDraggableTrack();
 

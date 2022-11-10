@@ -9,7 +9,7 @@ import { FaCheck } from "react-icons/fa";
 import { useSnackbar } from "contexts/SnackbarContext";
 
 export const AddToPlaylist: React.FC<{
-  selectedTrackIds: number[];
+  selectedTrackIds: string[];
   onSongAdded: () => void;
 }> = ({ selectedTrackIds, onSongAdded }) => {
   const [playlists, setPlaylists] = React.useState<TrackgroupDetail[]>();
