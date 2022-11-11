@@ -127,6 +127,7 @@ export const PlaylistTracks: React.FC = () => {
         <TrackTable
           tracks={tracks}
           trackgroupId={playlist.id}
+          isPlaylist
           editable={playlist.creatorId === userId}
         />
       )}

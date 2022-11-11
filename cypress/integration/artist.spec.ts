@@ -32,10 +32,10 @@ describe("artist page", () => {
     beforeEach(() => {
       cy.intercept(Cypress.env("API") + "artists/*").as("getArtist");
       cy.intercept(Cypress.env("API") + "user/plays/resolve", {
-        body: { data: [{ count: 1, track_id: 1 }] },
+        body: { data: [{ count: 1, trackId: 1 }] },
       }).as("getPlayCounts");
       cy.intercept(Cypress.env("API") + "user/favorites/resolve", {
-        body: { data: [{ track_id: 1 }] },
+        body: { data: [{ trackId: 1 }] },
       }).as("getFavorites");
 
       cy.setLoggedInUser();

@@ -21,7 +21,7 @@ export const AddToPlaylist: React.FC<{
       setPlaylists(result);
       if (id) {
         await addTracksToPlaylist(id, {
-          tracks: selectedTrackIds.map((id) => ({ track_id: id })),
+          tracks: selectedTrackIds.map((id) => ({ trackId: id })),
         });
         onSongAdded();
       }
@@ -42,7 +42,7 @@ export const AddToPlaylist: React.FC<{
       try {
         e.stopPropagation();
         await addTracksToPlaylist(playlistId, {
-          tracks: selectedTrackIds.map((id) => ({ track_id: id })),
+          tracks: selectedTrackIds.map((id) => ({ trackId: id })),
         });
         onSongAdded();
         snackbar(`Added song to "${playlistName}"`, { type: "success" });

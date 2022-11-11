@@ -116,11 +116,14 @@ const Profile: React.FC = () => {
           `}
         >
           <p className={pClass}>
-            <strong>nickname: </strong> {user.nickname}
+            <strong>Display name: </strong> {user.displayName}
           </p>
           <div className={pClass} style={{ flexDirection: "column" }}>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <strong>credits: </strong> {user.credit?.total ?? "None"}
+              <strong>credits: </strong>{" "}
+              {user.credit?.total
+                ? (user.credit.total / 1000).toFixed(4)
+                : "None"}
             </div>
             <small style={{ textAlign: "right" }}>
               Want to add credits to your account? Go to{" "}

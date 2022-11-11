@@ -16,6 +16,17 @@ export const fetchUserProfile = async (): Promise<LoggedInUser> => {
   });
 };
 
+export const updateUserProfile = async (data: {
+  // email: string;
+  displayName: string;
+  newsletterNotification: boolean;
+}): Promise<LoggedInUser> => {
+  return fetchWrapper("user/profile/", {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+};
+
 export const fetchPublicUserPlaylists = async (
   id: number,
   options?: APIOptions
@@ -76,7 +87,7 @@ export const fetchUserPlaylist = async (
 export const addTracksToPlaylist = async (
   id: string,
   data: {
-    tracks: { track_id: string }[];
+    tracks: { trackId: string }[];
   }
 ) => {
   return fetchWrapper(`user/playlists/${id}/items/add`, {
@@ -88,7 +99,7 @@ export const addTracksToPlaylist = async (
 export const removeTracksFromPlaylist = async (
   id: string,
   data: {
-    tracks: { track_id: number }[];
+    tracks: { trackId: string }[];
   }
 ) => {
   return fetchWrapper(`user/playlists/${id}/items/remove`, {
@@ -100,7 +111,7 @@ export const removeTracksFromPlaylist = async (
 export const setNewTracksOnPlaylist = async (
   id: string,
   data: {
-    tracks: { track_id: string; index?: number }[];
+    tracks: { trackId: string; index?: number }[];
   }
 ) => {
   return fetchWrapper(`user/playlists/${id}/items`, {
@@ -374,7 +385,7 @@ export const checkTrackIdsForFavorite = async (
 
 export const registerPlay = (
   trackId: string
-): Promise<{ count: number; cost: number; total: string }> => {
+): Promise<{ count: number; cost: number; total: number }> => {
   return fetchWrapper(`user/plays`, {
     method: "POST",
     body: JSON.stringify({ trackId }),

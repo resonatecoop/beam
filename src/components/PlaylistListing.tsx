@@ -1,10 +1,14 @@
 import { css } from "@emotion/css";
 import styled from "@emotion/styled";
+import { useSnackbar } from "contexts/SnackbarContext";
 import React from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { bp } from "../constants";
 import { useGlobalStateContext } from "../contexts/globalState";
-import { addTracksToTrackGroup } from "../services/api/User";
+import {
+  addTracksToPlaylist,
+  addTracksToTrackGroup,
+} from "../services/api/User";
 import AddPlaylist from "./AddPlaylist";
 import { NavLinkAsButton } from "./common/ListButton";
 
@@ -107,6 +111,7 @@ const LI = styled.li<{ isHoveringOver: boolean }>`
 const PlaylistLI: React.FC<{ playlist: { id: string; title: string } }> = ({
   playlist,
 }) => {
+  const snackbar = useSnackbar();
   const {
     state: { draggingTrackId },
   } = useGlobalStateContext();
@@ -121,15 +126,23 @@ const PlaylistLI: React.FC<{ playlist: { id: string; title: string } }> = ({
   };
 
   const onDrop = React.useCallback(
-    (id) => {
+    async (id) => {
       if (draggingTrackId && id) {
-        addTracksToTrackGroup(id, {
-          tracks: [{ track_id: draggingTrackId }],
-        });
+        try {
+          await addTracksToPlaylist(id, {
+            tracks: [{ trackId: draggingTrackId }],
+          });
+          snackbar("Track added to playlist", { type: "success" });
+        } catch (e) {
+          console.error(e);
+          snackbar("Something went wrong adding the track to the playlist", {
+            type: "warning",
+          });
+        }
       }
       setIsHoveringOver(false);
     },
-    [draggingTrackId]
+    [draggingTrackId, snackbar]
   );
 
   return (

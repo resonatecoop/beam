@@ -13,6 +13,7 @@ import TextArea from "../common/TextArea";
 import FormComponent from "components/common/FormComponent";
 import { useSnackbar } from "contexts/SnackbarContext";
 import { pick } from "lodash";
+import { css } from "@emotion/css";
 
 const AlbumForm: React.FC<{
   existing?: Trackgroup;
@@ -35,6 +36,7 @@ const AlbumForm: React.FC<{
             ...pick(data, [
               "display_artist",
               "title",
+              "private",
               "type",
               "release_date",
               "about",
@@ -47,7 +49,8 @@ const AlbumForm: React.FC<{
           });
           savedId = newGroup.id;
         }
-        if (savedId && data.cover[0]) {
+        // data cover is a string if the form hasn't been changed.
+        if (savedId && typeof data.cover[0] !== "string") {
           await uploadTrackGroupCover(savedId, data.cover[0]);
         }
         reload();
@@ -70,6 +73,25 @@ const AlbumForm: React.FC<{
       </FormComponent>
       <FormComponent>
         Title: <InputEl {...register("title")} />
+      </FormComponent>
+      <FormComponent
+        className={css`
+          margin-top: 0.5rem;
+          display: flex;
+        `}
+      >
+        <input id="private" type="checkbox" {...register("private")} />{" "}
+        <label
+          className={css`
+            display: flex;
+            flex-direction: column;
+            margin-left: 0.5rem;
+          `}
+          htmlFor="private"
+        >
+          Is private?
+          <small>Private albums can not be listened to by Resonate users</small>
+        </label>
       </FormComponent>
       <FormComponent
         style={{

@@ -28,7 +28,7 @@ const Header = () => {
         // startIcon={isLoading ? <LoadingSpinner /> : undefined}
         // disabled={isLoading}
       >
-        {user ? user?.nickname : "Log in"}
+        {user ? user?.displayName : "Log in"}
       </Button>
     </>
   );

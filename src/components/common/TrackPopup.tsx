@@ -13,8 +13,8 @@ import TrackPopupDetails from "./TrackPopupDetails";
 import SharePopUp from "./SharePopUp";
 import { useGlobalStateContext } from "../../contexts/globalState";
 import {
-  removeTracksFromTrackGroup,
   addTrackToUserFavorites,
+  removeTracksFromPlaylist,
 } from "services/api/User";
 import { useSnackbar } from "contexts/SnackbarContext";
 
@@ -60,8 +60,8 @@ const TrackPopup: React.FC<{
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.stopPropagation();
       if (user && groupId && trackId) {
-        await removeTracksFromTrackGroup(groupId, {
-          tracks: [{ track_id: trackId }],
+        await removeTracksFromPlaylist(groupId, {
+          tracks: [{ trackId }],
         });
         if (reload) {
           reload();

@@ -10,6 +10,7 @@ import { SelectEl } from "./common/Select";
 import { API } from "services/Api";
 
 import { css } from "@emotion/css";
+import FormComponent from "./common/FormComponent";
 
 const UserPurchases: React.FC = () => {
   const {
@@ -72,6 +73,10 @@ const UserPurchases: React.FC = () => {
     return null;
   }
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <form
       onSubmit={handleSubmit(doSave)}
@@ -80,43 +85,60 @@ const UserPurchases: React.FC = () => {
       `}
     >
       <h5>Purchases</h5>
-      <SelectEl {...register("credits")}>
-        <option value="Stream-Credit-05">
-          €7 (5 Credits, 16h of listening)
-        </option>
-        <option value="Stream-Credit-10">
-          €12 (10 Credits, 32h of listening)
-        </option>
-        <option value="Stream-Credit-20">
-          €22 (20 Credits, 64h of listening)
-        </option>
-        <option value="Stream-Credit-50">
-          €50 (50 Credits, 128h of listening)
-        </option>
-      </SelectEl>
-      <div
-        className={css`
-          margin-top: 0.5rem;
-          display: flex;
-        `}
-      >
-        <input id="membership" type="checkbox" {...register("membership")} />{" "}
-        <label
+      {user.isListenerMember && (
+        <div
           className={css`
-            display: flex;
-            flex-direction: column;
-            margin-left: 0.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
           `}
-          htmlFor="membership"
         >
-          Membership
-          <small>
-            10 Euros a year (listener) / Membership is free for artists (and
-            label owners)
-          </small>
-        </label>
-      </div>
-      <div
+          You are already a listener member! 🎉
+        </div>
+      )}
+      {!user.isListenerMember && (
+        <FormComponent
+          className={css`
+            margin-top: 0.5rem;
+            display: flex;
+          `}
+        >
+          <input id="membership" type="checkbox" {...register("membership")} />{" "}
+          <label
+            className={css`
+              display: flex;
+              flex-direction: column;
+              margin-left: 0.5rem;
+            `}
+            htmlFor="membership"
+          >
+            Membership
+            <small>
+              10 Euros a year (listener) / Membership is free for artists (and
+              label owners)
+            </small>
+          </label>
+        </FormComponent>
+      )}
+      <FormComponent>
+        Current credits:{" "}
+        {user.credit?.total && (user.credit.total / 1000).toFixed(4)}
+        <SelectEl {...register("credits")}>
+          <option value="Stream-Credit-05">
+            €7 (5 Credits, 16h of listening)
+          </option>
+          <option value="Stream-Credit-10">
+            €12 (10 Credits, 32h of listening)
+          </option>
+          <option value="Stream-Credit-20">
+            €22 (20 Credits, 64h of listening)
+          </option>
+          <option value="Stream-Credit-50">
+            €50 (50 Credits, 128h of listening)
+          </option>
+        </SelectEl>
+      </FormComponent>
+
+      <FormComponent
         className={css`
           margin-top: 0.5rem;
         `}
@@ -124,7 +146,7 @@ const UserPurchases: React.FC = () => {
         Supporter shares
         <InputEl type="number" {...register("shares")} />
         <small>1 Euro per share</small>
-      </div>
+      </FormComponent>
       <Button
         type="submit"
         className={css`

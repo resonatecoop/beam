@@ -42,7 +42,7 @@ declare global {
     // credits: string;
     id: string;
     legacyId: number;
-    nickname: string;
+    displayName: string;
     email: string;
     ownedGroups: unknown[];
     newsletterNotification: boolean;
@@ -51,15 +51,21 @@ declare global {
       name: string;
     };
     credit: {
-      total: string;
+      total: number;
     };
     token: string;
     uid: number;
+    isListenerMember: boolean;
+    isMusicMember: boolean;
+    memberships: {
+      id: string;
+      class: { name: string; id: number };
+    }[];
   }
 
   interface User {
     id: number;
-    nickname: string;
+    displayName: string;
   }
 
   // FIXME: Suss out the relationship between trackgroups and playlists
@@ -137,6 +143,8 @@ declare global {
   interface Track {
     id: string;
     creatorId: string;
+    creator?: Partial<UserGroup>;
+    trackGroup: Partial<Trackgroup>;
     title: string;
     duration: number;
     album: string;

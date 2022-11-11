@@ -92,7 +92,7 @@ type DecrementCurrentlyPlayingIndex = {
 
 type SetUserCredits = {
   type: "setUserCredits";
-  credits: string;
+  credits: number;
 };
 
 type SetUserPlaylists = {

@@ -118,7 +118,17 @@ const TrackRow: React.FC<{
           text-overflow: ellipsis;
         `}
       >
-        {track.album}
+        {track.trackGroup && (
+          <Link
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            to={`/library/trackgroup/${track.trackGroup.id}`}
+          >
+            {track.trackGroup.title}
+          </Link>
+        )}
+        {!track.trackGroup && track.album}
       </td>
       <td
         className={css`
@@ -134,7 +144,7 @@ const TrackRow: React.FC<{
           }}
           to={`/library/artist/${track.creatorId}`}
         >
-          {track.artist}
+          {track.artist ?? track.creator?.displayName}
         </Link>
       </td>
       <td>

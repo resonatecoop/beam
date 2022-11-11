@@ -15,13 +15,13 @@ const padding = css`
 export const PlaylistPage: React.FC = () => {
   let { trackgroupId } = useParams();
   const [isLoading, setIsLoading] = React.useState(false);
-  const [trackgroup, setTrackgroup] = React.useState<TrackgroupDetail>();
+  const [playlist, setPlaylist] = React.useState<TrackgroupDetail>();
   const [tracks, setTracks] = React.useState<Track[]>([]);
 
   const fetchTracks = React.useCallback(async (id: string) => {
     setIsLoading(true);
     const result = await fetchPlaylist(id);
-    setTrackgroup(result);
+    setPlaylist(result);
     setTracks(result.items.map((item) => item.track));
     setIsLoading(false);
   }, []);
@@ -39,7 +39,7 @@ export const PlaylistPage: React.FC = () => {
       `}
     >
       {isLoading && <CenteredSpinner />}
-      {!isLoading && trackgroup && (
+      {!isLoading && playlist && (
         <>
           <div
             className={css`
@@ -50,7 +50,7 @@ export const PlaylistPage: React.FC = () => {
               margin-bottom: 1rem;
             `}
             style={{
-              backgroundImage: `url(${trackgroup.cover})`,
+              backgroundImage: `url(${playlist.cover})`,
             }}
           >
             <h3
@@ -63,10 +63,10 @@ export const PlaylistPage: React.FC = () => {
                 );
               `}
             >
-              {trackgroup.title}
+              {playlist.title}
             </h3>
           </div>
-          <p className={padding}>{trackgroup.about}</p>
+          <p className={padding}>{playlist.about}</p>
           <div
             className={css`
               display: flex;
@@ -75,18 +75,22 @@ export const PlaylistPage: React.FC = () => {
               margin-bottom: 1rem;
             `}
           >
-            <ShareTrackgroupButton trackgroup={trackgroup} />
-            {trackgroup.type !== "playlist" && (
-              <BuyAlbumButton trackgroup={trackgroup} />
+            <ShareTrackgroupButton trackgroup={playlist} />
+            {playlist.type !== "playlist" && (
+              <BuyAlbumButton trackgroup={playlist} />
             )}
           </div>
 
           <div className={padding}>
-            <Tags tags={trackgroup.tags} />
+            <Tags tags={playlist.tags} />
           </div>
-          {trackgroup && (
+          {playlist && (
             <>
-              <TrackTable trackgroupId={trackgroup.id} tracks={tracks} />
+              <TrackTable
+                trackgroupId={playlist.id}
+                tracks={tracks}
+                isPlaylist
+              />
             </>
           )}
         </>

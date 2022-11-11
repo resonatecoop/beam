@@ -47,16 +47,21 @@ export const TrackTable: React.FC<{
           if (trackgroupId) {
             setDisplayTracks(newTracks);
 
-            const setFnc = isPlaylist
-              ? setNewTracksOnPlaylist
-              : setNewTracksOnTrackGroup;
-
-            await setFnc(trackgroupId, {
-              tracks: newTracks.map((t, index) => ({
-                track_id: t.id,
-                index: index + 1,
-              })),
-            });
+            if (isPlaylist) {
+              await setNewTracksOnPlaylist(trackgroupId, {
+                tracks: newTracks.map((t, index) => ({
+                  trackId: t.id,
+                  index: index + 1,
+                })),
+              });
+            } else {
+              await setNewTracksOnTrackGroup(trackgroupId, {
+                tracks: newTracks.map((t, index) => ({
+                  track_id: t.id,
+                  index: index + 1,
+                })),
+              });
+            }
           }
         }
       },

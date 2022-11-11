@@ -8,6 +8,9 @@ import Modal from "./common/Modal";
 import { useGlobalStateContext } from "contexts/globalState";
 import { css } from "@emotion/css";
 import UserPurchases from "./UserPurchases";
+import FormComponent from "./common/FormComponent";
+import { updateUserProfile } from "services/api/User";
+import { useSnackbar } from "contexts/SnackbarContext";
 
 const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
   open,
@@ -16,30 +19,44 @@ const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
   const {
     state: { user },
   } = useGlobalStateContext();
+  const snackbar = useSnackbar();
   const { register, handleSubmit, reset } = useForm();
 
   React.useEffect(() => {
     if (user) {
       reset({
-        nickname: user?.nickname,
+        displayName: user?.displayName,
+        // email: user?.email,
+        newsletterNotification: user?.newsletterNotification,
       });
     }
   }, [reset, user]);
 
-  const doSave = React.useCallback(async (data) => {}, []);
+  const doSave = React.useCallback(
+    async (data) => {
+      try {
+        await updateUserProfile(data);
+        snackbar("Updated profile", { type: "success" });
+      } catch (e) {
+        snackbar("Failed to update profile", { type: "warning" });
+      }
+    },
+    [snackbar]
+  );
 
   return (
     <>
       <Modal open={open} onClose={onClose} size="small">
         <form onSubmit={handleSubmit(doSave)}>
           <h4>Update your account</h4>
-          <div>
-            Display name: <InputEl {...register("nickname")} />
-          </div>
-          <div>
+          <FormComponent>
+            Display name: <InputEl {...register("displayName")} />
+          </FormComponent>
+          {/* TODO: This will require resending email confirmation */}
+          {/* <FormComponent>
             Email: <InputEl type="email" {...register("email")} />
-          </div>
-          <div
+          </FormComponent> */}
+          <FormComponent
             className={css`
               display: flex;
               margin-bottom: 0.5rem;
@@ -53,7 +70,7 @@ const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
             >
               Subscribe to our newsletter?
             </label>
-          </div>
+          </FormComponent>
           <Button type="submit">Save account details</Button>
         </form>
         <UserPurchases />
