@@ -3,10 +3,11 @@
 describe("artist page", () => {
   describe("unauthenticated", () => {
     beforeEach(() => {
+      cy.log("Cypress", Cypress.env("API") + "artists/*");
       cy.intercept(Cypress.env("API") + "artists/*").as("getArtist");
       // NOTE: navigation via URL won't work within electron because
       // we use the MemoryRouter there.
-      cy.memoryNavigate("/library/artist/20230");
+      cy.memoryNavigate("/library/artist/49d2ac44-7f20-4a47-9cf5-3ea5d6ef78f6");
       cy.wait(["@getArtist"]).then(() => {});
     });
 
@@ -23,11 +24,12 @@ describe("artist page", () => {
 
     it("should pop up track details", () => {
       cy.get("[aria-label='open track actions']").first().click();
-      cy.get("[data-cy=modal]").contains("Karen Vogt");
+      cy.get("[data-cy=modal]").contains("matrix");
       cy.get("[data-cy=modal]").contains("Share & embed");
       cy.get("[data-cy=modal]").contains("Artist page");
     });
   });
+
   describe("authenticated", () => {
     beforeEach(() => {
       cy.intercept(Cypress.env("API") + "artists/*").as("getArtist");
@@ -37,9 +39,16 @@ describe("artist page", () => {
       cy.intercept(Cypress.env("API") + "user/favorites/resolve", {
         body: { data: [{ trackId: 1 }] },
       }).as("getFavorites");
-
-      cy.setLoggedInUser();
-      cy.memoryNavigate("/library/artist/20230");
+      cy.visit("/");
+      cy.get("button[data-cy=log-in]").click();
+      cy.url().should("contain", Cypress.env("issuer"));
+      cy.get("[type=email").type("listener@admin.com");
+      cy.get("[type=password").type("test1234");
+      cy.get("button").click();
+      cy.get("button").click();
+      cy.get("[data-cy=log-in]").contains("listener");
+      // cy.setLoggedInUser();
+      cy.memoryNavigate("/library/artist/49d2ac44-7f20-4a47-9cf5-3ea5d6ef78f6");
       cy.wait(["@getArtist"]).then(() => {});
     });
 

@@ -58,7 +58,7 @@ Cypress.Commands.add("isAudioPaused", () => {
 
 Cypress.Commands.add("setLoggedInUser", () => {
   window.localStorage.setItem(
-    `oidc.user:https://id.resonate.coop:${Cypress.env("client_id")}`,
+    `oidc.user:${Cypress.env("API")}:${Cypress.env("client_id")}`,
     JSON.stringify({ access_token: "1234" })
   );
   cy.intercept("GET", Cypress.env("API") + "user/profile/", {
@@ -72,6 +72,7 @@ Cypress.Commands.add("memoryNavigate", (url: string) => {
     .should("contain", "co-operative")
     .then(() => {
       cy.window().then((win) => {
+        cy.log("navigating to", url);
         // @ts-ignore
         win.AppHistory?.navigate(url);
       });

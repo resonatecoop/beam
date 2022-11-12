@@ -41,7 +41,7 @@ export const TagList: React.FC = () => {
                 title={group.title}
                 subtitle={
                   <Link to={`/library/artist/${group.creatorId}`}>
-                    {group.display_artist}
+                    {group.creator.displayName}
                   </Link>
                 }
                 footer={<Tags tags={group.tags} />}

@@ -11,7 +11,6 @@ import Header from "./components/Header";
 import Player from "./components/Player";
 import Queue from "./components/Queue";
 import { bp } from "./constants";
-import PlaylistTracks from "./components/PlaylistTracks";
 import ArtistPage from "./components/ArtistPage";
 import Favorites from "./components/Favorites";
 import History from "./components/History";
@@ -40,6 +39,7 @@ import UserDetails from "components/Admin/UserDetails";
 import TrackgroupDetails from "components/Admin/TrackgroupDetails";
 import TrackDetails from "components/Admin/TrackDetails";
 import UpdateUserForm from "components/Admin/UpdateUserForm";
+import PlaylistTracks from "components/PlaylistTracks";
 
 // export default History;
 
@@ -207,10 +207,11 @@ function App() {
   }, [fetchUserProfileCallback, accessToken, expired]);
 
   React.useEffect(() => {
-    if (!userData) {
+    // FIXME: if userData is expired, then we should try to silently re-log in the user
+    if (!userData || expired) {
       dispatch({ type: "setLoggedInUser", user: undefined });
     }
-  }, [userData, dispatch, fetchUserProfileCallback]);
+  }, [userData, dispatch, fetchUserProfileCallback, expired]);
 
   return (
     <>

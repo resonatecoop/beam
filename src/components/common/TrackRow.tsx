@@ -118,7 +118,7 @@ const TrackRow: React.FC<{
           text-overflow: ellipsis;
         `}
       >
-        {track.trackGroup && (
+        {track.trackGroup && track.trackGroup.id && (
           <Link
             onClick={(e) => {
               e.stopPropagation();
@@ -128,6 +128,7 @@ const TrackRow: React.FC<{
             {track.trackGroup.title}
           </Link>
         )}
+        {track.trackGroup && !track.trackGroup.id && track.trackGroup.title}
         {!track.trackGroup && track.album}
       </td>
       <td
@@ -138,14 +139,17 @@ const TrackRow: React.FC<{
           text-overflow: ellipsis;
         `}
       >
-        <Link
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-          to={`/library/artist/${track.creatorId}`}
-        >
-          {track.artist ?? track.creator?.displayName}
-        </Link>
+        {track.creator?.id && (
+          <Link
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+            to={`/library/artist/${track.creator?.id}`}
+          >
+            {track.creator?.displayName}
+          </Link>
+        )}
+        {!track.creator?.id && (track.artist ?? track.creator?.displayName)}
       </td>
       <td>
         {trackPlays !== undefined && (

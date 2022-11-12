@@ -1,6 +1,0 @@
-{
-  "baseUrl": "http://localhost:8080",
-  "env": {
-    "API": "https://stream.resonate.coop/api/v3/"
-  }
-}

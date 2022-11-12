@@ -24,22 +24,20 @@ export const PlaylistTracks: React.FC = () => {
 
   const fetchTracks = React.useCallback(
     async (playlistId: string) => {
-      if (userId) {
-        setIsLoading(true);
+      setIsLoading(true);
 
-        const fetchFunction = ownedByUser ? fetchUserPlaylist : fetchPlaylist;
-        const trackgroup = await fetchFunction(playlistId);
-        setPlaylist(trackgroup);
-        setTracks(
-          // FIXME: This should be changed back to item.index
-          // when that's fixed on the API
-          // https://github.com/resonatecoop/tracks-api/issues/34
-          trackgroup.items.map((item, idx) => ({ ...item.track, index: idx }))
-        );
-        setIsLoading(false);
-      }
+      const fetchFunction = ownedByUser ? fetchUserPlaylist : fetchPlaylist;
+      const trackgroup = await fetchFunction(playlistId);
+      setPlaylist(trackgroup);
+      setTracks(
+        // FIXME: This should be changed back to item.index
+        // when that's fixed on the API
+        // https://github.com/resonatecoop/tracks-api/issues/34
+        trackgroup.items.map((item, idx) => ({ ...item.track, index: idx }))
+      );
+      setIsLoading(false);
     },
-    [userId, ownedByUser]
+    [ownedByUser]
   );
 
   React.useEffect(() => {
@@ -96,7 +94,9 @@ export const PlaylistTracks: React.FC = () => {
                 }
               `}
             >
-              {ownedByUser && playlist?.private ? <FaLock /> : <FaEye />}
+              {userId && (
+                <>{ownedByUser && playlist?.private ? <FaLock /> : <FaEye />}</>
+              )}
               {playlist?.title ?? "Tracks"}{" "}
               {ownedByUser && (
                 <IconButton

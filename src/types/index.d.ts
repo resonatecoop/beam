@@ -77,6 +77,7 @@ declare global {
     cover: string;
     cover_metadata: CoverMetadata;
     creatorId: string;
+    creator: Partial<UserGroup>;
     display_artist: null | string;
     id: string;
     slug: string;
@@ -137,6 +138,7 @@ declare global {
   }
 
   interface UserGroup {
+    id: string;
     displayName: string;
   }
 

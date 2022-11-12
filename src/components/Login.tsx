@@ -25,6 +25,7 @@ const Header = () => {
     <>
       <Button
         onClick={onOAuth2Click}
+        data-cy="log-in"
         // startIcon={isLoading ? <LoadingSpinner /> : undefined}
         // disabled={isLoading}
       >
