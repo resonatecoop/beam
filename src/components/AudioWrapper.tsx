@@ -118,7 +118,7 @@ export const AudioWrapper: React.FC<{
   }, [determineIfShouldPlay]);
 
   const getAudioSrc = React.useCallback(async () => {
-    const streamUrl = buildStreamURL(currentTrack.id);
+    const streamUrl = buildStreamURL(currentTrack.id, !!userId);
     try {
       const blob = await getCORSSong(streamUrl);
       if (blob) {
@@ -129,7 +129,7 @@ export const AudioWrapper: React.FC<{
       // so we'll just set the audio src directly.
       playerRef.current.audio.current.src = streamUrl;
     }
-  }, [currentTrack.id]);
+  }, [currentTrack.id, userId]);
 
   React.useEffect(() => {
     getAudioSrc();

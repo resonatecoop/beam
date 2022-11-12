@@ -52,10 +52,12 @@ export function calculateRemainingCost(count: number) {
   return 1022 - cost;
 }
 
-export function buildStreamURL(id?: string) {
+export function buildStreamURL(id: string, loggedInUser: boolean) {
   // We assume we're using full OIDC
-  // if (process.env.REACT_APP_AUTH_METADATA_URL) {
-  return `${API}user/stream/${id}`;
+  if (loggedInUser) {
+    return `${API}user/stream/${id}`;
+  }
+  return `${API}stream/${id}`;
 }
 
 export const determineNewTrackOrder = produce(

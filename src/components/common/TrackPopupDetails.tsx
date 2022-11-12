@@ -80,11 +80,11 @@ const TrackOwnerhsip: React.FC<{ track: TrackWithUserCounts }> = ({
   const download = React.useCallback(async () => {
     setIsDownloading(true);
     await downloadFile(
-      buildStreamURL(track.id),
+      buildStreamURL(track.id, !!userId),
       `${track.artist} - ${track.title}`
     );
     setIsDownloading(false);
-  }, [track.id, track.artist, track.title]);
+  }, [track.id, track.artist, track.title, userId]);
 
   const onBuyClick = React.useCallback(async () => {
     if (userId) {
