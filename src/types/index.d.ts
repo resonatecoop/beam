@@ -73,7 +73,7 @@ declare global {
   type TrackgroupType = "playlist" | "ep" | "lp";
 
   interface Trackgroup {
-    about: null | string;
+    about: string;
     cover: string;
     cover_metadata: CoverMetadata;
     creatorId: string;
@@ -274,6 +274,6 @@ declare global {
 
   interface Stat {
     date: string;
-    plays: number;
+    count: number;
   }
 }

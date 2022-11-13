@@ -19,22 +19,31 @@ const AlbumForm: React.FC<{
   existing?: Trackgroup;
   reload: () => Promise<void>;
   artist: Artist;
-}> = ({ reload, artist, existing }) => {
+  onClose?: () => void;
+}> = ({ reload, artist, existing, onClose }) => {
   const snackbar = useSnackbar();
 
   const { register, handleSubmit } = useForm({
-    defaultValues: existing,
+    defaultValues: existing ?? {
+      private: true,
+    },
   });
 
   const existingId = existing?.id;
   const doSave = React.useCallback(
-    async (data) => {
+    async (data: {
+      title: string;
+      private: boolean;
+      type: string;
+      release_date: string;
+      about: string;
+      cover: string | File[];
+    }) => {
       try {
         let savedId = existingId;
         if (existingId) {
           await updateTrackGroup(existingId, {
             ...pick(data, [
-              "display_artist",
               "title",
               "private",
               "type",
@@ -44,22 +53,29 @@ const AlbumForm: React.FC<{
           });
         } else {
           const newGroup = await createTrackGroup({
-            ...data,
+            ...pick(data, [
+              "title",
+              "private",
+              "type",
+              "release_date",
+              "about",
+            ]),
             artistId: artist.id,
           });
           savedId = newGroup.id;
         }
         // data cover is a string if the form hasn't been changed.
-        if (savedId && typeof data.cover[0] !== "string") {
+        if (savedId && data.cover[0] && typeof data.cover[0] !== "string") {
           await uploadTrackGroupCover(savedId, data.cover[0]);
         }
         reload();
         snackbar("Trackgroup updated", { type: "success" });
+        onClose?.();
       } catch (e) {
         snackbar("There was a problem with the API", { type: "warning" });
       }
     },
-    [reload, existingId, snackbar, artist.id]
+    [reload, existingId, snackbar, artist.id, onClose]
   );
 
   return (
@@ -68,9 +84,9 @@ const AlbumForm: React.FC<{
         {existing ? "Edit" : "New"} Album for {artist.displayName}
       </h4>
 
-      <FormComponent>
+      {/* <FormComponent>
         Display artist: <InputEl {...register("display_artist")} />
-      </FormComponent>
+      </FormComponent> */}
       <FormComponent>
         Title: <InputEl {...register("title")} />
       </FormComponent>

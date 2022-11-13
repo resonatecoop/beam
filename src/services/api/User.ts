@@ -144,10 +144,11 @@ export const uploadPlaylistCover = async (id: string, file: File) => {
  */
 
 export const createTrackGroup = async (data: {
-  cover: string;
   title: string;
   type: string;
-  artistId?: number;
+  artistId: number;
+  release_date: string;
+  about: string;
 }): Promise<TrackgroupDetail> => {
   return fetchWrapper(`user/trackgroups`, {
     method: "POST",

@@ -55,12 +55,12 @@ const Profile: React.FC = () => {
     );
     const days = differenceInDays(date, start);
     const dates = [];
-    for (let i = 0; i < days; i++) {
+    for (let i = 0; i < days + 1; i++) {
+      const today = addDays(start, i);
+      const todayFormatted = format(today, formatStr);
       dates.push({
-        date: format(addDays(start, i), formatStr),
-        plays:
-          stats.find((s) => s.date === format(addDays(start, i), formatStr))
-            ?.plays ?? 0,
+        date: todayFormatted,
+        plays: stats.find((s) => s.date === todayFormatted)?.count ?? 0,
       });
     }
     setStats(dates);

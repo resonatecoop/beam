@@ -11,7 +11,7 @@ const NewAlbumForm: React.FC<{
 }> = ({ reload, artist, open, onClose }) => {
   return (
     <Modal open={open} onClose={onClose}>
-      <AlbumForm {...{ reload, artist }} />
+      <AlbumForm {...{ reload, artist }} onClose={onClose} />
     </Modal>
   );
 };

@@ -12,7 +12,7 @@ interface ReleaseDetails {
   id: string;
   images?: ImageSizes;
   title?: string;
-  about: string | null;
+  about: string;
   tags?: string[];
   creatorId: string;
   slug: string;
