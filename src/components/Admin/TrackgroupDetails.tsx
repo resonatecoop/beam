@@ -74,7 +74,7 @@ export const TrackGroupDetails: React.FC = () => {
           <InputEl {...register("about")} />
         </div>
         <div>
-          Release date: <InputEl type="date" {...register("release_date")} />
+          Release date: <InputEl type="date" {...register("releaseDate")} />
         </div>
         <div>
           About: <TextArea {...register("about")} />

@@ -103,7 +103,7 @@ export const Manage: React.FC = () => {
                       {album.enabled ? <FaCheck /> : ""}
                     </td>
                     <td className="alignRight">{album.items.length}</td>
-                    <td className="alignRight">{album.release_date}</td>
+                    <td className="alignRight">{album.releaseDate}</td>
 
                     <td className="alignRight">
                       <Button

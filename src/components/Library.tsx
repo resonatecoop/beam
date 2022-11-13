@@ -22,7 +22,7 @@ export const Library: React.FC = () => {
             top: calc(48px + 3rem);
             left: 0;
             overflow-x: hidden;
-            padding: 0 0 1rem 1rem;
+            padding: 0 1rem 1rem 1rem;
           `}
         >
           <BackButton />

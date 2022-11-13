@@ -59,7 +59,7 @@ export interface AdminTrackGroup {
   display_artist: string;
   composers: string[];
   performers: string[];
-  release_date: string;
+  releaseDate: string;
   cover_metadata: unknown;
   tags: string[];
   images: ResonateImage;

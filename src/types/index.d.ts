@@ -89,7 +89,7 @@ declare global {
     images: ImageSizes;
     private: boolean;
     enabled: boolean;
-    release_date: string;
+    releaseDate: string;
   }
 
   interface Playlist {
@@ -180,7 +180,6 @@ declare global {
     download: boolean;
     items: TrackgroupItem[];
     private: boolean;
-    release_date: string;
   }
 
   interface TagResult {

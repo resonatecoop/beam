@@ -147,7 +147,7 @@ export const createTrackGroup = async (data: {
   title: string;
   type: string;
   artistId: number;
-  release_date: string;
+  releaseDate: string;
   about: string;
 }): Promise<TrackgroupDetail> => {
   return fetchWrapper(`user/trackgroups`, {

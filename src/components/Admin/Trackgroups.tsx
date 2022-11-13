@@ -59,7 +59,7 @@ export const AdminTrackGroups: React.FC = () => {
                 <td>{trackgroup.private ? <FaCheck /> : undefined}</td>
                 <td>{trackgroup.enabled ? <FaCheck /> : undefined}</td>
                 <td>{trackgroup.display_artist}</td>
-                <td>{trackgroup.release_date}</td>
+                <td>{trackgroup.releaseDate}</td>
                 <td className="alignRight">
                   <IconButton
                     compact

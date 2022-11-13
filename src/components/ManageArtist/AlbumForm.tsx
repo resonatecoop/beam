@@ -35,7 +35,7 @@ const AlbumForm: React.FC<{
       title: string;
       private: boolean;
       type: string;
-      release_date: string;
+      releaseDate: string;
       about: string;
       cover: string | File[];
     }) => {
@@ -43,23 +43,11 @@ const AlbumForm: React.FC<{
         let savedId = existingId;
         if (existingId) {
           await updateTrackGroup(existingId, {
-            ...pick(data, [
-              "title",
-              "private",
-              "type",
-              "release_date",
-              "about",
-            ]),
+            ...pick(data, ["title", "private", "type", "releaseDate", "about"]),
           });
         } else {
           const newGroup = await createTrackGroup({
-            ...pick(data, [
-              "title",
-              "private",
-              "type",
-              "release_date",
-              "about",
-            ]),
+            ...pick(data, ["title", "private", "type", "releaseDate", "about"]),
             artistId: artist.id,
           });
           savedId = newGroup.id;
@@ -137,7 +125,7 @@ const AlbumForm: React.FC<{
         </SelectEl>
       </FormComponent>
       <FormComponent>
-        Release date: <InputEl type="date" {...register("release_date")} />
+        Release date: <InputEl type="date" {...register("releaseDate")} />
       </FormComponent>
       <FormComponent>
         About: <TextArea {...register("about")} />
