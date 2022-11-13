@@ -13,6 +13,9 @@ export const SmallTileDetails: React.FC<{
         className={css`
           margin-left: 1rem;
           margin-top: 1rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         `}
       >
         <div

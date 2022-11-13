@@ -36,6 +36,10 @@ export const ImageWithPlaceholder: React.FC<{
           width={size}
           height={size}
           className={className}
+          style={{
+            width: `${size}px`,
+            height: `${size}px`,
+          }}
         />
       )}
       {!checkedSrc && (

@@ -80,6 +80,7 @@ const TrackLIWrapper: React.FC<{
   const onDragLeave = () => {
     setIsHoveringOver(false);
   };
+
   return (
     <ResultListItem
       draggable={draggable}
