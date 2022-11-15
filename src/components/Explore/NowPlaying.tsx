@@ -14,21 +14,7 @@ export const NowPlaying: React.FC = () => {
   });
 
   React.useEffect(() => {
-    setTracks(
-      results.map((r) => ({
-        ...r,
-        images: {
-          ...r.images,
-          small: {
-            // FIXME: There's a bug with the API's `images` being returned
-            // from fetchTracks. The URLs seem to not point to any existing files.
-            url: r.cover,
-            width: 120,
-            height: 120,
-          },
-        },
-      }))
-    );
+    setTracks(results);
   }, [results]);
 
   return (

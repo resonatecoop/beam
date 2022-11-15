@@ -122,6 +122,7 @@ export const Search: React.FC = () => {
           onChange={onChange}
           autoComplete="off"
           className={css`
+            background-color: white;
             width: auto;
             @media (max-width: ${bp.small}px) {
               display: none;

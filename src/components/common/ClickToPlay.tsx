@@ -96,7 +96,7 @@ const ClickToPlay: React.FC<{
   groupId?: string;
   trackId?: string;
   title: string;
-  image: ResonateImage;
+  image?: ResonateImage;
   className?: string;
   trackGroupType?: "playlist" | "trackgroup";
   playActionIntercept?: (trackId: string) => void;
