@@ -256,7 +256,13 @@ export const fetchTrack = (trackId: string): Promise<Track> => {
 
 export const fetchSearchResults = (
   searchString: string
-): Promise<SearchResult[] | null> => {
+): Promise<{
+  artists: Artist[];
+  trackgroups: Trackgroup[];
+  tracks: Track[];
+  labels: Label[];
+  bands: Artist[];
+}> => {
   return fetchWrapper(
     "search/",
     { method: "GET" },

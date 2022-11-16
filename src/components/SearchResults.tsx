@@ -10,18 +10,23 @@ import {
 } from "../typeguards";
 import ClickToPlay from "./common/ClickToPlay";
 import EmptyBox from "./common/EmptyBox";
+import GridListItem from "./common/GridListItem";
 import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
+import LargeTileDetail from "./common/LargeTileDetail";
 import ResultListItem from "./common/ResultListItem";
 import SmallTileDetails from "./common/SmallTileDetails";
 
 export const SearchResults: React.FC = () => {
   const [search] = useSearchParams();
   const searchString = search.get("q");
-  const [searchResults, setSearchResults] = React.useState<SearchResult[]>([]);
+  const [searchResults, setSearchResults] = React.useState<{
+    artists: Artist[];
+    trackgroups: Trackgroup[];
+  }>();
 
   const fetchSearchResultsCallback = React.useCallback(async (str: string) => {
     const results = await fetchSearchResults(str);
-    setSearchResults(results ?? []);
+    setSearchResults(results);
   }, []);
 
   React.useEffect(() => {
@@ -31,89 +36,60 @@ export const SearchResults: React.FC = () => {
   return (
     <>
       <h3>Results for "{searchString}"</h3>
-      <div>
-        {searchResults.length === 0 && (
-          <EmptyBox>No results found, try another search!</EmptyBox>
-        )}
-        <ul
-          className={css`
-            list-style: none;
-          `}
-        >
-          {searchResults.map((result) => (
-            <ResultListItem>
-              {(isArtistSearchResult(result) ||
-                isLabelSearchResult(result)) && (
-                <>
+      {searchResults && (
+        <>
+          <div>
+            <h3>Artists</h3>
+            <ul
+              className={css`
+                list-style: none;
+              `}
+            >
+              {searchResults.artists.map((artist) => (
+                <GridListItem key={artist.id} maxWidth={300}>
                   <ImageWithPlaceholder
-                    src={result.images?.["profile_photo-sm"]}
-                    className={css`
-                      background-color: #ddd;
-                    `}
-                    size={120}
-                    alt={result.name}
+                    src={artist.images?.["profile_photo-m"]}
+                    alt={artist.displayName}
+                    size={300}
                   />
-                  <SmallTileDetails
+                  <LargeTileDetail
                     title={
-                      <Link
-                        to={`/library/${
-                          result.kind === "label" ? "label" : "artist"
-                        }/${result.user_id}`}
-                      >
-                        {result.kind}: {result.name}
+                      <Link to={`/library/artist/${artist.id}`}>
+                        {artist.displayName}
                       </Link>
                     }
-                    subtitle={""}
                   />
-                </>
-              )}
-
-              {isTrackSearchResult(result) && (
-                <>
-                  {result.images.small && (
-                    <ClickToPlay
-                      title={result.title}
-                      image={result.images.small}
-                      trackId={result.track_id}
-                    />
-                  )}
-                  <SmallTileDetails
-                    title={`Track: ${result.title}`}
-                    subtitle={result.display_artist}
+                </GridListItem>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3>Releases</h3>
+            <ul
+              className={css`
+                list-style: none;
+              `}
+            >
+              {searchResults.trackgroups.map((trackgroup) => (
+                <GridListItem key={trackgroup.id} maxWidth={300}>
+                  <ImageWithPlaceholder
+                    src={trackgroup.cover}
+                    alt={trackgroup.title}
+                    size={300}
                   />
-                </>
-              )}
-              {isAlbumSearchResult(result) && (
-                <>
-                  {result.images?.small && (
-                    <ClickToPlay
-                      title={result.title}
-                      image={result.images.small}
-                      groupId={result.track_group_id}
-                      trackGroupType="trackgroup"
-                    />
-                  )}
-                  <SmallTileDetails
+                  <LargeTileDetail
                     title={
-                      <Link to={`/library/trackgroup/${result.track_group_id}`}>
-                        {result.kind}: {result.title}
+                      <Link to={`/library/trackgroup/${trackgroup.id}`}>
+                        {trackgroup.title}
                       </Link>
                     }
-                    subtitle={
-                      <>
-                        by:{" "}
-                        <Link to={`/library/artist/${result.creatorId}`}>
-                          {result.display_artist}
-                        </Link>
-                      </>
-                    }
                   />
-                </>
-              )}
-            </ResultListItem>
-          ))}
-        </ul>
-      </div>
+                </GridListItem>
+              ))}
+            </ul>
+          </div>
+        </>
+      )}
     </>
   );
 };
