@@ -54,7 +54,7 @@ export const TrackPopupDetails: React.FC<{
               font-size: 1rem;
             `}
           >
-            {track.artist}
+            {track.creator?.displayName}
           </p>
         </div>
       </div>
@@ -81,10 +81,10 @@ const TrackOwnerhsip: React.FC<{ track: TrackWithUserCounts }> = ({
     setIsDownloading(true);
     await downloadFile(
       buildStreamURL(track.id, !!userId),
-      `${track.artist} - ${track.title}`
+      `${track.creator?.displayName} - ${track.title}`
     );
     setIsDownloading(false);
-  }, [track.id, track.artist, track.title, userId]);
+  }, [track.id, track.creator?.displayName, track.title, userId]);
 
   const onBuyClick = React.useCallback(async () => {
     if (userId) {

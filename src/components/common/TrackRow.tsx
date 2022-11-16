@@ -149,7 +149,7 @@ const TrackRow: React.FC<{
             {track.creator?.displayName}
           </Link>
         )}
-        {!track.creator?.id && (track.artist ?? track.creator?.displayName)}
+        {!track.creator?.id && track.creator?.displayName}
       </td>
       <td>
         {trackPlays !== undefined && (

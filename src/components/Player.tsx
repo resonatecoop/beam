@@ -73,15 +73,19 @@ const Player = () => {
   const fetchTrackCallback = React.useCallback(
     async (id: string) => {
       setIsLoading(true);
-      const track = await fetchTrack(id);
-      if (userId) {
-        const mappedTrack = (await mapFavoriteAndPlaysToTracks([track]))[0];
-        setCurrentTrack(mappedTrack);
-      } else {
-        setCurrentTrack(track);
+      try {
+        const track = await fetchTrack(id);
+        if (userId) {
+          const mappedTrack = (await mapFavoriteAndPlaysToTracks([track]))[0];
+          setCurrentTrack(mappedTrack);
+        } else {
+          setCurrentTrack(track);
+        }
+      } catch {
+        setCurrentTrack(undefined);
+      } finally {
+        setIsLoading(false);
       }
-
-      setIsLoading(false);
     },
     [userId]
   );
@@ -135,7 +139,7 @@ const Player = () => {
       if ("mediaSession" in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({
           title: currentTrack.title,
-          artist: currentTrack.artist,
+          artist: currentTrack.creator?.displayName ?? "",
           album: currentTrack.album ?? "",
           artwork: [
             {
@@ -154,7 +158,7 @@ const Player = () => {
       <Helmet>
         {currentTrack && (
           <title>
-            {currentTrack.artist} - {currentTrack.title}
+            {currentTrack.creator?.displayName} - {currentTrack.title}
           </title>
         )}
       </Helmet>
@@ -174,7 +178,7 @@ const Player = () => {
             <div>{currentTrack.album}</div>
             <div>
               <Link to={`/library/artist/${currentTrack.creatorId}`}>
-                {currentTrack.artist}
+                {currentTrack.creator?.displayName}
               </Link>
             </div>
           </div>

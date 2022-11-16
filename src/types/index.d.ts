@@ -152,7 +152,6 @@ declare global {
     album: string;
     cover: string;
     cover_metadata: CoverMetadata;
-    artist: string;
     status: "Paid";
     url: string;
     images: ImageSizes;

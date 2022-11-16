@@ -36,21 +36,7 @@ export const Queue: React.FC = () => {
           return fetchTrack(id);
         })
       );
-      setPlayerQueue(
-        results.map((result) => {
-          // FIXME currentTrack.images doesn't contain small image URL
-          return {
-            ...result,
-            images: {
-              ...result.images,
-              small: {
-                ...(result.images.small ?? { width: 60, height: 60 }),
-                url: result.images.small?.url ?? result.cover,
-              },
-            },
-          };
-        })
-      );
+      setPlayerQueue(results);
       setIsLoading(false);
     } else {
       setPlayerQueue([]);

@@ -2,7 +2,7 @@ export function isTrack(entity: unknown): entity is Track {
   if (!entity) {
     return false;
   }
-  return (entity as Track).artist !== undefined;
+  return (entity as Track).creator !== undefined;
 }
 
 export function isTrackgroup(entity: unknown): entity is Trackgroup {
