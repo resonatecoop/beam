@@ -38,11 +38,20 @@ export const TagList: React.FC = () => {
                 />
               )}
               <SmallTileDetails
-                title={group.title}
-                subtitle={
-                  <Link to={`/library/artist/${group.creatorId}`}>
-                    {group.creator.displayName}
+                title={
+                  <Link to={`/library/trackgroup/${group.id}`}>
+                    {group.title}
                   </Link>
+                }
+                subtitle={
+                  <>
+                    {group.creatorId && (
+                      <Link to={`/library/artist/${group.creatorId}`}>
+                        {group.creator.displayName ?? "Artist not found"}
+                      </Link>
+                    )}
+                    {!group.creatorId && "Artist not found"}
+                  </>
                 }
                 footer={<Tags tags={group.tags} />}
                 moreActions={<TrackPopup groupId={group.id} />}
