@@ -3,6 +3,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import Button from "./common/Button";
 import { InputEl } from "./common/Input";
+import { SelectEl } from "./common/Select";
 
 import Modal from "./common/Modal";
 import { useGlobalStateContext } from "contexts/globalState";
@@ -21,16 +22,27 @@ const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
   } = useGlobalStateContext();
   const snackbar = useSnackbar();
   const { register, handleSubmit, reset } = useForm();
+  const [countries, setCountries] = React.useState<
+    { name: string; code: string }[]
+  >([]);
+  const fetchCountries = React.useCallback(async () => {
+    const fetchedCountries = await fetch("/countries.json").then((res) =>
+      res.json()
+    );
+    setCountries(fetchedCountries);
+    reset({
+      displayName: user?.displayName,
+      country: user?.country,
+      // email: user?.email,
+      newsletterNotification: user?.newsletterNotification,
+    });
+  }, [reset, user]);
 
   React.useEffect(() => {
     if (user) {
-      reset({
-        displayName: user?.displayName,
-        // email: user?.email,
-        newsletterNotification: user?.newsletterNotification,
-      });
+      fetchCountries();
     }
-  }, [reset, user]);
+  }, [user, fetchCountries]);
 
   const doSave = React.useCallback(
     async (data) => {
@@ -51,6 +63,16 @@ const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
           <h4>Update your account</h4>
           <FormComponent>
             Display name: <InputEl {...register("displayName")} />
+          </FormComponent>
+          <FormComponent>
+            Country:{" "}
+            <SelectEl {...register("country")}>
+              {countries.map((c) => (
+                <option key={c.code} value={c.code}>
+                  {c.name}
+                </option>
+              ))}
+            </SelectEl>
           </FormComponent>
           {/* TODO: This will require resending email confirmation */}
           {/* <FormComponent>
