@@ -2,19 +2,9 @@ import { css } from "@emotion/css";
 import React from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { fetchSearchResults } from "../services/Api";
-import {
-  isAlbumSearchResult,
-  isArtistSearchResult,
-  isLabelSearchResult,
-  isTrackSearchResult,
-} from "../typeguards";
-import ClickToPlay from "./common/ClickToPlay";
-import EmptyBox from "./common/EmptyBox";
 import GridListItem from "./common/GridListItem";
 import ImageWithPlaceholder from "./common/ImageWithPlaceholder";
 import LargeTileDetail from "./common/LargeTileDetail";
-import ResultListItem from "./common/ResultListItem";
-import SmallTileDetails from "./common/SmallTileDetails";
 
 export const SearchResults: React.FC = () => {
   const [search] = useSearchParams();
