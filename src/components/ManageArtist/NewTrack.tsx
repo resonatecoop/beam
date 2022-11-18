@@ -38,11 +38,12 @@ export const NewTrack: React.FC<{
             },
           ],
         });
-        await reload();
         snackbar("Track uploaded", { type: "success" });
       } catch (e) {
         console.error(e);
         snackbar("There was a problem with the API", { type: "warning" });
+      } finally {
+        await reload();
       }
     },
     [trackgroup.id, trackgroup.creatorId, reload, snackbar]

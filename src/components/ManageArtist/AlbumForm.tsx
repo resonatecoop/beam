@@ -56,11 +56,12 @@ const AlbumForm: React.FC<{
         if (savedId && data.cover[0] && typeof data.cover[0] !== "string") {
           await uploadTrackGroupCover(savedId, data.cover[0]);
         }
-        reload();
         snackbar("Trackgroup updated", { type: "success" });
         onClose?.();
       } catch (e) {
         snackbar("There was a problem with the API", { type: "warning" });
+      } finally {
+        await reload();
       }
     },
     [reload, existingId, snackbar, artist.id, onClose]

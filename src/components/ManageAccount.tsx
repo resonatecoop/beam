@@ -34,7 +34,7 @@ const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
       displayName: user?.displayName,
       country: user?.country,
       // email: user?.email,
-      newsletterNotification: user?.newsletterNotification,
+      newsletterNotification: user?.newsletterNotification ?? false,
     });
   }, [reset, user]);
 
