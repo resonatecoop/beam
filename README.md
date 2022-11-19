@@ -10,8 +10,6 @@ This is a music player that uses Resonate's API.
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-View the [project board](https://github.com/resonatecoop/beam/projects/1) where work is tracked for this repository.
-
 ## Development
 
 Install yarn if you don't yet have it on your machine by running:
