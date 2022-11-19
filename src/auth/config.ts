@@ -9,6 +9,8 @@ const userManager = new UserManager({
   client_secret: process.env.REACT_APP_CLIENT_SECRET ?? "missing",
   response_type: "code",
   scope: "read_write",
+  // post_logout_redirect_uri: window.location.toString(),
+  // popup_post_logout_redirect_uri: window.location.toString(),
   revokeTokensOnSignout: true,
   // loadUserInfo: true,
   automaticSilentRenew: true,

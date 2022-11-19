@@ -44,6 +44,7 @@ declare global {
     legacyId: number;
     displayName: string;
     email: string;
+    emailConfirmed: false;
     ownedGroups: unknown[];
     newsletterNotification: boolean;
     role: {

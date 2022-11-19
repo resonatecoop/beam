@@ -12,6 +12,18 @@ import UserPurchases from "./UserPurchases";
 import FormComponent from "./common/FormComponent";
 import { updateUserProfile } from "services/api/User";
 import { useSnackbar } from "contexts/SnackbarContext";
+import styled from "@emotion/styled";
+
+const Alert = styled.div`
+  width: 100%;
+  background-color: ${(props) => props.theme.colors.warning};
+  color: white;
+  text-align: center;
+  font-size: 1rem;
+  padding: 1rem;
+  position: relative;
+  margin-bottom: 1rem;
+`;
 
 const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
   open,
@@ -19,12 +31,14 @@ const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
 }) => {
   const {
     state: { user },
+    dispatch,
   } = useGlobalStateContext();
   const snackbar = useSnackbar();
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, formState } = useForm();
   const [countries, setCountries] = React.useState<
     { name: string; code: string }[]
   >([]);
+
   const fetchCountries = React.useCallback(async () => {
     const fetchedCountries = await fetch("/countries.json").then((res) =>
       res.json()
@@ -33,7 +47,8 @@ const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
     reset({
       displayName: user?.displayName,
       country: user?.country,
-      // email: user?.email,
+      email: user?.email,
+      password: "",
       newsletterNotification: user?.newsletterNotification ?? false,
     });
   }, [reset, user]);
@@ -47,18 +62,25 @@ const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
   const doSave = React.useCallback(
     async (data) => {
       try {
-        await updateUserProfile(data);
+        const newProfile = await updateUserProfile(data);
+        dispatch({ type: "setLoggedInUser", user: newProfile });
         snackbar("Updated profile", { type: "success" });
       } catch (e) {
         snackbar("Failed to update profile", { type: "warning" });
       }
     },
-    [snackbar]
+    [snackbar, dispatch]
   );
 
   return (
     <>
       <Modal open={open} onClose={onClose} size="small">
+        {!user?.emailConfirmed && (
+          <Alert>
+            Your email address hasn't been confirmed yet. Please check your
+            inbox
+          </Alert>
+        )}
         <form onSubmit={handleSubmit(doSave)}>
           <h4>Update your account</h4>
           <FormComponent>
@@ -74,10 +96,15 @@ const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
               ))}
             </SelectEl>
           </FormComponent>
-          {/* TODO: This will require resending email confirmation */}
-          {/* <FormComponent>
+          <FormComponent>
             Email: <InputEl type="email" {...register("email")} />
-          </FormComponent> */}
+          </FormComponent>
+          {formState?.dirtyFields?.email && (
+            <FormComponent>
+              Password: <InputEl type="password" {...register("password")} />
+              <small>Changing your email will require your password</small>
+            </FormComponent>
+          )}
           <FormComponent
             className={css`
               display: flex;
@@ -95,7 +122,7 @@ const ManageAccount: React.FC<{ open: boolean; onClose: () => void }> = ({
           </FormComponent>
           <Button type="submit">Save account details</Button>
         </form>
-        <UserPurchases />
+        {user?.emailConfirmed && <UserPurchases />}
       </Modal>
     </>
   );
