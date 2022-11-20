@@ -10,6 +10,7 @@ import { InputEl } from "../common/Input";
 import { SelectEl } from "../common/Select";
 import FormComponent from "components/common/FormComponent";
 import { useSnackbar } from "contexts/SnackbarContext";
+import LoadingSpinner from "components/common/LoadingSpinner";
 
 export interface ShareableTrackgroup {
   creatorId: number;
@@ -21,11 +22,13 @@ export const NewTrack: React.FC<{
   reload: () => Promise<void>;
 }> = ({ trackgroup, reload }) => {
   const { register, handleSubmit } = useForm();
+  const [isSaving, setIsSaving] = React.useState(false);
   const snackbar = useSnackbar();
 
   const doAddTrack = React.useCallback(
     async (data) => {
       try {
+        setIsSaving(true);
         const track = await createTrack({
           ...data,
           creatorId: trackgroup.creatorId,
@@ -43,6 +46,7 @@ export const NewTrack: React.FC<{
         console.error(e);
         snackbar("There was a problem with the API", { type: "warning" });
       } finally {
+        setIsSaving(false);
         await reload();
       }
     },
@@ -74,7 +78,13 @@ export const NewTrack: React.FC<{
           accept="audio/mpeg,audio/flac"
         />
       </FormComponent>
-      <Button type="submit">Add track</Button>
+      <Button
+        type="submit"
+        disabled={isSaving}
+        startIcon={isSaving ? <LoadingSpinner /> : undefined}
+      >
+        Add track
+      </Button>
     </form>
   );
 };

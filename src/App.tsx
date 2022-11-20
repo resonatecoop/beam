@@ -170,7 +170,7 @@ const HasPermission: React.FC<{
   }
 
   const userIsArtist =
-    (user?.userGroups?.length ?? 0) === 0 || user?.role?.name === "artist";
+    (user?.userGroups?.length ?? 0) !== 0 || user?.role?.name === "artist";
 
   if (roles?.includes("artist") && !userIsArtist) {
     return <Navigate to="/" />;

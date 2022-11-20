@@ -16,8 +16,11 @@ export const ImageWithPlaceholder: React.FC<{
     const prefetchSrc = async () => {
       try {
         if (src) {
-          await fetch(src);
-          setCheckedSrc(src);
+          const img = new Image();
+          img.src = src;
+          img.onload = () => {
+            setCheckedSrc(src);
+          };
         }
       } catch {
         console.error("src returns 404", src);

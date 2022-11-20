@@ -294,6 +294,12 @@ export const createTrack = async (data: {
   });
 };
 
+export const deleteTrack = async (id: string) => {
+  return fetchWrapper(`user/tracks/${id}`, {
+    method: "DELETE",
+  });
+};
+
 export const uploadTrackFile = async (id: number, data: any) => {
   var fd = new FormData();
   fd.append("files", data.upload[0]);

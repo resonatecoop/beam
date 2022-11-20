@@ -16,12 +16,18 @@ export const ManageAlbumForm: React.FC<{
   artist: Artist;
   reload: () => Promise<void>;
 }> = ({ open, trackgroup, onClose, reload, artist }) => {
-  const [tracks] = React.useState(trackgroup.items.map((i) => i.track));
+  const [tracks, setTracks] = React.useState<Track[]>([]);
+
+  React.useEffect(() => {
+    if (trackgroup.items) {
+      setTracks(trackgroup.items.map((i) => i.track));
+    }
+  }, [trackgroup.items]);
 
   return (
     <Modal open={open} onClose={onClose}>
       <AlbumForm existing={trackgroup} reload={reload} artist={artist} />
-      <TrackTable tracks={tracks} editable trackgroupId={trackgroup.id} />
+      <TrackTable tracks={tracks} editable trackgroupId={trackgroup.id} owned />
       <NewTrack trackgroup={trackgroup} reload={reload} />
     </Modal>
   );

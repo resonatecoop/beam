@@ -17,12 +17,23 @@ export const Manage: React.FC = () => {
   const [creatingNewArtist, setCreatingNewArtist] = React.useState(false);
   const [addingNewAlbum, setAddingNewAlbum] = React.useState(false);
 
+  const albumId = addingTrackToAlbum?.id;
+
   const fetchArtists = React.useCallback(async () => {
     const fetchedArtists = await fetchUserArtists();
     if (fetchedArtists) {
       setArtists(fetchedArtists.data);
+      if (albumId) {
+        setAddingTrackToAlbum(
+          fetchedArtists.data
+            .find((artist) =>
+              artist.trackgroups?.find((tg) => tg.id === albumId)
+            )
+            ?.trackgroups?.find((tg) => tg.id === albumId)
+        );
+      }
     }
-  }, []);
+  }, [albumId]);
 
   React.useEffect(() => {
     fetchArtists();
@@ -95,7 +106,7 @@ export const Manage: React.FC = () => {
                 {a.trackgroups?.map((album) => (
                   <tr key={album.id}>
                     <td>{album.title}</td>
-                    <td>{album.display_artist}</td>
+                    <td>{a.displayName}</td>
                     <td className="alignRight">
                       {album.private ? <FaCheck /> : ""}
                     </td>

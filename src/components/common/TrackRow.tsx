@@ -1,6 +1,6 @@
 import { css } from "@emotion/css";
 import React from "react";
-import { FaPause, FaPlay } from "react-icons/fa";
+import { FaPause, FaPlay, FaTrash } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useGlobalStateContext } from "contexts/globalState";
 import { isTrackWithUserCounts } from "typeguards";
@@ -11,7 +11,8 @@ import IconButton from "./IconButton";
 import TrackPopup from "./TrackPopup";
 import styled from "@emotion/styled";
 import { colorShade } from "utils/theme";
-import { checkPlayCountOfTrackIds } from "services/api/User";
+import { checkPlayCountOfTrackIds, deleteTrack } from "services/api/User";
+import { useSnackbar } from "contexts/SnackbarContext";
 
 const PlaysTracker = styled.div<{ width: number; played?: boolean }>`
   width: ${(props) => props.width}px;
@@ -27,12 +28,14 @@ const TrackRow: React.FC<{
   trackgroupId?: string;
   addTracksToQueue: (id: string) => void;
   reload: () => Promise<void>;
+  owned?: boolean;
   handleDrop: (val: React.DragEvent<HTMLTableRowElement>) => void;
-}> = ({ track, addTracksToQueue, trackgroupId, reload, handleDrop }) => {
+}> = ({ track, addTracksToQueue, trackgroupId, reload, handleDrop, owned }) => {
   const [trackPlays, setTrackPlays] = React.useState(
     (isTrackWithUserCounts(track) && track.plays) || undefined
   );
   const loadedRef = React.useRef(false);
+  const snackbar = useSnackbar();
   const {
     state: { playerQueueIds, playing, currentlyPlayingIndex, user },
     dispatch,
@@ -57,6 +60,16 @@ const TrackRow: React.FC<{
     const playCount = await checkPlayCountOfTrackIds([track.id]);
     setTrackPlays(playCount[0]?.count);
   }, [track.id]);
+
+  const onDeleteClick = React.useCallback(async () => {
+    try {
+      await deleteTrack(track.id);
+      await reload?.();
+      snackbar("Deleted track", { type: "success" });
+    } catch (e) {
+      console.error(e);
+    }
+  }, [track.id, reload, snackbar]);
 
   React.useEffect(() => {
     if (loadedRef.current) {
@@ -163,14 +176,23 @@ const TrackRow: React.FC<{
           </div>
         )}
       </td>
-      <td>
-        <TrackPopup
-          trackId={track.id}
-          compact
-          groupId={trackgroupId}
-          reload={reload}
-        />
-      </td>
+      {!owned && (
+        <td>
+          <TrackPopup
+            trackId={track.id}
+            compact
+            groupId={trackgroupId}
+            reload={reload}
+          />
+        </td>
+      )}
+      {owned && (
+        <td>
+          <IconButton compact onClick={onDeleteClick} title="Delete">
+            <FaTrash />
+          </IconButton>
+        </td>
+      )}
     </tr>
   );
 };

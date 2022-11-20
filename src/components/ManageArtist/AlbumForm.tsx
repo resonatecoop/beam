@@ -14,6 +14,7 @@ import FormComponent from "components/common/FormComponent";
 import { useSnackbar } from "contexts/SnackbarContext";
 import { pick } from "lodash";
 import { css } from "@emotion/css";
+import LoadingSpinner from "components/common/LoadingSpinner";
 
 const AlbumForm: React.FC<{
   existing?: Trackgroup;
@@ -22,7 +23,7 @@ const AlbumForm: React.FC<{
   onClose?: () => void;
 }> = ({ reload, artist, existing, onClose }) => {
   const snackbar = useSnackbar();
-
+  const [isSaving, setIsSaving] = React.useState(false);
   const { register, handleSubmit } = useForm({
     defaultValues: existing ?? {
       private: true,
@@ -40,6 +41,7 @@ const AlbumForm: React.FC<{
       cover: string | File[];
     }) => {
       try {
+        setIsSaving(true);
         let savedId = existingId;
         if (existingId) {
           await updateTrackGroup(existingId, {
@@ -61,6 +63,7 @@ const AlbumForm: React.FC<{
       } catch (e) {
         snackbar("There was a problem with the API", { type: "warning" });
       } finally {
+        setIsSaving(false);
         await reload();
       }
     },
@@ -131,7 +134,13 @@ const AlbumForm: React.FC<{
       <FormComponent>
         About: <TextArea {...register("about")} />
       </FormComponent>
-      <Button type="submit">{existing ? "Save" : "Submit"} Album</Button>
+      <Button
+        type="submit"
+        disabled={isSaving}
+        startIcon={isSaving ? <LoadingSpinner /> : undefined}
+      >
+        {existing ? "Save" : "Submit"} Album
+      </Button>
     </form>
   );
 };
