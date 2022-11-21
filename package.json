@@ -1,7 +1,7 @@
 {
   "name": "beam",
   "version": "0.5.3",
-  "homepage": "./",
+  "homepage": ".",
   "main": "./public/electron.js",
   "author": "Si <simsamsomred@gmail.com>",
   "description": "Beaming Resonate",
