@@ -37,7 +37,7 @@ export const NewTrack: React.FC<{
         await addTracksToTrackGroup(trackgroup.id, {
           tracks: [
             {
-              track_id: track.id,
+              trackId: track.id,
             },
           ],
         });

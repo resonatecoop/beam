@@ -146,7 +146,7 @@ export const uploadPlaylistCover = async (id: string, file: File) => {
 export const createTrackGroup = async (data: {
   title: string;
   type: string;
-  artistId: number;
+  artistId: string;
   releaseDate: string;
   about: string;
 }): Promise<TrackgroupDetail> => {
@@ -196,7 +196,7 @@ export const fetchUserTrackGroup = async (
 export const addTracksToTrackGroup = async (
   id: string,
   data: {
-    tracks: { track_id: string }[];
+    tracks: { trackId: string }[];
   }
 ) => {
   return fetchWrapper(`user/trackgroups/${id}/items/add`, {
@@ -208,7 +208,7 @@ export const addTracksToTrackGroup = async (
 export const removeTracksFromTrackGroup = async (
   id: string,
   data: {
-    tracks: { track_id: string }[];
+    tracks: { trackId: string }[];
   }
 ) => {
   return fetchWrapper(`user/trackgroups/${id}/items/remove`, {
@@ -220,7 +220,7 @@ export const removeTracksFromTrackGroup = async (
 export const setNewTracksOnTrackGroup = async (
   id: string,
   data: {
-    tracks: { track_id: string; index?: number }[];
+    tracks: { trackId: string; index?: number }[];
   }
 ) => {
   return fetchWrapper(`user/trackgroups/${id}/items`, {
@@ -273,9 +273,21 @@ export const fetchUserArtist = (artistId: number): Promise<Artist> => {
 
 export const createUserArtist = async (data: {
   displayName: string;
-}): Promise<TrackgroupDetail> => {
+}): Promise<Artist> => {
   return fetchWrapper(`user/artists`, {
     method: "POST",
+    body: JSON.stringify(data),
+  });
+};
+
+export const updateUserArtist = async (
+  id: string,
+  data: {
+    displayName: string;
+  }
+): Promise<Artist> => {
+  return fetchWrapper(`user/artists/${id}`, {
+    method: "PUT",
     body: JSON.stringify(data),
   });
 };
@@ -403,7 +415,7 @@ export const buyTrack = async (trackId: string) => {
   return fetchWrapper(`user/plays/buy`, {
     method: "POST",
     body: JSON.stringify({
-      track_id: trackId,
+      trackId,
     }),
   });
 };

@@ -26,8 +26,15 @@ export const ManageAlbumForm: React.FC<{
 
   return (
     <Modal open={open} onClose={onClose}>
+      {/* There is some overly complex state management going on here with the reloads being passed around */}
       <AlbumForm existing={trackgroup} reload={reload} artist={artist} />
-      <TrackTable tracks={tracks} editable trackgroupId={trackgroup.id} owned />
+      <TrackTable
+        tracks={tracks}
+        editable
+        trackgroupId={trackgroup.id}
+        owned
+        reload={reload}
+      />
       <NewTrack trackgroup={trackgroup} reload={reload} />
     </Modal>
   );

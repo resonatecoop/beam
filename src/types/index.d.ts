@@ -119,7 +119,7 @@ declare global {
 
   interface Artist {
     displayName: string;
-    id: number;
+    id: string;
     links?: {
       uri: string;
       platform: string;
@@ -228,48 +228,6 @@ declare global {
     _id: string;
     score: number;
   }
-
-  interface TrackSearchResult extends SearchResultBase {
-    track_id: string;
-    kind: "track";
-    display_artist: string;
-    title: string;
-    cover: string;
-    images: ImageSizes;
-  }
-
-  interface LabelSearchResult extends SearchResultBase {
-    user_id: number;
-    kind: "label";
-    name: string;
-    twitter_handle: string;
-    images?: ArtistImage;
-  }
-
-  interface ArtistSearchResult extends SearchResultBase {
-    user_id: number;
-    kind: "artist" | "band";
-    name: string;
-    twitter_handle: string | null;
-    images?: ArtistImage;
-  }
-
-  interface AlbumSearchResult extends SearchResultBase {
-    creatorId: number;
-    track_group_id: string;
-    slug: string;
-    kind: "album";
-    title: string;
-    images?: ImageSizes;
-    display_artist: string;
-    cover_metadata: CoverMetadata;
-  }
-
-  type SearchResult =
-    | ArtistSearchResult
-    | TrackSearchResult
-    | LabelSearchResult
-    | AlbumSearchResult;
 
   interface Stat {
     date: string;

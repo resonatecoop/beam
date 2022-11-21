@@ -1,4 +1,4 @@
-import { cloneDeep, isEqual } from "lodash";
+import { cloneDeep } from "lodash";
 import React from "react";
 import { useGlobalStateContext } from "contexts/globalState";
 import {
@@ -23,7 +23,8 @@ export const TrackTable: React.FC<{
   trackgroupId?: string;
   editable?: boolean;
   owned?: boolean;
-}> = ({ tracks, trackgroupId, editable, isPlaylist, owned }) => {
+  reload?: () => Promise<void>;
+}> = ({ tracks, trackgroupId, editable, isPlaylist, owned, reload }) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const {
     state: { user, draggingTrackId },
@@ -57,7 +58,7 @@ export const TrackTable: React.FC<{
           } else {
             await setNewTracksOnTrackGroup(trackgroupId, {
               tracks: newTracks.map((t, index) => ({
-                track_id: t.id,
+                trackId: t.id,
                 index: index + 1,
               })),
             });
@@ -101,13 +102,17 @@ export const TrackTable: React.FC<{
     [dispatch, tracks]
   );
 
-  const reload = React.useCallback(async () => {
+  const reloadWrapper = React.useCallback(async () => {
     if (trackgroupId) {
       const fetchGroup = isPlaylist ? fetchUserPlaylist : fetchUserTrackGroup;
       const newTracks = await fetchGroup(trackgroupId);
       fetchTracks(newTracks.items.map((i) => i.track));
+
+      if (reload) {
+        await reload();
+      }
     }
-  }, [fetchTracks, isPlaylist, trackgroupId]);
+  }, [fetchTracks, isPlaylist, trackgroupId, reload]);
 
   if (isLoading) {
     return <CenteredSpinner />;
@@ -135,7 +140,7 @@ export const TrackTable: React.FC<{
             track={track}
             addTracksToQueue={addTracksToQueue}
             trackgroupId={trackgroupId}
-            reload={reload}
+            reload={reloadWrapper}
             handleDrop={handleDrop}
             owned={owned}
           />
