@@ -4,6 +4,7 @@ import { InputEl } from "components/common/Input";
 import LoadingSpinner from "components/common/LoadingSpinner";
 import TextArea from "components/common/TextArea";
 import { useSnackbar } from "contexts/SnackbarContext";
+import { pick } from "lodash";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -43,7 +44,10 @@ export const PlaylistDetails: React.FC = () => {
       if (playlistId) {
         try {
           setIsLoading(true);
-          await updatePlaylist(playlistId, data);
+          await updatePlaylist(
+            playlistId,
+            pick(data, ["title", "about", "private", "featured"])
+          );
           snackbar("Successfully updated track group", { type: "success" });
         } catch (e) {
           console.error(e);

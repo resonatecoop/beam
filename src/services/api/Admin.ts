@@ -139,7 +139,7 @@ export const fetchPlaylist = (id: string): Promise<AdminPlaylist> => {
 
 export const updatePlaylist = (
   id: string,
-  data: AdminPlaylist
+  data: Partial<AdminPlaylist>
 ): Promise<AdminPlaylist> => {
   return fetchWrapper(`user/admin/playlists/${id}`, {
     method: "PUT",
