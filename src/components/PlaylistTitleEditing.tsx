@@ -33,7 +33,7 @@ const PlaylistTitleEditing: React.FC<{
   const onSave = React.useCallback(
     async (e) => {
       await updatePlaylist(playlist.id, {
-        cover: playlist.cover_metadata.id,
+        // cover: playlist.cover_metadata.id,
         tags: playlist.tags,
         type: "playlist",
         private: isPrivate,

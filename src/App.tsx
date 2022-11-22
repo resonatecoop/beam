@@ -40,6 +40,8 @@ import TrackgroupDetails from "components/Admin/TrackgroupDetails";
 import TrackDetails from "components/Admin/TrackDetails";
 import UpdateUserForm from "components/Admin/UpdateUserForm";
 import PlaylistTracks from "components/PlaylistTracks";
+import AdminPlaylists from "components/Admin/Playlists";
+import PlaylistDetails from "components/Admin/PlaylistDetails";
 
 // export default History;
 
@@ -256,6 +258,9 @@ function App() {
 
               <Route path="trackgroups" element={<AdminTrackgroups />}>
                 <Route path=":trackgroupId" element={<TrackgroupDetails />} />
+              </Route>
+              <Route path="playlists" element={<AdminPlaylists />}>
+                <Route path=":playlistId" element={<PlaylistDetails />} />
               </Route>
               <Route path="tracks" element={<AdminTracks />}>
                 <Route path=":trackId" element={<TrackDetails />} />

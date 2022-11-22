@@ -56,7 +56,7 @@ export const createPlaylist = async (data: {
 export const updatePlaylist = async (
   id: string,
   data: {
-    cover: string;
+    // cover: string;
     title: string;
     private: boolean;
     tags: string[];

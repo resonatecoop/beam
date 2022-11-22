@@ -49,6 +49,9 @@ export const fetchUser = (id: string): Promise<AdminUser> => {
   });
 };
 
+/**
+ * Admin TrackGroups
+ */
 export interface AdminTrackGroup {
   id: string;
   title: string;
@@ -56,7 +59,11 @@ export interface AdminTrackGroup {
   about: string;
   private: boolean;
   enabled: boolean;
-  display_artist: string;
+  featured: boolean;
+  creator: {
+    id: string;
+    displayName: string;
+  };
   composers: string[];
   performers: string[];
   releaseDate: string;
@@ -94,11 +101,61 @@ export const updateTrackGroup = (
   });
 };
 
+/**
+ * Admin TrackGroups
+ */
+export interface AdminPlaylist {
+  id: string;
+  title: string;
+  about: string;
+  private: boolean;
+  featured: boolean;
+  creator: {
+    id: string;
+    displayName: string;
+  };
+  tags: string[];
+  images: ResonateImage;
+}
+
+export const fetchPlaylists = (
+  options: APIOptions
+): Promise<APIPaginatedResult<AdminPlaylist>> => {
+  return fetchWrapper(
+    "user/admin/playlists/",
+    {
+      method: "GET",
+    },
+    options,
+    true
+  );
+};
+
+export const fetchPlaylist = (id: string): Promise<AdminPlaylist> => {
+  return fetchWrapper(`user/admin/playlists/${id}`, {
+    method: "GET",
+  });
+};
+
+export const updatePlaylist = (
+  id: string,
+  data: AdminPlaylist
+): Promise<AdminPlaylist> => {
+  return fetchWrapper(`user/admin/playlists/${id}`, {
+    method: "PUT",
+    body: JSON.stringify(data),
+  });
+};
+
+/**
+ * Admin Tracks
+ */
+
 export interface AdminTrack {
   id: number;
   title: string;
-  album: string;
-  album_artist: string;
+  trackGroup: { id: string; cover: string; title: string };
+  creator: { id: string; displayName: string };
   status: string;
   images: ResonateImage;
 }

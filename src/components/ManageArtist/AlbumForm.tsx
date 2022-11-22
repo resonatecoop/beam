@@ -89,14 +89,7 @@ const AlbumForm: React.FC<{
         `}
       >
         <input id="private" type="checkbox" {...register("private")} />{" "}
-        <label
-          className={css`
-            display: flex;
-            flex-direction: column;
-            margin-left: 0.5rem;
-          `}
-          htmlFor="private"
-        >
+        <label htmlFor="private">
           Is private?
           <small>Private albums can not be listened to by Resonate users</small>
         </label>

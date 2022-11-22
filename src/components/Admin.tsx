@@ -17,6 +17,9 @@ export const Admin: React.FC = () => {
         <li>
           <NavLink to="tracks">Tracks</NavLink>
         </li>
+        <li>
+          <NavLink to="playlists">Playlists</NavLink>
+        </li>
       </Tabs>
       <div
         className={css`

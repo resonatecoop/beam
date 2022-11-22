@@ -58,13 +58,6 @@ export const TrackDetails: React.FC = () => {
           Title: <InputEl {...register("title")} />
         </div>
         <div>
-          Album: <InputEl {...register("album")} />
-        </div>
-        <div>
-          Album artist:
-          <InputEl {...register("album_artist")} />
-        </div>
-        <div>
           Status:{" "}
           <SelectEl defaultValue="paid" {...register("status")}>
             <option value="free+paid">Free + Paid</option>
@@ -78,6 +71,7 @@ export const TrackDetails: React.FC = () => {
         <Button
           type="submit"
           style={{ marginTop: "1rem" }}
+          disabled={isLoading}
           startIcon={isLoading ? <LoadingSpinner /> : undefined}
         >
           Save track

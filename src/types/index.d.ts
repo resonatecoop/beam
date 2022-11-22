@@ -90,6 +90,7 @@ declare global {
     images: ImageSizes;
     private: boolean;
     enabled: boolean;
+    featured: boolean;
     releaseDate: string;
   }
 
