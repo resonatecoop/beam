@@ -6,7 +6,7 @@ import Disclaimer from "./common/Disclaimer";
 import { fetchUserStats } from "services/api/User";
 import { format, subDays, differenceInDays, addDays } from "date-fns";
 import { useAuth } from "oidc-react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import beamPackage from "../../package.json";
 import ManageAccount from "./ManageAccount";
@@ -94,6 +94,9 @@ const Profile: React.FC = () => {
     }
   }, [user, navigate]);
 
+  const userIsArtist =
+    (user?.userGroups?.length ?? 0) !== 0 || user?.role?.name === "artist";
+
   return (
     <div
       className={css`
@@ -137,6 +140,11 @@ const Profile: React.FC = () => {
             <strong>role: </strong> {user.role.name}
           </p>
         </div>
+      )}
+      {userIsArtist && (
+        <Link to="/manage">
+          <Button onClick={() => setOpenAccount(true)}>Manage Artists</Button>
+        </Link>
       )}
       <Button onClick={() => setOpenAccount(true)}>Manage Account</Button>
       <ManageAccount open={openAccount} onClose={() => setOpenAccount(false)} />

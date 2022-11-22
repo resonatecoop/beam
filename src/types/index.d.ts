@@ -120,12 +120,29 @@ declare global {
   interface Artist {
     displayName: string;
     id: string;
+    banner?: {
+      small: string;
+      medium: string;
+      large: string;
+    };
+    avatar?: {
+      xxs: string;
+      xs: string;
+      s: string;
+      m: string;
+      l: string;
+      xl: string;
+      xxl: string;
+      xxxl: string;
+    };
     links?: {
       uri: string;
       platform: string;
     }[];
     images?: ArtistImage;
-    bio: string;
+    shortBio: string;
+    description: string;
+    email: string;
     label?: { id: number; name: string };
     country: string;
     trackgroups?: TrackgroupDetail[];

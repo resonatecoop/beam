@@ -5,6 +5,12 @@ import { useForm } from "react-hook-form";
 import { createUserArtist, updateUserArtist } from "services/api/User";
 import { InputEl } from "../common/Input";
 import LoadingSpinner from "components/common/LoadingSpinner";
+import FormComponent from "components/common/FormComponent";
+import TextArea from "components/common/TextArea";
+import { css } from "@emotion/css";
+import { useSnackbar } from "contexts/SnackbarContext";
+import { pick } from "lodash";
+import UploadArtistImage from "./UploadArtistImage";
 
 export interface ShareableTrackgroup {
   creatorId: number;
@@ -17,6 +23,7 @@ export const ArtistForm: React.FC<{
   onClose: () => void;
   reload: () => Promise<void>;
 }> = ({ open, onClose, reload, existing }) => {
+  const snackbar = useSnackbar();
   const [isSaving, setIsSaving] = React.useState(false);
   const { register, handleSubmit } = useForm({
     defaultValues: existing,
@@ -30,11 +37,11 @@ export const ArtistForm: React.FC<{
         setIsSaving(true);
         if (existingId) {
           await updateUserArtist(existingId, {
-            ...data,
+            ...pick(data, ["shortBio", "description", "displayName", "email"]),
           });
         } else {
           await createUserArtist({
-            ...data,
+            ...pick(data, ["shortBio", "description", "displayName", "email"]),
           });
         }
 
@@ -42,29 +49,70 @@ export const ArtistForm: React.FC<{
         if (!existingId) {
           onClose();
         }
+        snackbar("Updated artist", { type: "success" });
       } catch (e) {
         console.error(e);
+        snackbar("Something went wrong with the API", { type: "warning" });
       } finally {
         setIsSaving(false);
       }
     },
-    [reload, onClose, existingId]
+    [reload, onClose, existingId, snackbar]
   );
 
   return (
     <Modal open={open} onClose={onClose} size="small">
       <form onSubmit={handleSubmit(soSave)}>
-        <h3>{existing ? existing.displayName : "New artist"}</h3>
-        <div>
-          Title: <InputEl {...register("displayName")} />
-        </div>
-        <Button
-          type="submit"
-          disabled={isSaving}
-          startIcon={isSaving ? <LoadingSpinner /> : undefined}
+        {existing && (
+          <UploadArtistImage
+            existing={existing}
+            reload={reload}
+            imageType="banner"
+            height="125px"
+            width="100%"
+            maxDimensions="2500x500"
+          />
+        )}
+        {existing && (
+          <UploadArtistImage
+            existing={existing}
+            reload={reload}
+            imageType="avatar"
+            height="120px"
+            width="120px"
+            maxDimensions="1500x1500"
+          />
+        )}
+
+        <div
+          className={css`
+            margin-top: 1rem;
+          `}
         >
-          Add artist
-        </Button>
+          <h3>{existing ? existing.displayName : "New artist"}</h3>
+          <FormComponent>
+            Display name: <InputEl {...register("displayName")} />
+          </FormComponent>
+          <FormComponent>
+            Bio:
+            <TextArea {...register("shortBio")} />
+          </FormComponent>
+          <FormComponent>
+            Description:
+            <TextArea {...register("description")} />
+          </FormComponent>
+          <FormComponent>
+            Email: <InputEl type="email" {...register("email")} />
+          </FormComponent>
+
+          <Button
+            type="submit"
+            disabled={isSaving}
+            startIcon={isSaving ? <LoadingSpinner /> : undefined}
+          >
+            {existing ? "Save" : "Create"} artist
+          </Button>
+        </div>
       </form>
     </Modal>
   );

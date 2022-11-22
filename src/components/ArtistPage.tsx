@@ -187,7 +187,8 @@ export const ArtistPage: React.FC = () => {
     }
   }, [fetchTracks, artistId]);
 
-  const backgroundImage = artist?.images?.["cover_photo-l"];
+  const backgroundImage =
+    artist?.banner?.medium ?? artist?.images?.["cover_photo-l"];
 
   return (
     <div
@@ -231,7 +232,7 @@ export const ArtistPage: React.FC = () => {
             </h3>
           </TitleWrapper>
           <div className={padding}>
-            <OverflowableText text={artist.bio} />
+            <OverflowableText text={artist.shortBio} />
           </div>
           <p className={padding}>{artist.country}</p>
           {artist.label && (

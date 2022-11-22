@@ -48,6 +48,7 @@ export const errorHandler = async (result: Response) => {
       throw new Error("There was a problem communicating with the API");
     }
   }
+  return result;
 };
 
 export const fetchWrapper = async (

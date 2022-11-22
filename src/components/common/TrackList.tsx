@@ -112,10 +112,15 @@ const TrackLIWrapper: React.FC<{
       <SmallTileDetails
         title={track.title}
         subtitle={
-          <Link to={`/library/trackgroup/${track.trackGroup.id}`}>
-            {track.creator?.displayName}{" "}
-            {track.trackGroup && <>- {track.trackGroup.title}</>}
-          </Link>
+          <>
+            <Link to={`/library/artist/${track.creator?.id}`}>
+              {track.creator?.displayName}
+            </Link>
+            {" - "}
+            <Link to={`/library/trackgroup/${track.trackGroup.id}`}>
+              {track.trackGroup?.title}
+            </Link>
+          </>
         }
         moreActions={<TrackPopup trackId={track.id} />}
       />

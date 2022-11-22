@@ -292,6 +292,25 @@ export const updateUserArtist = async (
   });
 };
 
+export const uploadArtistImage = async (
+  id: string,
+  file: File,
+  imageType: "banner" | "avatar"
+) => {
+  var fd = new FormData();
+  const { token } = getToken();
+  fd.append("file", file);
+  return fetch(`${API}user/artists/${id}/${imageType}`, {
+    method: "PUT",
+    body: fd,
+    headers: {
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    },
+  })
+    .then(errorHandler)
+    .then((result) => result.json());
+};
+
 /**
  * user tracks
  */

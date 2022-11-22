@@ -2,8 +2,10 @@ import { css } from "@emotion/css";
 import Button from "components/common/Button";
 import Table from "components/common/Table";
 import React from "react";
-import { FaCheck } from "react-icons/fa";
+import { FaCheck, FaEye, FaPen } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import { fetchUserTrackGroup } from "services/api/User";
+import ArtistForm from "./ArtistForm";
 import ManageAlbumForm from "./ManageAlbumForm";
 import NewAlbumForm from "./NewAlbumForm";
 
@@ -14,7 +16,7 @@ const ArtistListItem: React.FC<{
   const [manageTrackgroup, setManageTrackgroup] =
     React.useState<TrackgroupDetail>();
   const [addingNewAlbum, setAddingNewAlbum] = React.useState(false);
-
+  const [isEditing, setIsEditing] = React.useState(false);
   const albumId = manageTrackgroup?.id;
 
   const reloadWrapper = React.useCallback(async () => {
@@ -32,8 +34,35 @@ const ArtistListItem: React.FC<{
         margin-bottom: 2rem;
       `}
     >
-      <h4>{artist.displayName}</h4>
-
+      <ArtistForm
+        open={isEditing}
+        onClose={() => setIsEditing(false)}
+        existing={artist}
+        reload={reloadWrapper}
+      />
+      <div
+        className={css`
+          display: flex;
+          width: 100%;
+          justify-content: flex-end;
+        `}
+      >
+        <h4 style={{ flexGrow: 1 }}>Artist: {artist.displayName}</h4>
+        <span>
+          <Button
+            compact
+            startIcon={<FaPen />}
+            onClick={() => setIsEditing(true)}
+          >
+            Edit
+          </Button>
+        </span>
+        <Link to={`/library/artist/${artist.id}`}>
+          <Button compact startIcon={<FaEye />}>
+            View
+          </Button>
+        </Link>
+      </div>
       <h5>Your albums</h5>
       <Table>
         <thead>
