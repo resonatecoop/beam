@@ -102,6 +102,9 @@ declare global {
     creatorId: string;
     feature: boolean;
     items: TrackGroupItem[];
+    id: string;
+    tags: string[];
+    images: ImageSizes;
   }
 
   interface ArtistImage {

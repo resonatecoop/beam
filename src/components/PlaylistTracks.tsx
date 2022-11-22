@@ -17,7 +17,7 @@ export const PlaylistTracks: React.FC = () => {
   } = useGlobalStateContext();
   const [isLoading, setIsLoading] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(false);
-  const [playlist, setPlaylist] = React.useState<TrackgroupDetail>();
+  const [playlist, setPlaylist] = React.useState<Playlist>();
   const [tracks, setTracks] = React.useState<IndexedTrack[]>([]);
   const userId = user?.id;
   const ownedByUser = userId && playlist?.creatorId === userId;

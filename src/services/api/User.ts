@@ -46,7 +46,7 @@ export const fetchPublicUserPlaylists = async (
 
 export const createPlaylist = async (data: {
   title: string;
-}): Promise<TrackgroupDetail> => {
+}): Promise<Playlist> => {
   return fetchWrapper(`user/playlists`, {
     method: "POST",
     body: JSON.stringify(data),
@@ -63,22 +63,20 @@ export const updatePlaylist = async (
     type: string;
     about?: string;
   }
-): Promise<TrackgroupDetail> => {
+): Promise<Playlist> => {
   return fetchWrapper(`user/playlists/${id}`, {
     method: "PUT",
     body: JSON.stringify(data),
   });
 };
 
-export const fetchUserPlaylists = async (): Promise<TrackgroupDetail[]> => {
+export const fetchUserPlaylists = async (): Promise<Playlist[]> => {
   return fetchWrapper(`user/playlists`, {
     method: "GET",
   });
 };
 
-export const fetchUserPlaylist = async (
-  id: string
-): Promise<TrackgroupDetail> => {
+export const fetchUserPlaylist = async (id: string): Promise<Playlist> => {
   return fetchWrapper(`user/playlists/${id}`, {
     method: "GET",
   });

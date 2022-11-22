@@ -155,7 +155,7 @@ export interface AdminTrack {
   id: number;
   title: string;
   trackGroup: { id: string; cover: string; title: string };
-  creator: { id: string; displayName: string };
+  creator?: { id: string; displayName: string };
   status: string;
   images: ResonateImage;
 }

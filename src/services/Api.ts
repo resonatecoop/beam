@@ -96,13 +96,14 @@ export const fetchWrapper = async (
  * Playlists
  */
 
-export interface FetchTrackGroupFilter extends APIOptions {
-  type?: TrackgroupType;
+export interface FetchPlaylistFilter extends APIOptions {
+  random?: boolean;
+  featured?: boolean;
 }
 
 export const fetchPlaylists = async (
-  options?: FetchTrackGroupFilter
-): Promise<APIPaginatedResult<Trackgroup>> => {
+  options?: FetchPlaylistFilter
+): Promise<APIPaginatedResult<Playlist>> => {
   return fetchWrapper(
     "playlists",
     {
@@ -113,7 +114,7 @@ export const fetchPlaylists = async (
   );
 };
 
-export const fetchPlaylist = async (id: string): Promise<TrackgroupDetail> => {
+export const fetchPlaylist = async (id: string): Promise<Playlist> => {
   return fetchWrapper(`playlists/${id}`, {
     method: "GET",
   });
@@ -122,6 +123,10 @@ export const fetchPlaylist = async (id: string): Promise<TrackgroupDetail> => {
 /**
  * Track groups
  */
+
+export interface FetchTrackGroupFilter extends APIOptions {
+  type?: string;
+}
 
 export const fetchTrackGroups = async (
   options?: FetchTrackGroupFilter

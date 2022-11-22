@@ -160,7 +160,7 @@ const contentWrapper = css`
 const HasPermission: React.FC<{
   children: React.ReactElement;
   isLoading: boolean;
-  roles?: ("user" | "artist" | "superadmin")[];
+  roles?: ("user" | "artist" | "admin")[];
 }> = ({ children, roles, isLoading }) => {
   const { userData, isLoading: loginLoading } = useAuth();
   const {
@@ -177,7 +177,11 @@ const HasPermission: React.FC<{
   if (roles?.includes("artist") && !userIsArtist) {
     return <Navigate to="/" />;
   }
-  if (roles?.includes("superadmin") && user?.role?.name !== "superadmin") {
+
+  const isUserAdmin =
+    user?.role?.name === "superadmin" || user?.role?.name === "admin";
+
+  if (roles?.includes("admin") && !isUserAdmin) {
     return <Navigate to="/" />;
   }
   if (!userData) {
@@ -242,7 +246,7 @@ function App() {
             <Route
               path="/admin"
               element={
-                <HasPermission roles={["superadmin"]} isLoading={isLoading}>
+                <HasPermission roles={["admin"]} isLoading={isLoading}>
                   <Admin />
                 </HasPermission>
               }

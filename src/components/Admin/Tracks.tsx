@@ -54,7 +54,7 @@ export const AdminTracks: React.FC = () => {
               <tr key={track.id}>
                 <td>{track.title}</td>
                 <td>{track.trackGroup.title}</td>
-                <td>{track.creator.displayName}</td>
+                <td>{track.creator?.displayName}</td>
                 <td>{track.status}</td>
                 <td className="alignRight">
                   <IconButton compact onClick={() => onClickQueue(track.id)}>

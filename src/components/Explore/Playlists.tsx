@@ -10,7 +10,7 @@ import { CenteredSpinner } from "../common/Spinner";
 import StaffPicks from "../StaffPicks";
 
 export const Playlists: React.FC = () => {
-  const { LoadingButton, results, isLoading } = usePagination<Trackgroup>({
+  const { LoadingButton, results, isLoading } = usePagination<Playlist>({
     apiCall: React.useCallback(fetchPlaylists, []),
     options: React.useMemo(() => ({ limit: 20, type: "playlist" }), []),
   });

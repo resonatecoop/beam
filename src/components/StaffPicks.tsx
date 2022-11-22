@@ -1,11 +1,10 @@
 import { css } from "@emotion/css";
-import { random } from "lodash";
 import React from "react";
 import { FaPlay } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { useGlobalStateContext } from "../contexts/globalState";
 
-import { fetchPlaylist } from "../services/Api";
+import { fetchPlaylists } from "../services/Api";
 import Button from "./common/Button";
 import { CenteredSpinner } from "./common/Spinner";
 import TrackList from "./common/TrackList";
@@ -15,23 +14,26 @@ const StaffPicks: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const { pathname } = useLocation();
   const editable = pathname.includes("library");
-  const [latestStaffPick, setLatestStaffPick] =
-    React.useState<TrackgroupDetail>();
+  const [latestStaffPick, setLatestStaffPick] = React.useState<Playlist>();
   const [tracks, setTracks] = React.useState<Track[]>();
 
   const fetchStaffPicksCallback = React.useCallback(async () => {
     setIsLoading(true);
     try {
-      const resp = await fetch(
-        "https://raw.githubusercontent.com/simonv3/beam/main/featured.json"
-      );
-      const ids = (await resp.json()).playlists;
-      const result = await fetchPlaylist(ids[random(ids.length - 1)]);
-      setLatestStaffPick(result);
+      // const resp = await fetch(
+      //   "https://raw.githubusercontent.com/simonv3/beam/main/featured.json"
+      // );
+      // const ids = (await resp.json()).playlists;
+      const result = await fetchPlaylists({
+        featured: true,
+        limit: 1,
+        random: true,
+      });
+      setLatestStaffPick(result.data[0]);
 
-      setTracks(result?.items.map((item) => item.track));
+      setTracks(result?.data[0].items.map((item) => item.track));
     } catch (e) {
-      console.error("Staff picks loading error");
+      console.error("Staff picks loading error", e);
     } finally {
       setIsLoading(false);
     }

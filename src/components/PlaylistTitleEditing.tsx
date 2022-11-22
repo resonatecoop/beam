@@ -13,7 +13,7 @@ import Input from "./common/Input";
 import TextArea from "./common/TextArea";
 
 const PlaylistTitleEditing: React.FC<{
-  playlist: Release;
+  playlist: Playlist;
   onDone: (update?: boolean) => void;
 }> = ({ playlist, onDone }) => {
   const snackbar = useSnackbar();

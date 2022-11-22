@@ -12,7 +12,7 @@ export const AddToPlaylist: React.FC<{
   selectedTrackIds: string[];
   onSongAdded: () => void;
 }> = ({ selectedTrackIds, onSongAdded }) => {
-  const [playlists, setPlaylists] = React.useState<TrackgroupDetail[]>();
+  const [playlists, setPlaylists] = React.useState<Playlist[]>();
   const snackbar = useSnackbar();
 
   const fetchPlaylistsCallback = React.useCallback(
