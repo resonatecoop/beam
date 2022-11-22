@@ -26,11 +26,20 @@ const PlaysTracker = styled.div<{ width: number; played?: boolean }>`
 const TrackRow: React.FC<{
   track: TrackWithUserCounts | Track;
   trackgroupId?: string;
+  isPlaylist?: boolean;
   addTracksToQueue: (id: string) => void;
   reload: () => Promise<void>;
   owned?: boolean;
   handleDrop: (val: React.DragEvent<HTMLTableRowElement>) => void;
-}> = ({ track, addTracksToQueue, trackgroupId, reload, handleDrop, owned }) => {
+}> = ({
+  track,
+  addTracksToQueue,
+  trackgroupId,
+  reload,
+  handleDrop,
+  owned,
+  isPlaylist,
+}) => {
   const [trackPlays, setTrackPlays] = React.useState(
     (isTrackWithUserCounts(track) && track.plays) || undefined
   );
@@ -181,7 +190,7 @@ const TrackRow: React.FC<{
           <TrackPopup
             trackId={track.id}
             compact
-            groupId={trackgroupId}
+            groupId={isPlaylist || !track.id ? trackgroupId : undefined}
             reload={reload}
           />
         </td>

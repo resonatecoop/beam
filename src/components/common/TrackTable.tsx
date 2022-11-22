@@ -141,6 +141,7 @@ export const TrackTable: React.FC<{
             addTracksToQueue={addTracksToQueue}
             trackgroupId={trackgroupId}
             reload={reloadWrapper}
+            isPlaylist={isPlaylist}
             handleDrop={handleDrop}
             owned={owned}
           />
