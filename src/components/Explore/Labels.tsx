@@ -22,14 +22,15 @@ export const Labels: React.FC = () => {
             <GridListItem key={label.id} maxWidth={300}>
               <ImageWithPlaceholder
                 src={label.images?.["profile_photo-m"]}
-                alt={label.name}
+                alt={label.displayName}
                 size={300}
               />
               <LargeTileDetail
                 title={
-                  <Link to={`/library/label/${label.id}`}>{label.name}</Link>
+                  <Link to={`/library/label/${label.id}`}>
+                    {label.displayName}
+                  </Link>
                 }
-                subtitle={label.country}
               />
             </GridListItem>
           );

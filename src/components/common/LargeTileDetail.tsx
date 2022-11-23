@@ -44,7 +44,6 @@ export const SmallTileDetails: React.FC<{
           className={css`
             display: flex;
             align-items: center;
-            margin-right: 1rem;
           `}
         >
           {moreActions}

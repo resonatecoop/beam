@@ -85,11 +85,11 @@ export const LabelPage: React.FC = () => {
                 );
               `}
             >
-              {label.name}
+              {label.displayName}
             </h3>
           </div>
           <div className={padding}>
-            <OverflowableText text={label.bio} />
+            <OverflowableText text={label.shortBio} />
           </div>
           <p className={padding}>
             {label.links?.map((link) => (

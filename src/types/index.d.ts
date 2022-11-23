@@ -159,9 +159,16 @@ declare global {
     userGroups?: UserGroup[];
   }
 
+  // FIXME: consolidate this with Artist
   interface UserGroup {
     id: string;
     displayName: string;
+    images?: ArtistImage;
+    shortBio: string;
+    links?: {
+      uri: string;
+      platform: string;
+    }[];
   }
 
   interface Track {
@@ -219,14 +226,7 @@ declare global {
 
   interface Favorite extends Track {}
 
-  interface Label {
-    name: string;
-    id: number;
-    links?: { uri: string; platform: string }[];
-    images?: ArtistImage;
-    bio: string;
-    country: string;
-  }
+  interface Label extends UserGroup {}
 
   interface LabelArtist {
     name: string;

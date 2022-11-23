@@ -51,12 +51,12 @@ const ReleaseItem: React.FC<{ group: Trackgroup }> = ({ group }) => {
                 to={`/library/artist/${group.creatorId}`}
                 data-cy="artist-link"
               >
-                {group.display_artist}
+                {group.creator?.displayName}
               </Link>
             )}
             {!artistExists && (
               <Tooltip hoverText="This artist is so fresh our servers haven't caught up yet">
-                {group.display_artist}
+                {group.creator?.displayName}
               </Tooltip>
             )}
           </>
@@ -71,7 +71,7 @@ export const NewReleases: React.FC = () => {
   const [trackgroups, setTrackgroups] = React.useState<Trackgroup[]>([]);
 
   const fetchTrackGroupsCallback = React.useCallback(async () => {
-    const result = await fetchTrackGroups({ limit: 4 });
+    const result = await fetchTrackGroups({ limit: 3 });
     setTrackgroups(result.data);
   }, []);
 
@@ -80,7 +80,7 @@ export const NewReleases: React.FC = () => {
   }, [fetchTrackGroupsCallback]);
 
   return (
-    <div>
+    <div style={{ marginTop: "1.4rem" }}>
       <h3>New releases</h3>
       <ul className={newReleasesUl}>
         {trackgroups.map((group) => (
