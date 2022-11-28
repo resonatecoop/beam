@@ -3,11 +3,14 @@ import styled from "@emotion/styled";
 import { GlobalState, useGlobalStateContext } from "contexts/globalState";
 import React from "react";
 import AudioPlayer from "react-h5-audio-player";
+import ReactHlsPlayer from "@gumlet/react-hls-player";
 import { ImLoop } from "react-icons/im";
+import { getToken } from "services/Api";
 import { registerPlay } from "../services/api/User";
 
-import { buildStreamURL, getCORSSong } from "../utils/tracks";
+import { buildHLSURL } from "../utils/tracks";
 import IconButton from "./common/IconButton";
+import { FaBackward, FaForward, FaPause, FaPlay } from "react-icons/fa";
 
 const LoopingIndicator = styled.span`
   position: absolute;
@@ -23,6 +26,17 @@ const LoopingIndicator = styled.span`
 function isEqualDurations(n1: number, n2: number) {
   return Math.abs(n1 - n2) < 0.00001;
 }
+function fmtMSS(s: number) {
+  return (s - (s %= 60)) / 60 + (9 < s ? ":" : ":0") + s;
+}
+
+const hlsConfig = {
+  xhrSetup: function (xhr: XMLHttpRequest, url: string) {
+    const { token } = getToken();
+    xhr.setRequestHeader("Content-Type", "application/octet-stream");
+    xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+  },
+};
 
 export const AudioWrapper: React.FC<{
   currentTrack: TrackWithUserCounts | Track;
@@ -31,8 +45,9 @@ export const AudioWrapper: React.FC<{
     state: { playerQueueIds, currentlyPlayingIndex, user, playing, looping },
     dispatch,
   } = useGlobalStateContext();
+  const [currentTime, setCurrentTime] = React.useState("0:00");
+  const playerRef = React.useRef<HTMLVideoElement>(null);
 
-  const playerRef = React.useRef<any>();
   const [mostlyListened, setMostlyListened] = React.useState(false);
   const userId = user?.id;
 
@@ -45,6 +60,7 @@ export const AudioWrapper: React.FC<{
       }
     }
     if (looping === "loopTrack") {
+      playerRef.current?.play();
     } else {
       dispatch({ type: "incrementCurrentlyPlayingIndex" });
     }
@@ -53,6 +69,7 @@ export const AudioWrapper: React.FC<{
 
   const onListen = React.useCallback(
     async (e) => {
+      setCurrentTime(fmtMSS(e.target.currentTime.toFixed()));
       if (
         !mostlyListened &&
         currentTrack &&
@@ -100,16 +117,16 @@ export const AudioWrapper: React.FC<{
       currentlyPlayingIndex !== undefined &&
       currentTrack.id === playerQueueIds[currentlyPlayingIndex] &&
       playerRef?.current &&
-      playing &&
-      !playerRef.current.isPlaying()
+      playing
+      // !playerRef.current.isPlaying()
     ) {
-      playerRef.current.audio.current.play();
+      playerRef.current.play();
     } else if (
       playerRef?.current &&
-      playing === false &&
-      playerRef.current.isPlaying()
+      playing === false
+      // playerRef.current.isPlaying()
     ) {
-      playerRef.current.audio.current.pause();
+      playerRef.current.pause();
     }
   }, [currentTrack, currentlyPlayingIndex, playerQueueIds, playing]);
 
@@ -117,39 +134,77 @@ export const AudioWrapper: React.FC<{
     determineIfShouldPlay();
   }, [determineIfShouldPlay]);
 
-  const getAudioSrc = React.useCallback(async () => {
-    const streamUrl = buildStreamURL(currentTrack.id, !!userId);
-    try {
-      const blob = await getCORSSong(streamUrl);
-      if (blob) {
-        playerRef.current.audio.current.src = URL.createObjectURL(blob);
-      }
-    } catch (e) {
-      // If the result gets rejected here it's probably because of CORS,
-      // so we'll just set the audio src directly.
-      playerRef.current.audio.current.src = streamUrl;
-    }
-  }, [currentTrack.id, userId]);
-
-  React.useEffect(() => {
-    getAudioSrc();
-  }, [getAudioSrc]);
-
   const onLoop = React.useCallback(() => {
-    playerRef.current.audio.current.loop = false;
     let nextLooping: GlobalState["looping"] = undefined;
     if (looping === undefined) {
       nextLooping = "loopTrack";
-      playerRef.current.audio.current.loop = true;
+      // playerRef.current.audio.current.loop = true;
     } else if (looping === "loopTrack") {
       nextLooping = "loopQueue";
     }
     dispatch({ type: "setLooping", looping: nextLooping });
   }, [dispatch, looping]);
 
+  const streamUrl = buildHLSURL(currentTrack.id, !!userId);
+  const duration = playerRef.current?.duration ?? 0;
+  const currentSeconds = playerRef.current?.currentTime ?? 0;
+  const percent = currentSeconds / duration;
+
   return (
     <>
-      <AudioPlayer
+      <IconButton onClick={onClickPrevious}>
+        <FaBackward />
+      </IconButton>
+      {!playing && (
+        <IconButton onClick={onPlay}>
+          <FaPlay />
+        </IconButton>
+      )}
+      {playing && (
+        <IconButton onClick={onPause}>
+          <FaPause />
+        </IconButton>
+      )}
+      <IconButton onClick={onClickNext}>
+        <FaForward />
+      </IconButton>
+      <ReactHlsPlayer
+        src={streamUrl}
+        autoPlay={false}
+        style={{ display: "none" }}
+        // controls={true}
+        // @ts-ignore
+        hlsConfig={hlsConfig}
+        width="100%"
+        height="2rem"
+        onPlay={onPlay}
+        onEnded={onEnded}
+        playerRef={playerRef}
+        onTimeUpdate={onListen}
+      />
+      <div
+        className={css`
+          height: 0.5rem;
+          width: 100%;
+          margin-left: 1rem;
+          border-radius: 1rem;
+          margin-right: 1rem;
+          background: rgba(0, 0, 0, 0.6);
+        `}
+      >
+        <div
+          className={css`
+            height: 100%;
+            overflow: none;
+            border-radius: 1rem;
+            transition: 1s width;
+            width: ${percent * 100}%;
+            background: rgba(0, 0, 0, 0.2);
+          `}
+        ></div>
+      </div>
+      {currentTime}
+      {/* <AudioPlayer
         ref={playerRef}
         onEnded={onEnded}
         onPause={onPause}
@@ -175,7 +230,7 @@ export const AudioWrapper: React.FC<{
             }
           }
         `}
-      />
+      /> */}
       <IconButton
         color={looping ? "primary" : undefined}
         compact

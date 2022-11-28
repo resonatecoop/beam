@@ -29,9 +29,12 @@ const StaffPicks: React.FC = () => {
         limit: 1,
         random: true,
       });
-      setLatestStaffPick(result.data[0]);
 
-      setTracks(result?.data[0].items.map((item) => item.track));
+      if (result.data.length > 0) {
+        setLatestStaffPick(result.data[0]);
+
+        setTracks(result?.data[0].items.map((item) => item.track));
+      }
     } catch (e) {
       console.error("Staff picks loading error", e);
     } finally {
