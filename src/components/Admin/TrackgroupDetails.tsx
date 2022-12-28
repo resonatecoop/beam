@@ -5,6 +5,7 @@ import LoadingSpinner from "components/common/LoadingSpinner";
 import { SelectEl } from "components/common/Select";
 import TextArea from "components/common/TextArea";
 import { useSnackbar } from "contexts/SnackbarContext";
+import { pick } from "lodash";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -44,7 +45,19 @@ export const TrackGroupDetails: React.FC = () => {
       if (trackgroupId) {
         try {
           setIsLoading(true);
-          await updateTrackGroup(trackgroupId, data);
+          await updateTrackGroup(
+            trackgroupId,
+            pick(
+              data,
+              "about",
+              "private",
+              "releaseDate",
+              "enabled",
+              "title",
+              "type",
+              "featured"
+            )
+          );
           snackbar("Successfully updated track group", { type: "success" });
         } catch (e) {
           console.error(e);

@@ -65,7 +65,7 @@ export function buildHLSURL(id: string, loggedInUser: boolean) {
   if (loggedInUser) {
     return `${API}user/stream/${id}/playlist.m3u8`;
   }
-  return `${API}stream/${id}`;
+  return `${API}stream/${id}/playlist.m3u8`;
 }
 
 export const determineNewTrackOrder = produce(

@@ -93,7 +93,7 @@ export const fetchTrackGroup = (id: string): Promise<AdminTrackGroup> => {
 
 export const updateTrackGroup = (
   id: string,
-  data: AdminTrackGroup
+  data: Partial<AdminTrackGroup>
 ): Promise<AdminTrackGroup> => {
   return fetchWrapper(`user/admin/trackgroups/${id}`, {
     method: "PUT",
