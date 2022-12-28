@@ -60,6 +60,14 @@ export function buildStreamURL(id: string, loggedInUser: boolean) {
   return `${API}stream/${id}`;
 }
 
+export function buildHLSURL(id: string, loggedInUser: boolean) {
+  // We assume we're using full OIDC
+  if (loggedInUser) {
+    return `${API}user/stream/${id}/playlist.m3u8`;
+  }
+  return `${API}stream/${id}/playlist.m3u8`;
+}
+
 export const determineNewTrackOrder = produce(
   (
     oldTracks: (TrackWithUserCounts | Track | IndexedTrack)[],

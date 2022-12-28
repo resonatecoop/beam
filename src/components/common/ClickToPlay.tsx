@@ -136,10 +136,13 @@ const ClickToPlay: React.FC<{
         }
       }
     }
-    dispatch({
-      type: "startPlayingIds",
-      playerQueueIds: ids,
-    });
+
+    if (ids.length > 0) {
+      dispatch({
+        type: "startPlayingIds",
+        playerQueueIds: ids,
+      });
+    }
   }, [
     dispatch,
     groupId,

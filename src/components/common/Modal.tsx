@@ -14,7 +14,7 @@ const wrapper = css`
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: scroll;
 `;
 
 type ContentProps = {
@@ -24,8 +24,11 @@ type ContentProps = {
 const Content = styled.div<ContentProps>`
   pointer-events: auto;
   background-color: #fefefe;
-  margin: 10% auto; /* 15% from the top and centered */
+  margin: 0 auto;
+  margin-top: 6rem;
   padding: 20px;
+  max-height: 80%;
+  overflow: scroll;
   z-index: 999;
   border: 1px solid #888;
   display: flex;

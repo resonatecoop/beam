@@ -173,6 +173,7 @@ declare global {
 
   interface Track {
     id: string;
+    hls?: boolean;
     creatorId: string;
     creator?: Partial<UserGroup>;
     trackGroup: Partial<Trackgroup>;
