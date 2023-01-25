@@ -62,7 +62,7 @@ export const PlaylistListing: React.FC = () => {
           > li:nth-of-type(odd) {
             background-color: #dfdfdf;
             @media (prefers-color-scheme: dark) {
-              background-color: #222;
+              background-color: "#18191A";
             }
           }
         `}

@@ -1,4 +1,5 @@
 import { css } from "@emotion/css";
+import styled from "@emotion/styled";
 import { Link } from "react-router-dom";
 
 export const Tags: React.FC<{ tags: string[]; onClick?: () => void }> = ({
@@ -23,7 +24,7 @@ export const Tags: React.FC<{ tags: string[]; onClick?: () => void }> = ({
             margin-bottom: 0.25rem;
 
             @media (prefers-color-scheme: dark) {
-              background-color: #222;
+              background-color: "#18191A";
             }
           `}
         >

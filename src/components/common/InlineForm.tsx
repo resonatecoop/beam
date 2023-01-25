@@ -21,7 +21,7 @@ export const InlineForm = styled.form<{ compact?: boolean }>`
 
   @media (prefers-color-scheme: dark) {
     > input {
-      background-color: #222;
+      background-color: ${(props) => props.theme.colors.backgroundDark};
     }
   }
 `;
